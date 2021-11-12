@@ -9,10 +9,16 @@ class ApiService {
   ApiService._internal();
 
   late final ApiClient _apiClient = _createApiClient();
+  late final ApiBasicClient _apiBasicClient = _createBasicApiClient();
 
   late final NodeApi nodeApi = NodeApi(_apiClient);
+  late final AuthApi authApi = AuthApi(_apiBasicClient);
 
   ApiClient _createApiClient() {
-    return ApiClient(nodeHandler.currentBaseUrl, loginHandler.accessToken);
+    return ApiClient(nodeHandler.currentBaseUrl(), loginHandler.accessToken);
+  }
+
+  ApiBasicClient _createBasicApiClient() {
+    return ApiBasicClient(nodeHandler.currentBaseUrl(), loginHandler.basicAuth);
   }
 }
