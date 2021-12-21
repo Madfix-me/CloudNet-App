@@ -24,6 +24,50 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: widget.child,
       appBar: _appBar(),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              accountEmail: Text('3ef54833-025d-4500-8b91-a85c50138bcd'),
+              accountName: Text('TheMeinerLP'),
+              currentAccountPicture: Image(image: NetworkImage('https://crafthead.net/avatar/05bf52c67bb04f1389510e1fd803df35')),
+            ),
+            ListTile(
+              title: const Text('Node'),
+            ),
+            ListTile(
+              title: const Text('Cluster'),
+            ),
+            ListTile(
+              title: const Text('Database'),
+            ),
+            ListTile(
+              title: const Text('Groups'),
+            ),
+            ListTile(
+              title: const Text('Tasks'),
+            ),
+            ListTile(
+              title: const Text('Services'),
+            ),
+            ListTile(
+              title: const Text('Template Storage'),
+            ),
+            ListTile(
+              title: const Text('Templates'),
+            ),
+            ListTile(
+              title: const Text('Service Versions'),
+            ),
+            ListTile(
+              title: const Text('Modules'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

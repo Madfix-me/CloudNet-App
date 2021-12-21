@@ -11,3 +11,11 @@ class InitAppStateAction extends ReduxAction<AppState> {
     return state.copyWith(nodeInfo: nodeInfo);
   }
 }
+
+class UpdateNodeInfoAction extends ReduxAction<AppState> {
+  @override
+  Future<AppState?> reduce() async {
+    final NodeInfo nodeInfo = await ApiService().nodeApi.getNode();
+    return state.copyWith(nodeInfo: nodeInfo);
+  }
+}

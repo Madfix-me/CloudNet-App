@@ -10,13 +10,12 @@ class NodeApi {
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/node');
+        queryParameters: queryParams, path: baseUri.path + '/api/v2/node');
     final val = await apiClient.dio
         .getUri(
       uri,
     )
         .then((response) {
-          print(response.data);
       return NodeInfo.fromJson(response.data);
     });
 

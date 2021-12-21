@@ -42,59 +42,84 @@ class _NodePageState extends State<NodePage> {
       builder: (context, state) {
         nodeHandler.load();
         final nodes = nodeHandler.nodeUrls.map(
-          (e) => ListTile(
-            selected: nodeHandler.currentBaseUrl() == e.url,
-            title: Text(e.name!),
-            onTap: () {
-              nodeHandler.selectCurrentUrl(e);
-              nodeHandler.load();
-              _showLoginMask();
-            },
-            trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                nodeHandler.deleteUrl(e);
-              },
-            ),
+          (e) => DropdownMenuItem<String>(
+            child: Text(e.name!),
+            value: e.name!,
           ),
         );
-        final menu = List<Widget>.empty(growable: true);
-        menu.add(
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text('Nodes'),
-          ),
-        );
+        final menu = List<DropdownMenuItem<String>>.empty(growable: true);
         menu.addAll(nodes);
-        menu.add(
-          ListTile(
-            title: const Text('Add node'),
-            trailing: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => _showAddNodeMask(),
-            ),
-          ),
-        );
+        menu.add(DropdownMenuItem<String>(
+          child: const Text('Add node'),
+          value: "Add node",
+        ));
         return Scaffold(
           appBar: AppBar(title: const Text(appTitle)),
-          drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: menu,
-            ),
-          ),
           body: Center(
-            child: Container(
-              child: loginHandler.accessToken() != null
-                  ? TextButton(
-                      onPressed: () => {
-                        context.go(DashboardPage.route),
+            child: Form(
+              key: _loginFormKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(4),
+                    child: DropdownButtonFormField(
+                      items: menu,
+                      onChanged: (String? value) {
+                        if (value == 'Add node') {
+                          _showAddNodeMask();
+                        } else {
+                          nodeHandler.selectCurrentUrl(nodeHandler.nodeUrls
+                              .firstWhere((element) => element.name == value));
+                          nodeHandler.load();
+                        }
                       },
-                      child: const Text('Dashboard'),
-                    )
-                  : null,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(4),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        errorBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        hintText: 'Username'.i18n,
+                        labelText: 'Username'.i18n,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () =>
+                              _clearInputField(_usernameController),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(4),
+                    child: TextFormField(
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        errorBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        labelText: 'Password'.i18n,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () =>
+                              _clearInputField(_passwordController),
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () => login(), child: const Text('Login'))
+                ],
+              ),
             ),
           ),
         );
@@ -236,61 +261,14 @@ class _NodePageState extends State<NodePage> {
     );
   }
 
-  void _showLoginMask() {
+  /*void _showLoginMask() {
     showDialog<AlertDialog>(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              content: Form(
-                key: _loginFormKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(4),
-                      child: TextFormField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          errorBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                          hintText: 'Username'.i18n,
-                          labelText: 'Username'.i18n,
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () =>
-                                _clearInputField(_usernameController),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(4),
-                      child: TextFormField(
-                        obscureText: true,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          errorBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                          labelText: 'Password'.i18n,
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () =>
-                                _clearInputField(_passwordController),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              content:,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(2.0),
@@ -303,16 +281,17 @@ class _NodePageState extends State<NodePage> {
                     if (_loginFormKey.currentState!.validate()) {
                       loginHandler
                           .handleLogin(
-                            _passwordController.text,
-                            _usernameController.text,
-                          )
+                        _passwordController.text,
+                        _usernameController.text,
+                      )
                           .whenComplete(
-                            () => {
-                              this.setState(
+                            () =>
+                        {
+                          this.setState(
                                 () => Navigator.pop(context),
-                              )
-                            },
-                          );
+                          )
+                        },
+                      );
                     }
                   },
                   child: const Text('Login'),
@@ -329,9 +308,31 @@ class _NodePageState extends State<NodePage> {
         );
       },
     );
-  }
+  }*/
 
   void submitValue() {
     _formKey.currentState!.validate();
+  }
+
+  void navigation(int value) {
+    switch (value) {
+      case 1:
+        {
+          login();
+        }
+    }
+  }
+
+  void login() {
+    if (_loginFormKey.currentState!.validate()) {
+      loginHandler
+          .handleLogin(
+            _passwordController.text,
+            _usernameController.text,
+          )
+          .whenComplete(
+            () => {context.go(DashboardPage.route)},
+          );
+    }
   }
 }
