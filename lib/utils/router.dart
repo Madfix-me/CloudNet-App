@@ -1,3 +1,5 @@
+import 'package:cloudnet_v3_flutter/feature/dashboard/dashboard_page.dart';
+import 'package:cloudnet_v3_flutter/feature/home/home_page_connector.dart';
 import 'package:cloudnet_v3_flutter/feature/node/node_handler.dart';
 import 'package:cloudnet_v3_flutter/feature/node/node_page.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,17 @@ import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
     routes: [
+      GoRoute(path: '/', redirect: (_) => DashboardPage.route, routes: []),
+      GoRoute(
+        path: DashboardPage.route,
+        name: DashboardPage.name,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const HomePageConnector(child: DashboardPage()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child)),
+      ),
       GoRoute(
         path: NodePage.route,
         name: NodePage.name,
