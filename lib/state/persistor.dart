@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet_v3_flutter/state/app_state.dart';
+import '/state/app_state.dart';
 import 'package:localstorage/localstorage.dart';
 
 

@@ -1,6 +1,6 @@
-import 'package:cloudnet_v3_flutter/extensions/i18n_ext.dart';
-import 'package:cloudnet_v3_flutter/feature/login/login_handler.dart';
-import 'package:cloudnet_v3_flutter/utils/const.dart';
+import '/extensions/i18n_ext.dart';
+import '/feature/login/login_handler.dart';
+import '/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
       loginHandler
           .handleLogin(
               _usernameController.value.text, _passwordController.value.text)
-          .then((value) => {print(loginHandler.token)});
+          .then((value) => {print(loginHandler.accessToken())});
     }
   }
 

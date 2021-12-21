@@ -9,9 +9,3 @@ class MyI18n {
     await JSONImporter().fromAssetDirectory("assets/locales");
   }
 }
-
-extension Localization on String {
-  String get i18n => localize(this, MyI18n.translations);
-  String plural(int value) => localizePlural(value, this, MyI18n.translations);
-  String fill(List<Object> params) => localizeFill(this, params);
-}

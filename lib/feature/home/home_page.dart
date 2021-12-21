@@ -1,5 +1,5 @@
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/node_info.dart';
-import 'package:cloudnet_v3_flutter/utils/const.dart';
+import '/apis/cloudnetv3spec/model/node_info.dart';
+import '/utils/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

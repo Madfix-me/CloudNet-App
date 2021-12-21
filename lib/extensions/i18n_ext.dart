@@ -1,4 +1,4 @@
-import 'package:cloudnet_v3_flutter/utils/i18n.dart';
+import '/utils/i18n.dart';
 import 'package:i18n_extension/i18n_extension.dart';
 
 extension Localization on String {

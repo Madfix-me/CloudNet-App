@@ -1,7 +1,7 @@
 
 
 
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/host_and_port.dart';
+import '/apis/cloudnetv3spec/model/host_and_port.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'network_cluster_node.g.dart';

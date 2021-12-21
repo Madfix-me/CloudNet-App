@@ -1,5 +1,5 @@
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/node_info.dart';
+import '/apis/cloudnetv3spec/model/menu_node.dart';
+import '/apis/cloudnetv3spec/model/node_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_state.freezed.dart';

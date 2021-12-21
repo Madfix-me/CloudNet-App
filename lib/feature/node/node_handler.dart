@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/menu_node.dart';
+import '/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 

@@ -1,4 +1,4 @@
-name: cloudnet_v3_flutter
+name: CloudNet
 description: The new webinterface and app for cloudnet
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

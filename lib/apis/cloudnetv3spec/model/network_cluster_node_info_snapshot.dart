@@ -1,7 +1,7 @@
 
 
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/cloudnet_version.dart';
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/process_snapshot.dart';
+import '/apis/cloudnetv3spec/model/cloudnet_version.dart';
+import '/apis/cloudnetv3spec/model/process_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'network_cluster_node.dart';

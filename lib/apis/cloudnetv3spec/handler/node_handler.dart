@@ -8,7 +8,7 @@ class NodeApi {
   Future<NodeInfo> getNode() async {
     final queryParams = <String, dynamic>{};
 
-    final baseUri = Uri.parse(apiClient.baseUrl()!);
+    final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
         queryParameters: queryParams, path: baseUri.path + '/node');
     final val = await apiClient.dio
@@ -16,8 +16,10 @@ class NodeApi {
       uri,
     )
         .then((response) {
+          print(response.data);
       return NodeInfo.fromJson(response.data);
     });
+
     return val;
   }
 }

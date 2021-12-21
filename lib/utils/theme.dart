@@ -1,5 +1,5 @@
-import 'package:cloudnet_v3_flutter/utils/color.dart' as color;
-import 'package:cloudnet_v3_flutter/utils/const.dart' as k;
+import '/utils/color.dart' as color;
+import '/utils/const.dart' as k;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

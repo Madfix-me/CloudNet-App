@@ -1,6 +1,6 @@
 
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/host_and_port.dart';
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
+import '/apis/cloudnetv3spec/model/host_and_port.dart';
+import '/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'node_info.freezed.dart';

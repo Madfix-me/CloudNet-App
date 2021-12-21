@@ -1,8 +1,8 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet_v3_flutter/feature/home/home_page.dart';
-import 'package:cloudnet_v3_flutter/feature/home/home_page_vm_factory.dart';
-import 'package:cloudnet_v3_flutter/state/actions/node_actions.dart';
-import 'package:cloudnet_v3_flutter/state/app_state.dart';
+import '/feature/home/home_page.dart';
+import '/feature/home/home_page_vm_factory.dart';
+import '/state/actions/node_actions.dart';
+import '/state/app_state.dart';
 import 'package:flutter/widgets.dart';
 
 class HomePageConnector extends StatelessWidget {

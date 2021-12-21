@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet_v3_flutter/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:cloudnet_v3_flutter/feature/dashboard/dashboard_page.dart';
-import 'package:cloudnet_v3_flutter/feature/login/login_handler.dart';
-import 'package:cloudnet_v3_flutter/feature/node/node_handler.dart';
-import 'package:cloudnet_v3_flutter/state/app_state.dart';
-import 'package:cloudnet_v3_flutter/utils/const.dart';
-import 'package:cloudnet_v3_flutter/utils/i18n.dart';
+import '/apis/cloudnetv3spec/model/menu_node.dart';
+import '/extensions/i18n_ext.dart';
+import '/feature/dashboard/dashboard_page.dart';
+import '/feature/login/login_handler.dart';
+import '/feature/node/node_handler.dart';
+import '/state/app_state.dart';
+import '/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

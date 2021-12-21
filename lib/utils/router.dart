@@ -1,7 +1,7 @@
-import 'package:cloudnet_v3_flutter/feature/dashboard/dashboard_page.dart';
-import 'package:cloudnet_v3_flutter/feature/home/home_page_connector.dart';
-import 'package:cloudnet_v3_flutter/feature/node/node_handler.dart';
-import 'package:cloudnet_v3_flutter/feature/node/node_page.dart';
+import '/feature/dashboard/dashboard_page.dart';
+import '/feature/home/home_page_connector.dart';
+import '/feature/node/node_handler.dart';
+import '/feature/node/node_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

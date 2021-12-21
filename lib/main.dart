@@ -1,8 +1,8 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet_v3_flutter/cloudnet.dart';
-import 'package:cloudnet_v3_flutter/feature/node/node_handler.dart';
-import 'package:cloudnet_v3_flutter/state/app_state.dart';
-import 'package:cloudnet_v3_flutter/state/persistor.dart';
+import '/cloudnet.dart';
+import '/feature/node/node_handler.dart';
+import '/state/app_state.dart';
+import '/state/persistor.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 

@@ -1,10 +1,10 @@
 
 
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet_v3_flutter/state/app_state.dart';
-import 'package:cloudnet_v3_flutter/utils/const.dart';
-import 'package:cloudnet_v3_flutter/utils/router.dart';
-import 'package:cloudnet_v3_flutter/utils/theme.dart';
+import '/state/app_state.dart';
+import '/utils/const.dart';
+import '/utils/router.dart';
+import '/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 class CloudNet extends StatelessWidget {
