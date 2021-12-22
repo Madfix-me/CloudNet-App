@@ -15,6 +15,8 @@ class CloudNet extends StatelessWidget {
     return MaterialApp.router(
       title: appTitle,
       theme: cloudnetTheme,
+      darkTheme: cloudnetDarkTheme,
+      themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,

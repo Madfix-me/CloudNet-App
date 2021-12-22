@@ -1,3 +1,5 @@
+import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
+
 import '/apis/cloudnetv3spec/model/menu_node.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -9,6 +11,8 @@ part 'app_state.g.dart';
 class AppState with _$AppState {
   factory AppState({
     NodeInfo? nodeInfo,
+    List<ServiceTask>? tasks,
+    String? token,
   }) = _AppState;
 
   factory AppState.fromJson(Map<String, dynamic> json) =>

@@ -1,3 +1,4 @@
+import 'package:CloudNet/state/actions/node_actions.dart';
 import 'package:async_redux/async_redux.dart';
 import '/apis/cloudnetv3spec/model/menu_node.dart';
 import '/extensions/i18n_ext.dart';
@@ -62,7 +63,7 @@ class _NodePageState extends State<NodePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(4),
+                    margin: const EdgeInsets.all(8),
                     child: DropdownButtonFormField(
                       items: menu,
                       onChanged: (String? value) {
@@ -77,12 +78,12 @@ class _NodePageState extends State<NodePage> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.all(4),
+                    margin: const EdgeInsets.all(8),
                     child: TextFormField(
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        border: const UnderlineInputBorder(),
-                        errorBorder: const UnderlineInputBorder(
+                        border: const OutlineInputBorder(),
+                        errorBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red),
                         ),
                         hintText: 'Username'.i18n,
@@ -96,15 +97,15 @@ class _NodePageState extends State<NodePage> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.all(4),
+                    margin: const EdgeInsets.fromLTRB(8, 8, 8, 32),
                     child: TextFormField(
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
                       controller: _passwordController,
                       decoration: InputDecoration(
-                        border: const UnderlineInputBorder(),
-                        errorBorder: const UnderlineInputBorder(
+                        border: const OutlineInputBorder(),
+                        errorBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red),
                         ),
                         labelText: 'Password'.i18n,
@@ -149,8 +150,8 @@ class _NodePageState extends State<NodePage> {
                         controller: _nameController,
                         keyboardType: TextInputType.name,
                         decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          errorBorder: const UnderlineInputBorder(
+                          border: const OutlineInputBorder(),
+                          errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
                           hintText: 'Name',
@@ -168,8 +169,8 @@ class _NodePageState extends State<NodePage> {
                         controller: _addressController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          errorBorder: const UnderlineInputBorder(
+                          border: const OutlineInputBorder(),
+                          errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
                           labelText: 'Network Name',
@@ -187,8 +188,8 @@ class _NodePageState extends State<NodePage> {
                         controller: _portController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          errorBorder: const UnderlineInputBorder(
+                          border: const OutlineInputBorder(),
+                          errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
                           labelText: 'Port',
@@ -330,9 +331,14 @@ class _NodePageState extends State<NodePage> {
             _passwordController.text,
             _usernameController.text,
           )
-          .whenComplete(
-            () => {context.go(DashboardPage.route)},
-          );
+          .then((value) => {
+                StoreProvider.dispatch(context, UpdateTokenInfoAction(value)),
+                context.go(DashboardPage.route)
+              })
+          .catchError((dynamic e) {
+        final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      });
     }
   }
 }

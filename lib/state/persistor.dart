@@ -8,12 +8,15 @@ import 'package:localstorage/localstorage.dart';
 
 class AppPersistor extends Persistor<AppState> {
 
-  final LocalStorage storage = LocalStorage('appstate');
+  late LocalStorage storage;
+  AppPersistor() {
+    storage = LocalStorage('appstate');
+  }
 
   @override
   Future<void> deleteState() async {
     await storage.ready;
-    storage.deleteItem('appstate');
+    await storage.deleteItem('appstate');
   }
 
   @override
@@ -22,7 +25,7 @@ class AppPersistor extends Persistor<AppState> {
       final Map<String, dynamic> json = newState.toJson();
       final String data = jsonEncode(json);
       await storage.ready;
-      storage.setItem('appstate', data);
+      await storage.setItem('appstate', data);
     }
   }
 

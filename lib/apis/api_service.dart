@@ -11,6 +11,7 @@ class ApiService {
   late final ApiClient _apiClient = _createApiClient();
 
   late final NodeApi nodeApi = NodeApi(_apiClient);
+  late final TasksApi tasksApi = TasksApi(_apiClient);
 
   ApiClient _createApiClient() {
     return ApiClient(nodeHandler.currentBaseUrl(), loginHandler.accessToken);

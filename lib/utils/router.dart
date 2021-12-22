@@ -1,3 +1,5 @@
+import 'package:CloudNet/feature/tasks/tasks_page.dart';
+
 import '/feature/dashboard/dashboard_page.dart';
 import '/feature/home/home_page_connector.dart';
 import '/feature/node/node_handler.dart';
@@ -14,6 +16,16 @@ final router = GoRouter(
         pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             child: const HomePageConnector(child: DashboardPage()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child)),
+      ),
+      GoRoute(
+        path: TasksPage.route,
+        name: TasksPage.name,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const HomePageConnector(child: TasksPage()),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                 FadeTransition(opacity: animation, child: child)),

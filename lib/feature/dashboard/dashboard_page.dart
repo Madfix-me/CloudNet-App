@@ -1,9 +1,12 @@
+import 'package:CloudNet/apis/cloudnetv3spec/model/cloudnet_version.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/state/actions/node_actions.dart';
 import '/state/app_state.dart';
 import 'package:flutter/widgets.dart';
+import '/utils/color.dart' as color;
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -22,7 +25,7 @@ class _DashboardPageState extends State<DashboardPage> {
       onInit: (store) {
         store.dispatch(InitAppStateAction());
       },
-      converter: (store) => store.state.nodeInfo!,
+      converter: (store) => store.state.nodeInfo ?? NodeInfo(),
       builder: (context, nodeInfo) => RefreshIndicator(
         onRefresh: _pullRefresh,
         child: GridView.builder(
@@ -93,7 +96,7 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             const Text('Cpu Usage'),
             Text(
-                '${state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!.toString()}%')
+                '${state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!.toStringAsFixed(2)}%')
           ],
         ),
       ),
@@ -106,7 +109,7 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Version Title'),
-            Text(state.lastNodeInfoSnapshot!.version!.versionTitle!)
+            Text(((state.lastNodeInfoSnapshot ?? NetworkClusterNodeInfoSnapshot()).version ?? CloudNetVersion()).versionTitle ?? '')
           ],
         ),
       ),
@@ -120,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Version Type'),
-            Text(state.lastNodeInfoSnapshot!.version!.versionType!)
+            Text(((state.lastNodeInfoSnapshot ?? NetworkClusterNodeInfoSnapshot()).version ?? CloudNetVersion()).versionType ?? '')
           ],
         ),
       ),

@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import '/feature/node/node_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 LoginHandler loginHandler = LoginHandler();
 
@@ -14,8 +12,7 @@ class LoginHandler extends ValueNotifier<bool> {
 
   String? accessToken() => _token;
 
-  Future<bool> handleLogin(String username, String password) async {
-    print('${nodeHandler.currentBaseUrl()}/api/v2/auth');
+  Future<String> handleLogin(String username, String password) async {
     final token = await Dio()
         .postUri<String>(
           Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/auth'),
@@ -26,9 +23,10 @@ class LoginHandler extends ValueNotifier<bool> {
           }),
         )
         .then((response) => response.data!);
-    Map<String, dynamic> response = jsonDecode(token) as Map<String, dynamic>;
+    final Map<String, dynamic> response =
+        jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;
     value = true;
-    return true;
+    return _token!;
   }
 }
