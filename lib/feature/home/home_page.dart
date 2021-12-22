@@ -1,4 +1,5 @@
 import 'package:CloudNet/feature/dashboard/dashboard_page.dart';
+import 'package:CloudNet/feature/feature/groups_page.dart';
 import 'package:CloudNet/feature/node/node_handler.dart';
 import 'package:CloudNet/feature/tasks/tasks_page.dart';
 
@@ -53,12 +54,19 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               title: const Text('Cluster'),
+              enabled: false,
             ),
             ListTile(
               title: const Text('Database'),
+              enabled: false,
             ),
             ListTile(
               title: const Text('Groups'),
+              selected: router.location == GroupsPage.route,
+              onTap: () => {
+                context.go(GroupsPage.route),
+                Navigator.pop(context),
+              },
             ),
             ListTile(
               title: const Text('Tasks'),
@@ -70,18 +78,24 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               title: const Text('Services'),
+              enabled: false,
+              onTap: null,
             ),
             ListTile(
               title: const Text('Template Storage'),
+              enabled: false,
             ),
             ListTile(
               title: const Text('Templates'),
+              enabled: false,
             ),
             ListTile(
               title: const Text('Service Versions'),
+              enabled: false,
             ),
             ListTile(
               title: const Text('Modules'),
+              enabled: false,
             ),
           ],
         ),

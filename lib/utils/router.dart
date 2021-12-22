@@ -1,3 +1,4 @@
+import 'package:CloudNet/feature/feature/groups_page.dart';
 import 'package:CloudNet/feature/tasks/tasks_page.dart';
 
 import '/feature/dashboard/dashboard_page.dart';
@@ -16,6 +17,16 @@ final router = GoRouter(
         pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             child: const HomePageConnector(child: DashboardPage()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child)),
+      ),
+      GoRoute(
+        path: GroupsPage.route,
+        name: GroupsPage.name,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const HomePageConnector(child: GroupsPage()),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                 FadeTransition(opacity: animation, child: child)),

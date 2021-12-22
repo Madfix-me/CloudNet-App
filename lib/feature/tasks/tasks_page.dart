@@ -17,185 +17,240 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
+  bool staticFilter = false;
+  bool maintenanceFilter = false;
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<ServiceTask>>(
       onInit: (store) {
         store.dispatch(InitAppStateAction());
       },
-      converter: (store) => store.state.tasks ?? List.empty(),
+      converter: (store) => store.state.tasks!.where((e) => filter(e)).toList(),
       builder: (context, tasks) => Stack(
         children: [
-          RefreshIndicator(
-            onRefresh: _pullRefresh,
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, i) {
-                final ServiceTask task = tasks[i];
-                return ExpansionTile(
-                  title: Text(task.name!),
-                  subtitle: Text(task.processConfiguration!.environment!),
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text('memory'.i18n),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(task.processConfiguration!.maxHeapMemorySize!
-                                      .toString() +
-                                  'Mb')
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: const [
-                              Text('Service Min Count: '),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [Text(task.minServiceCount!.toString())],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: const [
-                              Text('Auto delete on Stop: '),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(task.autoDeleteOnStop! ? 'Yes' : 'No')
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: const [
-                              Text(
-                                'Static Service: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+          Flex(
+            direction: Axis.vertical,
+            children: [
+              Wrap(
+                children: [
+                  FilterChip(
+                    label: Text('Static'),
+                    selected: staticFilter,
+                    onSelected: (bool value) {
+                      setState(() {
+                        staticFilter = value;
+                      });
+                    },
+                  ),
+                  FilterChip(
+                    label: Text('Maintenance'),
+                    selected: maintenanceFilter,
+                    onSelected: (bool value) {
+                      setState(() {
+                        maintenanceFilter = value;
+                      });
+                    },
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  RefreshIndicator(
+                    onRefresh: _pullRefresh,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: tasks.length,
+                      itemBuilder: (context, i) {
+                        final ServiceTask task = tasks[i];
+                        return ExpansionTile(
+                          title: Text(task.name!),
+                          subtitle:
+                              Text(task.processConfiguration!.environment!),
+                          children: <Widget>[
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text('memory'.i18n),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(task.processConfiguration!
+                                              .maxHeapMemorySize!
+                                              .toString() +
+                                          'Mb')
+                                    ],
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                task.staticServices! ? 'Yes' : 'No',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: const [
-                              Text(
-                                'Maintenance: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: const [
+                                      Text('Service Min Count: '),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(task.minServiceCount!.toString())
+                                    ],
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                task.maintenance! ? 'Yes' : 'No',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: const [
+                                      Text('Auto delete on Stop: '),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                          task.autoDeleteOnStop! ? 'Yes' : 'No')
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: const [
+                                      Text(
+                                        'Static Service: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        task.staticServices! ? 'Yes' : 'No',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: const [
+                                      Text(
+                                        'Maintenance: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        task.maintenance! ? 'Yes' : 'No',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: const [
+                                      Text('Disable IP Rewrite: '),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                          task.disableIpRewrite! ? 'Yes' : 'No')
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: const [
-                              Text('Disable IP Rewrite: '),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(task.disableIpRewrite! ? 'Yes' : 'No')
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                  )
+                ],
+              )
+            ],
           ),
           Positioned(
             child: FloatingActionButton(
@@ -212,5 +267,10 @@ class _TasksPageState extends State<TasksPage> {
 
   Future<void> _pullRefresh() async {
     StoreProvider.dispatch(context, UpdateTasksAction());
+  }
+
+  bool filter(ServiceTask element) {
+    return element.staticServices == staticFilter &&
+        element.maintenance == maintenanceFilter;
   }
 }

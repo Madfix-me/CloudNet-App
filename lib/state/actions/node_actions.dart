@@ -1,3 +1,4 @@
+import 'package:CloudNet/apis/cloudnetv3spec/model/group_configuration.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:async_redux/async_redux.dart';
 import '/apis/api_service.dart';
@@ -10,7 +11,8 @@ class InitAppStateAction extends ReduxAction<AppState> {
   Future<AppState?> reduce() async {
     final NodeInfo nodeInfo = await ApiService().nodeApi.getNode();
     final List<ServiceTask> tasks = await ApiService().tasksApi.getTasks();
-    return state.copyWith(nodeInfo: nodeInfo, tasks: tasks);
+    final List<GroupConfiguration> groups = await ApiService().groupsApi.getGroups();
+    return state.copyWith(nodeInfo: nodeInfo, tasks: tasks, groups: groups);
   }
 }
 

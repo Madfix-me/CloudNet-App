@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:CloudNet/apis/cloudnetv3spec/model/cloudnet_version.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
 import 'package:async_redux/async_redux.dart';
@@ -19,8 +21,19 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  _DashboardPageState() {
+    Timer.periodic(
+      const Duration(seconds: 10),
+          (Timer t) => {
+        StoreProvider.dispatch(context, UpdateNodeInfoAction()),
+        setState((){})
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return StoreConnector<AppState, NodeInfo>(
       onInit: (store) {
         store.dispatch(InitAppStateAction());
@@ -102,6 +115,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
+
   Card versionTitleCard(NodeInfo state) {
     return Card(
       child: Center(
@@ -109,7 +123,12 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Version Title'),
-            Text(((state.lastNodeInfoSnapshot ?? NetworkClusterNodeInfoSnapshot()).version ?? CloudNetVersion()).versionTitle ?? '')
+            Text(((state.lastNodeInfoSnapshot ??
+                                NetworkClusterNodeInfoSnapshot())
+                            .version ??
+                        CloudNetVersion())
+                    .versionTitle ??
+                '')
           ],
         ),
       ),
@@ -123,7 +142,12 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Version Type'),
-            Text(((state.lastNodeInfoSnapshot ?? NetworkClusterNodeInfoSnapshot()).version ?? CloudNetVersion()).versionType ?? '')
+            Text(((state.lastNodeInfoSnapshot ??
+                                NetworkClusterNodeInfoSnapshot())
+                            .version ??
+                        CloudNetVersion())
+                    .versionType ??
+                '')
           ],
         ),
       ),
@@ -141,7 +165,8 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Heap Usage'),
-            Text('${(info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0)}Mb')
+            Text(
+                '${(info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0)}Mb')
           ],
         ),
       ),

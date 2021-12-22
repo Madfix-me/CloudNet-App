@@ -1,5 +1,7 @@
 import 'package:CloudNet/state/actions/node_actions.dart';
 import 'package:async_redux/async_redux.dart';
+import 'package:dio/dio.dart';
+import 'package:form_validator/form_validator.dart';
 import '/apis/cloudnetv3spec/model/menu_node.dart';
 import '/extensions/i18n_ext.dart';
 import '/feature/dashboard/dashboard_page.dart';
@@ -65,6 +67,7 @@ class _NodePageState extends State<NodePage> {
                   Container(
                     margin: const EdgeInsets.all(8),
                     child: DropdownButtonFormField(
+                      validator: ValidationBuilder().required().build(),
                       items: menu,
                       onChanged: (String? value) {
                         if (value == 'Add node') {
@@ -72,7 +75,6 @@ class _NodePageState extends State<NodePage> {
                         } else {
                           nodeHandler.selectCurrentUrl(nodeHandler.nodeUrls
                               .firstWhere((element) => element.name == value));
-                          nodeHandler.load();
                         }
                       },
                     ),
@@ -80,6 +82,7 @@ class _NodePageState extends State<NodePage> {
                   Container(
                     margin: const EdgeInsets.all(8),
                     child: TextFormField(
+                      validator: ValidationBuilder().required().build(),
                       controller: _usernameController,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
@@ -99,6 +102,7 @@ class _NodePageState extends State<NodePage> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(8, 8, 8, 32),
                     child: TextFormField(
+                      validator: ValidationBuilder().required().build(),
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
@@ -167,13 +171,13 @@ class _NodePageState extends State<NodePage> {
                       margin: const EdgeInsets.all(4),
                       child: TextFormField(
                         controller: _addressController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red),
                           ),
-                          labelText: 'Network Name',
+                          labelText: 'Network Address',
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.clear),
                             onPressed: () =>
@@ -262,55 +266,6 @@ class _NodePageState extends State<NodePage> {
     );
   }
 
-  /*void _showLoginMask() {
-    showDialog<AlertDialog>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              content:,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(2.0),
-                ),
-              ),
-              title: const Text('Login'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    if (_loginFormKey.currentState!.validate()) {
-                      loginHandler
-                          .handleLogin(
-                        _passwordController.text,
-                        _usernameController.text,
-                      )
-                          .whenComplete(
-                            () =>
-                        {
-                          this.setState(
-                                () => Navigator.pop(context),
-                          )
-                        },
-                      );
-                    }
-                  },
-                  child: const Text('Login'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel'),
-                )
-              ],
-            );
-          },
-        );
-      },
-    );
-  }*/
-
   void submitValue() {
     _formKey.currentState!.validate();
   }
@@ -336,7 +291,9 @@ class _NodePageState extends State<NodePage> {
                 context.go(DashboardPage.route)
               })
           .catchError((dynamic e) {
-        final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+        const snackBar = SnackBar(
+          content: Text('Password or Username is wrong!'),
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
     }

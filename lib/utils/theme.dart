@@ -61,6 +61,9 @@ ThemeData cloudnetTheme = ThemeData(
       ),
     ),
   ),
+  toggleButtonsTheme: const ToggleButtonsThemeData(
+    selectedColor: color.blue
+  ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       elevation: 0.0,
