@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import '/feature/home/home_page.dart';
 import '/feature/home/home_page_vm_factory.dart';
-import '/state/actions/node_actions.dart';
+import '/state/actions/app_actions.dart';
 import '/state/app_state.dart';
 import 'package:flutter/widgets.dart';
 

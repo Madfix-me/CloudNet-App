@@ -1,5 +1,6 @@
 import 'package:CloudNet/apis/cloudnetv3spec/model/group_configuration.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
 
 import '/apis/cloudnetv3spec/model/menu_node.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
@@ -14,6 +15,7 @@ class AppState with _$AppState {
     NodeInfo? nodeInfo,
     List<ServiceTask>? tasks,
     List<GroupConfiguration>? groups,
+    List<ServiceVersionType>? versions,
     String? token,
   }) = _AppState;
 

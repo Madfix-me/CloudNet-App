@@ -1,4 +1,4 @@
-import 'package:CloudNet/state/actions/node_actions.dart';
+import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:dio/dio.dart';
 import 'package:form_validator/form_validator.dart';
@@ -173,7 +173,7 @@ class _NodePageState extends State<NodePage> {
                       margin: const EdgeInsets.all(4),
                       child: TextFormField(
                         controller: _addressController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.name,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           errorBorder: const OutlineInputBorder(

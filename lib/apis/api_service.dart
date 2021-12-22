@@ -13,6 +13,7 @@ class ApiService {
   late final NodeApi nodeApi = NodeApi(_apiClient);
   late final TasksApi tasksApi = TasksApi(_apiClient);
   late final GroupsApi groupsApi = GroupsApi(_apiClient);
+  late final VersionsApi versionsApi = VersionsApi(_apiClient);
 
   ApiClient _createApiClient() {
     return ApiClient(nodeHandler.currentBaseUrl(), loginHandler.accessToken);

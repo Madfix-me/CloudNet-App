@@ -5,7 +5,7 @@ import 'package:CloudNet/apis/cloudnetv3spec/model/network_cluster_node_info_sna
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
-import '/state/actions/node_actions.dart';
+import '/state/actions/app_actions.dart';
 import '/state/app_state.dart';
 import 'package:flutter/widgets.dart';
 import '/utils/color.dart' as color;

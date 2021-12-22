@@ -1,22 +1,22 @@
 part of cloudnetv3specapi;
 
-class TasksApi {
+class VersionsApi {
   final ApiClient apiClient;
 
-  TasksApi(ApiClient apiClient) : apiClient = apiClient;
+  VersionsApi(ApiClient apiClient) : apiClient = apiClient;
 
-  Future<List<ServiceTask>> getTasks() async {
+  Future<List<ServiceVersionType>> getVersions() async {
     final queryParams = <String, dynamic>{};
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/api/v2/task');
+        queryParameters: queryParams, path: baseUri.path + '/api/v2/serviceVersion');
     final val = await apiClient.dio
         .getUri(
       uri,
     )
         .then((response) {
-      return TaskResponse.fromJson(response.data!).tasks!;
+      return ServiceVersionTypeResponse.fromJson(response.data!).versions!.values.toList();
     });
 
     return val;
