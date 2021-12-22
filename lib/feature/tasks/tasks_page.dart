@@ -35,7 +35,7 @@ class _TasksPageState extends State<TasksPage> {
               Wrap(
                 children: [
                   FilterChip(
-                    label: Text('Static'),
+                    label: const Text('Static'),
                     selected: staticFilter,
                     onSelected: (bool value) {
                       setState(() {
@@ -44,7 +44,7 @@ class _TasksPageState extends State<TasksPage> {
                     },
                   ),
                   FilterChip(
-                    label: Text('Maintenance'),
+                    label: const Text('Maintenance'),
                     selected: maintenanceFilter,
                     onSelected: (bool value) {
                       setState(() {
