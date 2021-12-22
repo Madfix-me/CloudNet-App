@@ -1,10 +1,12 @@
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:CloudNet/extensions/i18n_ext.dart';
+import 'package:CloudNet/feature/tasks/task_setup_page.dart';
 import 'package:CloudNet/state/actions/node_actions.dart';
 import 'package:CloudNet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -254,7 +256,9 @@ class _TasksPageState extends State<TasksPage> {
           ),
           Positioned(
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                context.push(TaskSetupPage.route);
+              },
               child: const Icon(Icons.add),
             ),
             bottom: 16,
@@ -270,6 +274,9 @@ class _TasksPageState extends State<TasksPage> {
   }
 
   bool filter(ServiceTask element) {
+    if (staticFilter == false && maintenanceFilter == false) {
+      return true;
+    }
     return element.staticServices == staticFilter &&
         element.maintenance == maintenanceFilter;
   }

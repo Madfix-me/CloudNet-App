@@ -1,4 +1,6 @@
 import 'package:CloudNet/feature/feature/groups_page.dart';
+import 'package:CloudNet/feature/login/login_handler.dart';
+import 'package:CloudNet/feature/tasks/task_setup_page.dart';
 import 'package:CloudNet/feature/tasks/tasks_page.dart';
 
 import '/feature/dashboard/dashboard_page.dart';
@@ -17,6 +19,16 @@ final router = GoRouter(
         pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             child: const HomePageConnector(child: DashboardPage()),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child)),
+      ),
+      GoRoute(
+        path: TaskSetupPage.route,
+        name: TaskSetupPage.name,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const HomePageConnector(child: TaskSetupPage()),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                 FadeTransition(opacity: animation, child: child)),
@@ -55,14 +67,14 @@ final router = GoRouter(
       child: Text(state.error.toString()),
     ),
     redirect: (GoRouterState state) {
-      final bool loggedIn = nodeHandler.hasBaseUrl();
+      final bool loggedIn = nodeHandler.hasBaseUrl() && !loginHandler.isExpired();
       final bool goingToLogin = state.location == NodePage.route;
 
       // the user is not set a node url headed to /login, they need to set it
       if (!loggedIn && !goingToLogin) return NodePage.route;
 
       // the user is logged in and headed to /login, no need to login again
-      // if (loggedIn && goingToLogin) return CameraPage.route;
+      if (loggedIn && goingToLogin) return DashboardPage.route;
 
       // no need to redirect at all
       return null;

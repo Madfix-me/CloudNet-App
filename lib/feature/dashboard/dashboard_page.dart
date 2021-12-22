@@ -22,13 +22,13 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   _DashboardPageState() {
-    Timer.periodic(
+    /*Timer.periodic(
       const Duration(seconds: 10),
           (Timer t) => {
         StoreProvider.dispatch(context, UpdateNodeInfoAction()),
         setState((){})
       },
-    );
+    );*/
   }
 
   @override

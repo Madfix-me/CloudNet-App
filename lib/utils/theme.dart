@@ -46,8 +46,8 @@ ThemeData cloudnetTheme = ThemeData(
         borderRadius: BorderRadius.circular(k.radius.small)),
     margin: k.edgeAll.medium / 2.0,
     color: color.white,
-    elevation: 4.0,
-    shadowColor: color.lightBlue,
+    elevation: 2.0,
+    shadowColor: color.gray,
   ),
   tooltipTheme: TooltipThemeData(
     waitDuration: k.transitionDuration,

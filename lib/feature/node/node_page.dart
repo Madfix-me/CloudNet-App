@@ -56,6 +56,7 @@ class _NodePageState extends State<NodePage> {
           child: const Text('Add node'),
           value: "Add node",
         ));
+        final String? value =  nodeHandler.nodeUrl.name;
         return Scaffold(
           appBar: AppBar(title: const Text(appTitle)),
           body: Center(
@@ -69,6 +70,7 @@ class _NodePageState extends State<NodePage> {
                     child: DropdownButtonFormField(
                       validator: ValidationBuilder().required().build(),
                       items: menu,
+                      value: value,
                       onChanged: (String? value) {
                         if (value == 'Add node') {
                           _showAddNodeMask();
