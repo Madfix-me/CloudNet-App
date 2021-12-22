@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.themeinerlp.cloudnet_v3_flutter">
    <application
-        android:label="cloudnet_v3_flutter"
+        android:label="CloudNet"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
