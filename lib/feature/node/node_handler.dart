@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:CloudNet/apis/cloudnetv3spec/cloudnetv3specapi.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,11 +12,13 @@ NodeHandler nodeHandler = NodeHandler();
 class NodeHandler extends ValueNotifier<bool>{
   NodeHandler() : super(false);
 
-  MenuNode nodeUrl = const MenuNode(url: null);
-  List<MenuNode> nodeUrls = List.empty(growable: true);
+  MenuNode nodeUrl = const MenuNode();
+  Set<MenuNode> nodeUrls = {};
 
-  String currentBaseUrl() => nodeUrl.url!;
-  List<MenuNode> baseUrls() => nodeUrls;
+  String currentBaseUrl() => nodeUrl.toUrl();
+  Set<MenuNode> baseUrls() => nodeUrls;
+
+
 
   Future<void> load() async {
     final storage = LocalStorage('urls.json');
@@ -25,7 +29,7 @@ class NodeHandler extends ValueNotifier<bool>{
     }
     final dynamic baseUrls = await storage.getItem('baseUrls');
     if (baseUrls != null && baseUrls is List) {
-      nodeUrls = baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toList();
+      nodeUrls = baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toSet();
     }
     if (nodeUrl != null || nodeUrls.isNotEmpty) value = true;
   }
@@ -34,14 +38,14 @@ class NodeHandler extends ValueNotifier<bool>{
     final storage = LocalStorage('urls.json');
     nodeUrls.add(url);
     await storage.ready;
-    await storage.setItem('baseUrls', nodeUrls);
+    await storage.setItem('baseUrls', nodeUrls.toList());
   }
 
   Future<void> deleteUrl(MenuNode url) async {
     final storage = LocalStorage('urls.json');
     nodeUrls.remove(url);
     await storage.ready;
-    await storage.setItem('baseUrls', nodeUrls);
+    await storage.setItem('baseUrls', nodeUrls.toList());
   }
 
   Future<void> selectCurrentUrl(MenuNode url) async {
@@ -52,6 +56,12 @@ class NodeHandler extends ValueNotifier<bool>{
   }
 
   bool hasBaseUrl() {
-    return nodeUrls.isNotEmpty && nodeUrl.url != null;
+    return nodeUrls.isNotEmpty && nodeUrl.name != null;
+  }
+}
+
+extension UrlCreator on MenuNode {
+  String toUrl() {
+    return '${ssl ?? false ? 'https' : 'http'}://$address:$port';
   }
 }
