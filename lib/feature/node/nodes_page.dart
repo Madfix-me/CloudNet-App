@@ -1,18 +1,43 @@
+import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:CloudNet/feature/node/menu_node_page.dart';
 import 'package:CloudNet/utils/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import 'node_handler.dart';
 
-class NodesPage extends StatelessWidget {
+class NodesPage extends StatefulWidget {
   const NodesPage({Key? key}) : super(key: key);
   static const String route = '/nodes';
   static const String name = 'nodes';
 
   @override
+  State<StatefulWidget> createState() => _NodesPageState();
+}
+
+class _NodesPageState extends State<NodesPage> {
+  List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
+
+  @override
+  void initState() {
+    nodeHandler.addListener(updateNodes);
+    super.initState();
+  }
+
+  void updateNodes() {
+    setState(() {
+      nodes = nodeHandler.nodeUrls.toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    nodeHandler.removeListener(updateNodes);
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-    final nodes = nodeHandler.nodeUrls.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text(appTitle),

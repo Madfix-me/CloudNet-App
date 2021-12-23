@@ -40,6 +40,10 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
             setState(() {
               _index += 1;
             });
+          } else if (_index >= 0 ) {
+            setState(() {
+              _index += 1;
+            });
           }
         },
         onStepTapped: (int index) {

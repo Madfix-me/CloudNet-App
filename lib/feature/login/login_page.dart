@@ -1,3 +1,4 @@
+import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:CloudNet/feature/node/nodes_page.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:async_redux/async_redux.dart';
@@ -26,6 +27,24 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _loginFormKey = GlobalKey<FormState>();
   late bool ssl = false;
+  List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
+  @override
+  void initState() {
+    nodeHandler.addListener(updateNodes);
+    super.initState();
+  }
+
+  void updateNodes() {
+    setState(() {
+      nodes = nodeHandler.nodeUrls.toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    nodeHandler.removeListener(updateNodes);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
-        nodeHandler.load();
-        final nodes = nodeHandler.nodeUrls.toList().map(
+        final menuNodes = nodes.map(
           (e) => DropdownMenuItem<String>(
             child: Text(e.name!),
             value: e.name!,
@@ -59,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(
                           child: DropdownButtonFormField(
                             validator: ValidationBuilder().required().build(),
-                            items: nodes,
+                            items: menuNodes,
                             value: value,
                             onChanged: (String? value) {
                               nodeHandler.selectCurrentUrl(

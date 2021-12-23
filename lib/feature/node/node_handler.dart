@@ -32,6 +32,7 @@ class NodeHandler extends ValueNotifier<bool>{
       nodeUrls = baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toSet();
     }
     if (nodeUrl != null || nodeUrls.isNotEmpty) value = true;
+    notifyListeners();
   }
 
   Future<void> saveUrl(MenuNode url) async {
@@ -39,6 +40,8 @@ class NodeHandler extends ValueNotifier<bool>{
     nodeUrls.add(url);
     await storage.ready;
     await storage.setItem('baseUrls', nodeUrls.toList());
+    value = true;
+    notifyListeners();
   }
 
   Future<void> deleteUrl(MenuNode url) async {
@@ -46,6 +49,8 @@ class NodeHandler extends ValueNotifier<bool>{
     nodeUrls.remove(url);
     await storage.ready;
     await storage.setItem('baseUrls', nodeUrls.toList());
+    value = true;
+    notifyListeners();
   }
 
   Future<void> selectCurrentUrl(MenuNode url) async {
@@ -53,6 +58,8 @@ class NodeHandler extends ValueNotifier<bool>{
     nodeUrl = url;
     await storage.ready;
     await storage.setItem('currentBaseUrl', nodeUrl);
+    value = true;
+    notifyListeners();
   }
 
   bool hasBaseUrl() {

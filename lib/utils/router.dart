@@ -88,8 +88,12 @@ final router = GoRouter(
     child: Text(state.error.toString()),
   ),
   redirect: (GoRouterState state) {
-    final bool loggedIn = nodeHandler.hasBaseUrl() && !loginHandler.isExpired();
+    final bool loggedIn = nodeHandler.hasBaseUrl() && !loginHandler.isExpired() && loginHandler.accessToken() != null;
     final bool goingToLogin = state.location == LoginPage.route ||
+        state.location == NodesPage.route ||
+        state.location == MenuNodePage.route;
+
+    final bool goingToNodes =
         state.location == NodesPage.route ||
         state.location == MenuNodePage.route;
 
@@ -97,7 +101,7 @@ final router = GoRouter(
     if (!loggedIn && !goingToLogin) return LoginPage.route;
 
     // the user is logged in and headed to /login, no need to login again
-    if (loggedIn && goingToLogin) return DashboardPage.route;
+    if (loggedIn && goingToLogin && !goingToNodes) return DashboardPage.route;
 
     // no need to redirect at all
     return null;
