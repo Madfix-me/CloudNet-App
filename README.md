@@ -1,4 +1,4 @@
-# cloudnet_v3_flutter
+# CloudNet | App/UI
 
 The new webinterface and app for cloudnet
 
