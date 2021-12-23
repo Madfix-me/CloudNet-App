@@ -1,4 +1,3 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_version.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:CloudNet/state/app_state.dart';
@@ -40,7 +39,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
             setState(() {
               _index += 1;
             });
-          } else if (_index >= 0 ) {
+          } else if (_index >= 0) {
             setState(() {
               _index += 1;
             });
@@ -52,230 +51,270 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
           });
         },
         steps: <Step>[
-          Step(
-            title: const Text('Task Name'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text('What should the name of the new task be?'),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.name,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        labelText: 'Task name',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: const Text('Memory'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text(
-                      'What amount of max memory should the new task have? (in MB)'),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: TextFormField(
-                      initialValue: '512',
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        labelText: 'Memory',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: const Text('Maintaince default'),
-            content: Column(
-              children: [
-                const Text(
-                    'Should the task be in maintenance by default? (this prevents auto starting of the services)'),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Switch(
-                    value: false,
-                    onChanged: (value) {},
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Step(
-            title: const Text('Auto delete'),
-            content: Column(
-              children: [
-                const Text(
-                    'Should the services be automatically unregistered out of the cloud after stopping them?'),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Switch(
-                    value: true,
-                    onChanged: (value) {},
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Step(
-            title: const Text('Static Service'),
-            content: Column(
-              children: [
-                const Text(
-                    'Should the services of this task be static that their files are never deleted'),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Switch(
-                    value: false,
-                    onChanged: (value) {},
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Step(
-            title: const Text('Service Count'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text(
-                      'How many services of this task should be always online?'),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: TextFormField(
-                      initialValue: '1',
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        labelText: 'Service Count',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: const Text('Task Environment'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text('What should be the environment of this task? '),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: DropdownButtonFormField<String>(
-                      items: buildEnvs(versions),
-                      onChanged: (String? value) {
-                        serviceVersionType = versions.firstWhere((element) =>
-                            (element.environmentType ?? '') == (value ?? ''));
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: const Text('Start Port'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text('What should be the start port of the task?'),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: TextFormField(
-                      initialValue: '44955',
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        labelText: 'Start Port',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: const Text('Java executable'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text('What is the path to the Java executable?'),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: TextFormField(
-                      initialValue: 'java',
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        labelText: 'Path',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: const Text('Service Version'),
-            content: Container(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  const Text(
-                      'Which ServiceVersion should be ran on services of this task?'),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: DropdownButtonFormField<String>(
-                      items: buildVersions(
-                          versions,
-                          serviceVersionType ??
-                              const ServiceVersionType(
-                                  environmentType: 'MINECRAFT_SERVER')),
-                      onChanged: (String? value) {},
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
+          buildTaskNameStep(),
+          buildTaskMemoryStep(),
+          buildTaskMaintenanceStep(),
+          buildAutoDeleteStep(),
+          buildStaticServiceStep(),
+          buildServiceCountStep(),
+          buildEnvironmentStep(versions),
+          buildStartPortStep(),
+          buildJavaExecutableStep(),
+          buildServiceVersionStep(versions)
         ],
       ),
     );
   }
 
-  List<DropdownMenuItem<String>>? buildEnvs(List<ServiceVersionType> versions) {
+  Step buildServiceVersionStep(List<ServiceVersionType> versions) {
+    return Step(
+      title: const Text('Service Version'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text(
+                'Which ServiceVersion should be ran on services of this task?'),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: DropdownButtonFormField<String>(
+                items: buildVersions(
+                    versions,
+                    serviceVersionType ??
+                        const ServiceVersionType(
+                            environmentType: 'MINECRAFT_SERVER')),
+                onChanged: (String? value) {},
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildJavaExecutableStep() {
+    return Step(
+      title: const Text('Java executable'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text('What is the path to the Java executable?'),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: TextFormField(
+                initialValue: 'java',
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  labelText: 'Path',
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildStartPortStep() {
+    return Step(
+      title: const Text('Start Port'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text('What should be the start port of the task?'),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: TextFormField(
+                initialValue: '44955',
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  labelText: 'Start Port',
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildEnvironmentStep(List<ServiceVersionType> versions) {
+    return Step(
+      title: const Text('Task Environment'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text('What should be the environment of this task? '),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: DropdownButtonFormField<String>(
+                items: buildEnvironments(versions),
+                onChanged: (String? value) {
+                  serviceVersionType = versions.firstWhere((element) =>
+                      (element.environmentType ?? '') == (value ?? ''));
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildServiceCountStep() {
+    return Step(
+      title: const Text('Service Count'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text(
+                'How many services of this task should be always online?'),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: TextFormField(
+                initialValue: '1',
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  labelText: 'Service Count',
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildStaticServiceStep() {
+    return Step(
+      title: const Text('Static Service'),
+      content: Column(
+        children: [
+          const Text(
+              'Should the services of this task be static that their files are never deleted'),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Switch(
+              value: false,
+              onChanged: (value) {},
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Step buildAutoDeleteStep() {
+    return Step(
+      title: const Text('Auto delete'),
+      content: Column(
+        children: [
+          const Text(
+              'Should the services be automatically unregistered out of the cloud after stopping them?'),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Switch(
+              value: true,
+              onChanged: (value) {},
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Step buildTaskNameStep() {
+    return Step(
+      title: const Text('Task Name'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text('What should the name of the new task be?'),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: TextFormField(
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  labelText: 'Task name',
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildTaskMemoryStep() {
+    return Step(
+      title: const Text('Memory'),
+      content: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            const Text(
+                'What amount of max memory should the new task have? (in MB)'),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: TextFormField(
+                initialValue: '512',
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  labelText: 'Memory',
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Step buildTaskMaintenanceStep() {
+    return Step(
+      title: const Text('Maintaince default'),
+      content: Column(
+        children: [
+          const Text(
+              'Should the task be in maintenance by default? (this prevents auto starting of the services)'),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Switch(
+              value: false,
+              onChanged: (value) {},
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<DropdownMenuItem<String>>? buildEnvironments(List<ServiceVersionType> versions) {
     return versions.isNotEmpty
         ? versions.map((e) => e.environmentType ?? '').toSet().toList().map(
             (e) {
