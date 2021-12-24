@@ -10,6 +10,7 @@ import '/state/app_state.dart';
 import '/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:CloudNet/i18n/strings.g.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -103,8 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       validator: ValidationBuilder().required().build(),
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        hintText: 'Username',
-                        labelText: 'Username',
+                        labelText: t.page.login.username,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () =>
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                       autocorrect: false,
                       controller: _passwordController,
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: t.page.login.password,
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () =>
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   TextButton(
-                      onPressed: () => login(), child: const Text('Login'))
+                      onPressed: () => login(), child: Text(t.page.login.login))
                 ],
               ),
             ),
@@ -171,8 +171,8 @@ class _LoginPageState extends State<LoginPage> {
                 context.go(DashboardPage.route)
               })
           .catchError((dynamic e) {
-        const snackBar = SnackBar(
-          content: Text('Password or Username is wrong!'),
+        SnackBar snackBar = SnackBar(
+          content: Text(t.page.login.username_password_wrong),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });

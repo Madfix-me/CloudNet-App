@@ -1,18 +1,32 @@
 {
   "page": {
     "dashboard": {
-      "memory_usage": "Arbeitsspeicher auslastung",
-      "cpu_usage": "CPU auslastung",
-      "running_services": "Laufende Dienste",
-      "heap_usage": "Heap auslastung",
+      "memory_usage": "Arbeitsspeicherauslastung",
+      "cpu_usage": "Prozessorauslastung",
+      "running_services": "Laufende Services",
+      "heap_usage": "Heap-Auslastung",
       "version": "Version"
+    },
+    "menu_node": {
+      "node_name": "Node Name",
+      "network_address": "Netzwerk Addresse",
+      "port": "Port",
+      "ssl": "SSL",
+      "address": "Address",
+      "name": "Name"
+    },
+    "login": {
+      "username": "Benutzername",
+      "password": "Passwort",
+      "login": "Einloggen",
+      "username_password_wrong": "Passwort oder Benutzername ist falsch!"
     },
     "tasks": {
       "overview": {
         "memory": "Arbeitspeicher",
-        "service_min_count": "Mininmale Dienst anzahl",
+        "service_min_count": "Mininmale Service anzahl",
         "maintenance": "Wartungen",
-        "static_service": "Statischer Dienst",
+        "static_service": "Statischer Service",
         "auto_delete_on_stop": "Auto löschen beim Stoppen",
         "disable_ip_rewrite": "IP-Rewrite deaktivieren"
       },
@@ -26,8 +40,8 @@
           "task_name": "Wie sollte der Name der neuen Task lauten?",
           "memory": "Wie viel Arbeitsspeicher sollte die neue Task maximal haben? (in MB)",
           "maintenance_default": "Sollte die Task standardmäßig in der Wartung sein? (dies verhindert den automatischen Start der Dienste)",
-          "auto_delete": "Sollten die Dienste automatisch aus der Cloud gelöscht werden, nachdem sie gestoppt wurden?",
-          "static_service": "Sollten die Dienste dieser Task statisch sein, werden ihre Dateien nie gelöscht"
+          "auto_delete": "Sollten die Services automatisch aus der Cloud gelöscht werden, nachdem sie gestoppt wurden?",
+          "static_service": "Sollten die Services dieser Task statisch sein, werden ihre Dateien nie gelöscht"
         }
       }
     }
@@ -39,7 +53,13 @@
       "finish": "Fertig",
       "bcontinue": "Weiter",
       "cancel": "Abbruch",
-      "previous": "Zurück"
+      "previous": "Zurück",
+      "save": "Speichern",
+      "delete": "Löschen"
+    },
+    "formats": {
+      "mb": "${value}MB",
+      "percentage": "${value}%"
     }
   }
 }

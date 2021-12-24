@@ -7,6 +7,20 @@
       "heap_usage": "Heap usage",
       "version": "Version"
     },
+    "menu_node": {
+      "node_name": "Node Name",
+      "network_address": "Network address",
+      "port": "Port",
+      "ssl": "SSL",
+      "address": "Address",
+      "name": "Name"
+    },
+    "login": {
+      "username": "Username",
+      "password": "Password",
+      "login": "Login",
+      "username_password_wrong": "Password or Username is wrong!"
+    },
     "tasks": {
       "overview": {
         "memory": "Memory",
@@ -39,7 +53,13 @@
       "finish": "Finish",
       "bcontinue": "Continue",
       "cancel": "Cancel",
-      "previous": "Previous"
+      "previous": "Previous",
+      "save": "Save",
+      "delete": "Delete"
+    },
+    "formats": {
+      "mb": "${value}MB",
+      "percentage": "${value}%"
     }
   }
 }

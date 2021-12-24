@@ -84,10 +84,9 @@ class _TasksPageState extends State<TasksPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.processConfiguration!
-                                            .maxHeapMemorySize!
-                                            .toString() +
-                                        'Mb')
+                                    Text(t.general.formats.mb(value: task.processConfiguration!
+                                        .maxHeapMemorySize!
+                                        .toString()))
                                   ],
                                 )
                               ],

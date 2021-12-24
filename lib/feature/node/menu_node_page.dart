@@ -2,6 +2,7 @@ import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:CloudNet/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:CloudNet/i18n/strings.g.dart';
 
 import 'node_handler.dart';
 
@@ -49,8 +50,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   controller: _nameController,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
-                    hintText: 'Name',
-                    labelText: 'Node Name',
+                    hintText: t.page.menu_node.name,
+                    labelText: t.page.menu_node.node_name,
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () => _clearInputField(_nameController),
@@ -64,8 +65,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   controller: _addressController,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
-                    hintText: 'Address',
-                    labelText: 'Network Address',
+                    hintText: t.page.menu_node.address,
+                    labelText: t.page.menu_node.network_address,
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () => _clearInputField(_addressController),
@@ -79,8 +80,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   controller: _portController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: 'Port',
-                    labelText: 'Port',
+                    hintText: t.page.menu_node.port,
+                    labelText: t.page.menu_node.port,
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () => _clearInputField(_portController),
@@ -93,7 +94,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('SSL'),
+                    Text(t.page.menu_node.ssl),
                     Switch(
                       value: ssl,
                       onChanged: (value) => {
@@ -120,7 +121,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                               .deleteUrl(node)
                               .then((value) => GoRouter.of(context).pop(context));
                         },
-                        child: const Text('Delete'),
+                        child: Text(t.general.button.delete),
                       ),
                     ),
                     Container(
@@ -138,7 +139,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                                 .then((value) => setState(() =>  GoRouter.of(context).pop(context)));
                           }
                         },
-                        child: const Text('Save'),
+                        child: Text(t.general.button.save),
                       ),
                     )
                   ],
@@ -154,88 +155,4 @@ class _MenuNodePageState extends State<MenuNodePage> {
   void _clearInputField(TextEditingController controller) {
     controller.clear();
   }
-
-/*
-  Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(4),
-              child: TextFormField(
-                controller: _nameController,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  hintText: 'Name',
-                  labelText: 'Node Name',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () => _clearInputField(_nameController),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(4),
-              child: TextFormField(
-                controller: _addressController,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  labelText: 'Network Address',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () => _clearInputField(_addressController),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(4),
-              child: TextFormField(
-                controller: _portController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
-                  labelText: 'Port',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () => _clearInputField(_addressController),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(4),
-              child: Row(
-                children: [
-                  const Text('SSL'),
-                  Switch(
-                    value: ssl,
-                    onChanged: (value) => {
-                      setState(
-                        () {
-                          ssl = value;
-                        },
-                      )
-                    },
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      )
-   */
 }

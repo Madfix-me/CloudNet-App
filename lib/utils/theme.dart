@@ -355,6 +355,7 @@ const cloudnetDarkText = TextTheme(
     fontWeight: FontWeight.w600,
     fontSize: 16.0,
     height: 1.25,
+    overflow: TextOverflow.clip
   ),
   headline6: TextStyle(
     fontFamily: fontFamily,

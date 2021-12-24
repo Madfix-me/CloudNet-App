@@ -30,7 +30,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return StoreConnector<AppState, NodeInfo>(
       onInit: (store) {
         store.dispatch(InitAppStateAction());
@@ -52,13 +51,17 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Card buildCard(int index, NodeInfo info) {
-    print(info.version);
     switch (index) {
-      case 0: return memoryCard(info);
-      case 1: return serviceCard(info);
-      case 2: return cpuCard(info);
-      case 3: return heapCard(info);
-      case 4: return versionCard(info);
+      case 0:
+        return memoryCard(info);
+      case 1:
+        return serviceCard(info);
+      case 2:
+        return cpuCard(info);
+      case 3:
+        return heapCard(info);
+      case 4:
+        return versionCard(info);
       default:
         return Card(child: Container());
     }
@@ -66,13 +69,20 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Card versionCard(NodeInfo state) {
     return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Version', textAlign: TextAlign.center),
-            Text(state.version!, textAlign: TextAlign.center)
-          ],
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                t.page.dashboard.version,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              Text(state.version!, textAlign: TextAlign.center)
+            ],
+          ),
         ),
       ),
     );
@@ -80,13 +90,18 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Card memoryCard(NodeInfo state) {
     return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(t.page.dashboard.memory_usage, textAlign: TextAlign.center),
-            Text(state.lastNodeInfoSnapshot!.usedMemory.toString() + 'MB')
-          ],
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(t.page.dashboard.memory_usage,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline5),
+              Text(t.general.formats.mb(value: state.lastNodeInfoSnapshot!.usedMemory.toString()))
+            ],
+          ),
         ),
       ),
     );
@@ -94,13 +109,18 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Card serviceCard(NodeInfo state) {
     return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(t.page.dashboard.running_services, textAlign: TextAlign.center),
-            Text(state.lastNodeInfoSnapshot!.currentServicesCount.toString())
-          ],
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(t.page.dashboard.running_services,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline5),
+              Text(state.lastNodeInfoSnapshot!.currentServicesCount.toString())
+            ],
+          ),
         ),
       ),
     );
@@ -108,14 +128,19 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Card cpuCard(NodeInfo state) {
     return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(t.page.dashboard.cpu_usage, textAlign: TextAlign.center),
-            Text(
-                '${state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!.toStringAsFixed(2)}%')
-          ],
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(t.page.dashboard.cpu_usage,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline5),
+              Text(
+                  t.general.formats.percentage(value: state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!.toStringAsFixed(2)))
+            ],
+          ),
         ),
       ),
     );
@@ -127,14 +152,22 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Card heapCard(NodeInfo info) {
     return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(t.page.dashboard.heap_usage, textAlign: TextAlign.center),
-            Text(
-                '${(info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0)}MB')
-          ],
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                t.page.dashboard.heap_usage,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              Text(
+                t.general.formats.mb(value: (info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0))
+              )
+            ],
+          ),
         ),
       ),
     );
