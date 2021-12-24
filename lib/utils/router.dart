@@ -88,13 +88,14 @@ final router = GoRouter(
     child: Text(state.error.toString()),
   ),
   redirect: (GoRouterState state) {
-    final bool loggedIn = nodeHandler.hasBaseUrl() && !loginHandler.isExpired() && loginHandler.accessToken() != null;
+    final bool loggedIn = nodeHandler.hasBaseUrl() &&
+        !loginHandler.isExpired() &&
+        loginHandler.accessToken() != null;
     final bool goingToLogin = state.location == LoginPage.route ||
         state.location == NodesPage.route ||
         state.location == MenuNodePage.route;
 
-    final bool goingToNodes =
-        state.location == NodesPage.route ||
+    final bool goingToNodes = state.location == NodesPage.route ||
         state.location == MenuNodePage.route;
 
     // the user is not set a node url headed to /login, they need to set it
