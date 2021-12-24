@@ -5,5 +5,25 @@
     "success": "Logged in successfully",
     "fail": "Logged in failed"
   },
-  "memory": "Memory"
+  "username": "Username",
+  "password": "Password",
+  "page": {
+    "tasks": {
+      "overview": {
+        "memory": "Memory",
+        "service_min_count": "Service minimum number",
+        "maintenance": "Maintenance",
+        "static_service": "Static Service",
+        "auto_delete_on_stop": "Auto delete on stop",
+        "disable_ip_rewrite": "Disable IP Rewrite"
+      },
+      "setup": {
+
+      }
+    }
+  },
+  "general": {
+    "yes": "Yes",
+    "no": "No"
+  }
 }

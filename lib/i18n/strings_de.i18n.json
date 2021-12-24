@@ -5,5 +5,23 @@
     "success": "Login erfolgreich",
     "fail": "Login fehlgeschlagen"
   },
-  "memory": "Arbeitspeicher"
+
+  "username": "Benutzername",
+  "password": "Passwort",
+  "page": {
+    "tasks": {
+      "overview": {
+        "memory": "Arbeitspeicher",
+        "service_min_count": "Mininmale service anzahl",
+        "maintenance": "Wartungen",
+        "static_service": "Statischer Service",
+        "auto_delete_on_stop": "Auto löschen beim Stoppen",
+        "disable_ip_rewrite": "IP-Rewrite deaktivieren"
+      }
+    }
+  },
+  "general": {
+    "yes": "Ja",
+    "no": "Nein"
+  }
 }

@@ -3,7 +3,6 @@ import 'package:CloudNet/feature/tasks/task_setup_page.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:CloudNet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +37,7 @@ class _TasksPageState extends State<TasksPage> {
               Wrap(
                 children: [
                   FilterChip(
-                    label: const Text('Static'),
+                    label: Text(t.page.tasks.overview.static_service),
                     selected: staticFilter,
                     onSelected: (bool value) {
                       setState(() {
@@ -47,7 +46,7 @@ class _TasksPageState extends State<TasksPage> {
                     },
                   ),
                   FilterChip(
-                    label: const Text('Maintenance'),
+                    label: Text(t.page.tasks.overview.maintenance),
                     selected: maintenanceFilter,
                     onSelected: (bool value) {
                       setState(() {
@@ -78,7 +77,7 @@ class _TasksPageState extends State<TasksPage> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(t.memory),
+                                    Text(t.page.tasks.overview.memory),
                                   ],
                                 ),
                                 Column(
@@ -101,8 +100,8 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: const [
-                                    Text('Service Min Count: '),
+                                  children: [
+                                    Text(t.page.tasks.overview.service_min_count),
                                   ],
                                 ),
                                 Column(
@@ -122,15 +121,15 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: const [
-                                    Text('Auto delete on Stop: '),
+                                  children: [
+                                    Text(t.page.tasks.overview.auto_delete_on_stop),
                                   ],
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.autoDeleteOnStop! ? 'Yes' : 'No')
+                                    Text(task.autoDeleteOnStop! ? t.general.yes : t.general.no)
                                   ],
                                 )
                               ],
@@ -143,10 +142,10 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: const [
+                                  children: [
                                     Text(
-                                      'Static Service: ',
-                                      style: TextStyle(
+                                      t.page.tasks.overview.static_service,
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -157,7 +156,7 @@ class _TasksPageState extends State<TasksPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      task.staticServices! ? 'Yes' : 'No',
+                                      task.staticServices! ? t.general.yes : t.general.no,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -174,10 +173,10 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: const [
+                                  children: [
                                     Text(
-                                      'Maintenance: ',
-                                      style: TextStyle(
+                                      t.page.tasks.overview.maintenance,
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -188,7 +187,7 @@ class _TasksPageState extends State<TasksPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      task.maintenance! ? 'Yes' : 'No',
+                                      task.maintenance! ? t.general.yes : t.general.no,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -205,15 +204,15 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: const [
-                                    Text('Disable IP Rewrite: '),
+                                  children: [
+                                    Text(t.page.tasks.overview.disable_ip_rewrite),
                                   ],
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.disableIpRewrite! ? 'Yes' : 'No')
+                                    Text(task.disableIpRewrite! ? t.general.yes : t.general.no)
                                   ],
                                 )
                               ],
