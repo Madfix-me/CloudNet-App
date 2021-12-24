@@ -21,7 +21,7 @@ class TaskSetupPage extends StatefulWidget {
 
 class _TaskSetupPageState extends State<TaskSetupPage> {
   int _index = 0;
-  ServiceVersionType? serviceVersionType;
+  ServiceVersionType serviceVersionType = const ServiceVersionType(environmentType: 'MINECRAFT_SERVER');
   ServiceVersion? selectedServiceVersion;
 
   bool _maintenance = false;
@@ -143,8 +143,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   Step buildServiceVersionStep(List<ServiceVersionType> versions) {
     final versionValues = buildVersions(
         versions,
-        serviceVersionType ??
-            const ServiceVersionType(environmentType: 'MINECRAFT_SERVER'));
+        serviceVersionType);
     return Step(
       title: Text(t.page.tasks.setup.service_version),
       content: Form(
@@ -167,7 +166,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                     setState(() {
                       selectedServiceVersion = versions
                           .firstWhere(
-                              (element) => element.environmentType == env)
+                              (element) => element.environmentType == serviceVersionType.environmentType && element.name == env)
                           .versions
                           ?.firstWhere((element) => element.name == version);
                     });
