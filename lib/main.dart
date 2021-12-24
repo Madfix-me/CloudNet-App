@@ -5,14 +5,11 @@ import '/feature/node/node_handler.dart';
 import '/state/app_state.dart';
 import '/state/persistor.dart';
 import 'package:flutter/material.dart';
-import 'package:i18n_extension/i18n_widget.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:CloudNet/i18n/strings.g.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  I18n.observeLocale =
-      ({required Locale oldLocale, required Locale newLocale})
-  => print("Changed from $oldLocale to $newLocale.");
+  LocaleSettings.useDeviceLocale();
   await nodeHandler.load();
   await loginHandler.load();
   final persistor = AppPersistor();
@@ -21,5 +18,5 @@ Future<void> main() async {
     persistor: persistor,
     initialState: initialState,
   );
-  runApp(StoreProvider<AppState>(store: store, child: const CloudNet()));
+  runApp(StoreProvider<AppState>(store: store, child: TranslationProvider(child: const CloudNet())));
 }

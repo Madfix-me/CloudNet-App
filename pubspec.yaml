@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: # add this
+    sdk: flutter
   path_provider: ^2.0.8
   #path_provider_android: ^2.0.1
   cupertino_icons: ^1.0.4
@@ -21,9 +23,9 @@ dependencies:
   freezed_annotation: ^1.1.0
   localstorage: ^4.0.0+1
   go_router: ^2.5.5
-  i18n_extension: ^4.1.3
   form_validator: ^1.0.1
   jwt_decoder: ^2.0.1
+  fluttericon: ^2.0.0
 
 
 dev_dependencies:
@@ -32,6 +34,7 @@ dev_dependencies:
   freezed: ^1.1.0
   json_serializable: ^6.1.3
   flutter_lints: 1.0.4
+  fast_i18n: 5.7.0
 
 flutter:
   uses-material-design: true

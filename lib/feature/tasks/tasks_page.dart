@@ -1,12 +1,14 @@
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
-import 'package:CloudNet/extensions/i18n_ext.dart';
 import 'package:CloudNet/feature/tasks/task_setup_page.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:CloudNet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/elusive_icons.dart';
 import 'package:go_router/go_router.dart';
+import '/utils/color.dart' as color;
+import 'package:CloudNet/i18n/strings.g.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -76,7 +78,7 @@ class _TasksPageState extends State<TasksPage> {
                               children: [
                                 Column(
                                   children: [
-                                    Text('memory'.i18n),
+                                    Text(t.memory),
                                   ],
                                 ),
                                 Column(
@@ -220,16 +222,46 @@ class _TasksPageState extends State<TasksPage> {
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.edit),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Elusive.wrench,
+                                            color: task.maintenance!
+                                                ? color.blue
+                                                : color.gray,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.delete),
-                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.edit),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                           ),

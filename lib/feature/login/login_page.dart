@@ -3,7 +3,6 @@ import 'package:CloudNet/feature/node/nodes_page.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:form_validator/form_validator.dart';
-import '/extensions/i18n_ext.dart';
 import '/feature/dashboard/dashboard_page.dart';
 import '/feature/login/login_handler.dart';
 import '/feature/node/node_handler.dart';
@@ -104,12 +103,8 @@ class _LoginPageState extends State<LoginPage> {
                       validator: ValidationBuilder().required().build(),
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        errorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        hintText: 'Username'.i18n,
-                        labelText: 'Username'.i18n,
+                        hintText: 'Username',
+                        labelText: 'Username',
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () =>
@@ -127,11 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                       autocorrect: false,
                       controller: _passwordController,
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        errorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        labelText: 'Password'.i18n,
+                        labelText: 'Password',
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () =>
