@@ -14,7 +14,6 @@ class InitAppStateAction extends ReduxAction<AppState> {
     final List<ServiceTask> tasks = await ApiService().tasksApi.getTasks();
     final List<GroupConfiguration> groups = await ApiService().groupsApi.getGroups();
     final List<ServiceVersionType> versions = await ApiService().versionsApi.getVersions();
-    print(versions.length);
     return state.copyWith(nodeInfo: nodeInfo, tasks: tasks, groups: groups, versions: versions);
   }
 }
