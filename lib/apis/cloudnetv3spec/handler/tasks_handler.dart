@@ -21,4 +21,18 @@ class TasksApi {
 
     return val;
   }
+
+  Future<Success> createTask(ServiceTask task) async {
+    final queryParams = <String, dynamic>{};
+
+    final baseUri = Uri.parse(apiClient.baseUrl);
+    final uri = baseUri.replace(
+        queryParameters: queryParams, path: baseUri.path + '/api/v2/task');
+    final val =
+        await apiClient.dio.postUri<Json>(uri, body: task).then((response) {
+      return Success.fromJson(response.data!).tasks!;
+    });
+
+    return val;
+  }
 }

@@ -1,3 +1,6 @@
+import 'package:CloudNet/apis/api_service.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/process_configuration.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_version.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
@@ -46,6 +49,47 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   final _javaExecutableFormKey = GlobalKey<FormState>();
   final _serviceVersionFormKey = GlobalKey<FormState>();
   final _splitterFormKey = GlobalKey<FormState>();
+
+  Step buildServiceVersionStep(List<ServiceVersionType> versions) {
+    final versionValues = buildVersions(
+        versions,
+        serviceVersionType);
+    return Step(
+      title: Text(t.page.tasks.setup.service_version),
+      content: Form(
+        key: _serviceVersionFormKey,
+        child: Container(
+          alignment: Alignment.centerLeft,
+          child: Column(
+            children: [
+              Text(t.page.tasks.setup.question.service_version),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                child: DropdownButtonFormField<String>(
+                  validator: ValidationBuilder().required().build(),
+                  value: versionValues?.first.value,
+                  items: versionValues,
+                  onChanged: (String? value) {
+                    final values = value?.split('-');
+                    final env = values?[0];
+                    final version = values?[1];
+                    setState(() {
+                      selectedServiceVersion = versions
+                          .firstWhere(
+                              (element) => element.environmentType == serviceVersionType.environmentType && element.name == env)
+                          .versions
+                          ?.firstWhere((element) => element.name == version);
+                    });
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      state: getStepState(9, _serviceVersionFormKey),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +149,36 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                         child: TextButton(
                           onPressed: () {
                             if (_index == (steps.length - 1)) {
+                              bool valid = _nameFormKey.currentState!.validate() &&
+                            _memoryFormKey.currentState!.validate() &&
+                            _maintenanceFormKey.currentState!.validate() &&
+                            _autoDeleteFormKey.currentState!.validate() &&
+                            _staticServiceFormKey.currentState!.validate() &&
+                            _serviceCountFormKey.currentState!.validate() &&
+                            _taskEnvironmentFormKey.currentState!.validate() &&
+                            _startPortFormKey.currentState!.validate() &&
+                            _javaExecutableFormKey.currentState!.validate() &&
+                            _serviceVersionFormKey.currentState!.validate() &&
+                            _splitterFormKey.currentState!.validate();
+                              if (valid) {
+                                ServiceTask task = ServiceTask(
+                                    name: _nameController.text,
+                                    javaCommand: _javaExecutableController.text,
+                                    maintenance: _maintenance,
+                                    minServiceCount: int.tryParse(_serviceCountController.text),
+                                    staticServices: _staticService,
+                                    autoDeleteOnStop: _autoDelete,
+                                    startPort: int.tryParse(_startPortController.text),
+                                    processConfiguration: ProcessConfiguration(
+                                        environment: serviceVersionType.environmentType,
+                                        maxHeapMemorySize: int.tryParse(_memoryController.text)
+                                    )
+                                );
+                                ApiService().tasksApi.createTask(task).then((value) {
+
+                                });
+                              }
+
                             } else {
                               if (isValid(_index)) {
                                 details.onStepContinue!();
@@ -137,47 +211,6 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
           ],
         );
       },
-    );
-  }
-
-  Step buildServiceVersionStep(List<ServiceVersionType> versions) {
-    final versionValues = buildVersions(
-        versions,
-        serviceVersionType);
-    return Step(
-      title: Text(t.page.tasks.setup.service_version),
-      content: Form(
-        key: _serviceVersionFormKey,
-        child: Container(
-          alignment: Alignment.centerLeft,
-          child: Column(
-            children: [
-              Text(t.page.tasks.setup.question.service_version),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: DropdownButtonFormField<String>(
-                  validator: ValidationBuilder().required().build(),
-                  value: versionValues?.first.value,
-                  items: versionValues,
-                  onChanged: (String? value) {
-                    final values = value?.split('-');
-                    final env = values?[0];
-                    final version = values?[1];
-                    setState(() {
-                      selectedServiceVersion = versions
-                          .firstWhere(
-                              (element) => element.environmentType == serviceVersionType.environmentType && element.name == env)
-                          .versions
-                          ?.firstWhere((element) => element.name == version);
-                    });
-                  },
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-      state: getStepState(9, _serviceVersionFormKey),
     );
   }
 

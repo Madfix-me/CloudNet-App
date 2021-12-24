@@ -18,6 +18,7 @@ class ServiceTask with _$ServiceTask {
     @JsonKey(name: 'processConfiguration') ProcessConfiguration? processConfiguration,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'minServiceCount') int? minServiceCount,
+    @JsonKey(name: 'startPort') int? startPort,
     @JsonKey(name: 'runtime') String? runtime,
     @JsonKey(name: 'javaCommand') String? javaCommand,
     @JsonKey(name: 'disableIpRewrite') bool? disableIpRewrite,
