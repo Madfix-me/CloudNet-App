@@ -16,7 +16,6 @@ class GroupsApi {
       uri,
     )
         .then((response) {
-      print(response.data!);
       return GroupResponse.fromJson(response.data!).groups!;
     });
 
