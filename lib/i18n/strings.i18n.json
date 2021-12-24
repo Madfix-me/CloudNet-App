@@ -36,12 +36,25 @@
         "maintenance_default": "Maintenance default",
         "auto_delete": "Auto delete",
         "static_service": "Static service",
+        "service_count": "Service count",
+        "task_environment": "Task Environment",
+        "start_port": "Start Port",
+        "java_executable": "Java executable",
+        "path": "Path",
+        "service_version": "Service Version",
+        "splitter": "Splitter",
         "question": {
           "task_name": "What should the name of the new task be?",
           "memory": "What amount of max memory should the new task have? (in MB)",
           "maintenance_default": "Should the task be in maintenance by default? (this prevents auto starting of the services)",
           "auto_delete": "Should the services be automatically unregistered out of the cloud after stopping them?",
-          "static_service": "Should the services of this task be static that their files are never deleted"
+          "static_service": "Should the services of this task be static that their files are never deleted",
+          "service_count" : "How many services of this task should be always online?",
+          "task_environment": "What should be the environment of this task?",
+          "start_port": "What should be the start port of the task?",
+          "java_executable": "What is the path to the Java executable?",
+          "service_version": "Which ServiceVersion should be ran on services of this task?",
+          "splitter": "What should the splitter of the new task be?"
         }
       }
     }

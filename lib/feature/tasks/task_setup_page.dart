@@ -146,15 +146,14 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
         serviceVersionType ??
             const ServiceVersionType(environmentType: 'MINECRAFT_SERVER'));
     return Step(
-      title: const Text('Service Version'),
+      title: Text(t.page.tasks.setup.service_version),
       content: Form(
         key: _serviceVersionFormKey,
         child: Container(
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text(
-                  'Which ServiceVersion should be ran on services of this task?'),
+              Text(t.page.tasks.setup.question.service_version),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: DropdownButtonFormField<String>(
@@ -185,22 +184,22 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
 
   Step buildJavaExecutableStep() {
     return Step(
-      title: const Text('Java executable'),
+      title: Text(t.page.tasks.setup.java_executable),
       content: Form(
         key: _javaExecutableFormKey,
         child: Container(
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text('What is the path to the Java executable?'),
+              Text(t.page.tasks.setup.question.java_executable),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: TextFormField(
                   validator: ValidationBuilder().required().build(),
                   controller: _javaExecutableController,
                   keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Path',
+                  decoration: InputDecoration(
+                    labelText: t.page.tasks.setup.path,
                   ),
                 ),
               )
@@ -214,22 +213,22 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
 
   Step buildStartPortStep() {
     return Step(
-      title: const Text('Start Port'),
+      title: Text(t.page.tasks.setup.start_port),
       content: Form(
         key: _startPortFormKey,
         child: Container(
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text('What should be the start port of the task?'),
+              Text(t.page.tasks.setup.question.start_port),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: TextFormField(
                   validator: ValidationBuilder().required().build(),
                   controller: _startPortController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Start Port',
+                  decoration: InputDecoration(
+                    labelText: t.page.tasks.setup.start_port,
                   ),
                 ),
               )
@@ -244,13 +243,13 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   Step buildEnvironmentStep(List<ServiceVersionType> versions) {
     final versionsValues = buildEnvironments(versions);
     return Step(
-      title: const Text('Task Environment'),
+      title: Text(t.page.tasks.setup.task_environment),
       content: Form(
         child: Container(
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text('What should be the environment of this task? '),
+              Text(t.page.tasks.setup.question.task_environment),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: DropdownButtonFormField<String>(
@@ -274,22 +273,21 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
 
   Step buildServiceCountStep() {
     return Step(
-      title: const Text('Service Count'),
+      title: Text(t.page.tasks.setup.service_count),
       content: Form(
         child: Container(
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text(
-                  'How many services of this task should be always online?'),
+              Text(t.page.tasks.setup.question.service_count),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: TextFormField(
                   validator: ValidationBuilder().required().build(),
                   controller: _serviceCountController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Service Count',
+                  decoration: InputDecoration(
+                    labelText: t.page.tasks.setup.service_count,
                   ),
                 ),
               )
@@ -437,22 +435,22 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
 
   Step buildSplitterStep() {
     return Step(
-      title: const Text('Splitter'),
+      title: Text(t.page.tasks.setup.splitter),
       content: Form(
         key: _splitterFormKey,
         child: Container(
           alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text('What should the splitter of the new task be?'),
+              Text(t.page.tasks.setup.question.splitter),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: TextFormField(
                   validator: ValidationBuilder().required().build(),
                   controller: _splitterController,
                   keyboardType: TextInputType.name,
-                  decoration: const InputDecoration(
-                    labelText: 'Splitter',
+                  decoration: InputDecoration(
+                    labelText: t.page.tasks.setup.splitter,
                   ),
                 ),
               )

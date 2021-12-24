@@ -35,13 +35,26 @@
         "memory": "Arbeitspeicher",
         "maintenance_default": "Wartungsvorgabe",
         "auto_delete": "Automatische Löschung",
-        "static_service": "Statischer Dienst",
+        "static_service": "Statischer Service",
+        "service_count": "Service Anzahl",
+        "task_environment": "Task Umfeld",
+        "start_port": "Start Port",
+        "java_executable": "Ausführbare Java-Datei",
+        "path": "Pfad",
+        "service_version": "Service Version",
+        "splitter": "Splitter",
         "question": {
           "task_name": "Wie sollte der Name der neuen Task lauten?",
           "memory": "Wie viel Arbeitsspeicher sollte die neue Task maximal haben? (in MB)",
           "maintenance_default": "Sollte die Task standardmäßig in der Wartung sein? (dies verhindert den automatischen Start der Dienste)",
           "auto_delete": "Sollten die Services automatisch aus der Cloud gelöscht werden, nachdem sie gestoppt wurden?",
-          "static_service": "Sollten die Services dieser Task statisch sein, werden ihre Dateien nie gelöscht"
+          "static_service": "Sollten die Services dieser Task statisch sein, werden ihre Dateien nie gelöscht",
+          "service_count" : "Wie viele Services dieser Task sollten immer online sein?",
+          "task_environment": "Wie sollte das Umfeld für diese Task aussehen?",
+          "start_port": "Was sollte der Startport der Task sein?",
+          "java_executable": "Wie lautet der Pfad zu der ausführbaren Java-Datei?",
+          "service_version": "Welche Service Version sollte auf den Services dieser Task ausgeführt werden?",
+          "splitter": "Wie soll der Splitter der neuen Task aussehen?"
         }
       }
     }
