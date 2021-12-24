@@ -3,7 +3,10 @@ import 'package:CloudNet/feature/feature/groups_page.dart';
 import 'package:CloudNet/feature/node/node_handler.dart';
 import 'package:CloudNet/feature/tasks/task_setup_page.dart';
 import 'package:CloudNet/feature/tasks/tasks_page.dart';
+import 'package:CloudNet/state/actions/app_actions.dart';
+import 'package:CloudNet/state/app_state.dart';
 import 'package:CloudNet/utils/router.dart';
+import 'package:async_redux/async_redux.dart';
 
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/utils/const.dart';
@@ -46,11 +49,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StoreConnector<AppState, NodeInfo>(
+        onInit: (store) {
+      store.dispatch(InitAppStateAction());
+    },
+    converter: (store) => store.state.nodeInfo ?? NodeInfo(),
+    builder: (context, nodeInfo) => Scaffold(
       body: widget.child,
-      appBar: _appBar(),
+      appBar: _appBar(nodeInfo),
       drawer: isSetupPage() ? null : buildDrawer(),
-    );
+    ),);
   }
 
   bool isSetupPage() {
@@ -140,9 +148,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  AppBar? _appBar() {
+  AppBar? _appBar(NodeInfo nodeInfo) {
     return AppBar(
-      title: Text(appTitle),
+      title: isSetupPage() ? const Text(appTitle) : Text('Node: ${nodeInfo.lastNodeInfoSnapshot?.node?.uniqueId}'),
     );
   }
 }

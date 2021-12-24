@@ -232,7 +232,7 @@ class _TasksPageState extends State<TasksPage> {
                                           icon: Icon(
                                             Elusive.wrench,
                                             color: task.maintenance!
-                                                ? color.blue
+                                                ? null
                                                 : color.gray,
                                           ),
                                         ),

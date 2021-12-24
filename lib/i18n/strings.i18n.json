@@ -1,13 +1,12 @@
 {
-  "hello": "Hello $name",
-  "save": "Save",
-  "login": {
-    "success": "Logged in successfully",
-    "fail": "Logged in failed"
-  },
-  "username": "Username",
-  "password": "Password",
   "page": {
+    "dashboard": {
+      "memory_usage": "Memory usage",
+      "cpu_usage": "CPU usage",
+      "running_services": "Running services",
+      "heap_usage": "Heap usage",
+      "version": "Version"
+    },
     "tasks": {
       "overview": {
         "memory": "Memory",
@@ -18,12 +17,29 @@
         "disable_ip_rewrite": "Disable IP Rewrite"
       },
       "setup": {
-
+        "task_name": "Task name",
+        "memory": "Memory",
+        "maintenance_default": "Maintenance default",
+        "auto_delete": "Auto delete",
+        "static_service": "Static service",
+        "question": {
+          "task_name": "What should the name of the new task be?",
+          "memory": "What amount of max memory should the new task have? (in MB)",
+          "maintenance_default": "Should the task be in maintenance by default? (this prevents auto starting of the services)",
+          "auto_delete": "Should the services be automatically unregistered out of the cloud after stopping them?",
+          "static_service": "Should the services of this task be static that their files are never deleted"
+        }
       }
     }
   },
   "general": {
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "button": {
+      "finish": "Finish",
+      "bcontinue": "Continue",
+      "cancel": "Cancel",
+      "previous": "Previous"
+    }
   }
 }

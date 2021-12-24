@@ -1,27 +1,45 @@
 {
-  "hello": "Hallo $name",
-  "save": "Speichern",
-  "login": {
-    "success": "Login erfolgreich",
-    "fail": "Login fehlgeschlagen"
-  },
-
-  "username": "Benutzername",
-  "password": "Passwort",
   "page": {
+    "dashboard": {
+      "memory_usage": "Arbeitsspeicher auslastung",
+      "cpu_usage": "CPU auslastung",
+      "running_services": "Laufende Dienste",
+      "heap_usage": "Heap auslastung",
+      "version": "Version"
+    },
     "tasks": {
       "overview": {
         "memory": "Arbeitspeicher",
-        "service_min_count": "Mininmale service anzahl",
+        "service_min_count": "Mininmale Dienst anzahl",
         "maintenance": "Wartungen",
-        "static_service": "Statischer Service",
+        "static_service": "Statischer Dienst",
         "auto_delete_on_stop": "Auto löschen beim Stoppen",
         "disable_ip_rewrite": "IP-Rewrite deaktivieren"
+      },
+      "setup": {
+        "task_name": "Task name",
+        "memory": "Arbeitspeicher",
+        "maintenance_default": "Wartungsvorgabe",
+        "auto_delete": "Automatische Löschung",
+        "static_service": "Statischer Dienst",
+        "question": {
+          "task_name": "Wie sollte der Name der neuen Task lauten?",
+          "memory": "Wie viel Arbeitsspeicher sollte die neue Task maximal haben? (in MB)",
+          "maintenance_default": "Sollte die Task standardmäßig in der Wartung sein? (dies verhindert den automatischen Start der Dienste)",
+          "auto_delete": "Sollten die Dienste automatisch aus der Cloud gelöscht werden, nachdem sie gestoppt wurden?",
+          "static_service": "Sollten die Dienste dieser Task statisch sein, werden ihre Dateien nie gelöscht"
+        }
       }
     }
   },
   "general": {
     "yes": "Ja",
-    "no": "Nein"
+    "no": "Nein",
+    "button": {
+      "finish": "Fertig",
+      "bcontinue": "Weiter",
+      "cancel": "Abbruch",
+      "previous": "Zurück"
+    }
   }
 }

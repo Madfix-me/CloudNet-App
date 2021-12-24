@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import '/utils/color.dart' as color;
+import 'package:CloudNet/i18n/strings.g.dart';
 
 class TaskSetupPage extends StatefulWidget {
   const TaskSetupPage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   ServiceVersion? selectedServiceVersion;
 
   bool _maintenance = false;
-  bool _autoDelete = false;
+  bool _autoDelete = true;
   bool _staticService = false;
 
   final TextEditingController _nameController = TextEditingController();
@@ -111,8 +112,8 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                             }
                           },
                           child: _index == (steps.length - 1)
-                              ? const Text('FINISH')
-                              : const Text('CONTINUE'),
+                              ? Text(t.general.button.finish)
+                              : Text(t.general.button.bcontinue),
                         ),
                         margin: const EdgeInsets.all(4.0),
                       ),
@@ -120,8 +121,8 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                         child: TextButton(
                           onPressed: details.onStepCancel,
                           child: _index == 0
-                              ? const Text('CANCEL')
-                              : const Text('PREVIOUS'),
+                              ? Text(t.general.button.cancel)
+                              : Text(t.general.button.previous),
                           style:
                               TextButton.styleFrom(backgroundColor: color.gray),
                         ),
@@ -301,22 +302,79 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
     );
   }
 
-  Step buildStaticServiceStep() {
+  Step buildTaskNameStep() {
     return Step(
-        title: const Text('Static Service'),
-        content: Form(
-          key: _staticServiceFormKey,
+      title: Text(t.page.tasks.setup.task_name),
+      content: Form(
+        child: Container(
+          alignment: Alignment.centerLeft,
           child: Column(
             children: [
-              const Text(
-                  'Should the services of this task be static that their files are never deleted'),
+              Text(t.page.tasks.setup.question.task_name),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                child: TextFormField(
+                  controller: _nameController,
+                  keyboardType: TextInputType.name,
+                  validator: ValidationBuilder().required().build(),
+                  decoration: InputDecoration(
+                    labelText: t.page.tasks.setup.task_name,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        key: _nameFormKey,
+      ),
+      state: getStepState(0, _nameFormKey),
+    );
+  }
+
+  Step buildTaskMemoryStep() {
+    return Step(
+      title: Text(t.page.tasks.setup.memory),
+      content: Form(
+        child: Container(
+          alignment: Alignment.centerLeft,
+          child: Column(
+            children: [
+              Text(t.page.tasks.setup.question.memory),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                child: TextFormField(
+                  controller: _memoryController,
+                  validator: ValidationBuilder().required().build(),
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: t.page.tasks.setup.memory,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        key: _memoryFormKey,
+      ),
+      state: getStepState(1, _memoryFormKey),
+    );
+  }
+
+  Step buildTaskMaintenanceStep() {
+    return Step(
+        title: Text(t.page.tasks.setup.maintenance_default),
+        content: Form(
+          key: _maintenanceFormKey,
+          child: Column(
+            children: [
+              Text(t.page.tasks.setup.question.maintenance_default),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Switch(
-                  value: _staticService,
+                  value: _maintenance,
                   onChanged: (value) {
                     setState(() {
-                      _staticService = value;
+                      _maintenance = value;
                     });
                   },
                 ),
@@ -324,18 +382,17 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
             ],
           ),
         ),
-        state: getStepState(3, _staticServiceFormKey));
+        state: getStepState(2, _maintenanceFormKey));
   }
 
   Step buildAutoDeleteStep() {
     return Step(
-        title: const Text('Auto delete'),
+        title: Text(t.page.tasks.setup.auto_delete),
         content: Form(
           key: _autoDeleteFormKey,
           child: Column(
             children: [
-              const Text(
-                  'Should the services be automatically unregistered out of the cloud after stopping them?'),
+              Text(t.page.tasks.setup.question.auto_delete),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Switch(
@@ -353,33 +410,29 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
         state: getStepState(3, _autoDeleteFormKey));
   }
 
-  Step buildTaskNameStep() {
+  Step buildStaticServiceStep() {
     return Step(
-      title: const Text('Task Name'),
-      content: Form(
-        child: Container(
-          alignment: Alignment.centerLeft,
+        title: Text(t.page.tasks.setup.static_service),
+        content: Form(
+          key: _staticServiceFormKey,
           child: Column(
             children: [
-              const Text('What should the name of the new task be?'),
+              Text(t.page.tasks.setup.question.static_service),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: TextFormField(
-                  controller: _nameController,
-                  keyboardType: TextInputType.name,
-                  validator: ValidationBuilder().required().build(),
-                  decoration: const InputDecoration(
-                    labelText: 'Task name',
-                  ),
+                child: Switch(
+                  value: _staticService,
+                  onChanged: (value) {
+                    setState(() {
+                      _staticService = value;
+                    });
+                  },
                 ),
-              )
+              ),
             ],
           ),
         ),
-        key: _nameFormKey,
-      ),
-      state: getStepState(0, _nameFormKey),
-    );
+        state: getStepState(3, _staticServiceFormKey));
   }
 
   Step buildSplitterStep() {
@@ -409,62 +462,6 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
       ),
       state: getStepState(10, _splitterFormKey),
     );
-  }
-
-  Step buildTaskMemoryStep() {
-    return Step(
-      title: const Text('Memory'),
-      content: Form(
-        child: Container(
-          alignment: Alignment.centerLeft,
-          child: Column(
-            children: [
-              const Text(
-                  'What amount of max memory should the new task have? (in MB)'),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: TextFormField(
-                  controller: _memoryController,
-                  validator: ValidationBuilder().required().build(),
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Memory',
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        key: _memoryFormKey,
-      ),
-      state: getStepState(1, _memoryFormKey),
-    );
-  }
-
-  Step buildTaskMaintenanceStep() {
-    return Step(
-        title: const Text('Maintenance default'),
-        content: Form(
-          key: _maintenanceFormKey,
-          child: Column(
-            children: [
-              const Text(
-                  'Should the task be in maintenance by default? (this prevents auto starting of the services)'),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Switch(
-                  value: _maintenance,
-                  onChanged: (value) {
-                    setState(() {
-                      _maintenance = value;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        state: getStepState(2, _maintenanceFormKey));
   }
 
   List<DropdownMenuItem<String>>? buildEnvironments(

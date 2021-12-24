@@ -1,14 +1,11 @@
 import 'dart:async';
 
-import 'package:CloudNet/apis/cloudnetv3spec/model/cloudnet_version.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/state/actions/app_actions.dart';
 import '/state/app_state.dart';
-import 'package:flutter/widgets.dart';
-import '/utils/color.dart' as color;
+import 'package:CloudNet/i18n/strings.g.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -42,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
       builder: (context, nodeInfo) => RefreshIndicator(
         onRefresh: _pullRefresh,
         child: GridView.builder(
-          itemCount: 6,
+          itemCount: 5,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2),
           itemBuilder: (context, index) {
@@ -55,22 +52,30 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Card buildCard(int index, NodeInfo info) {
+    print(info.version);
     switch (index) {
-      case 0:
-        return memoryCard(info);
-      case 1:
-        return serviceCard(info);
-      case 2:
-        return cpuCard(info);
-      case 3:
-        return heapCard(info);
-      case 4:
-        return versionTitleCard(info);
-      case 5:
-        return versionTypeCard(info);
+      case 0: return memoryCard(info);
+      case 1: return serviceCard(info);
+      case 2: return cpuCard(info);
+      case 3: return heapCard(info);
+      case 4: return versionCard(info);
       default:
         return Card(child: Container());
     }
+  }
+
+  Card versionCard(NodeInfo state) {
+    return Card(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Version', textAlign: TextAlign.center),
+            Text(state.version!, textAlign: TextAlign.center)
+          ],
+        ),
+      ),
+    );
   }
 
   Card memoryCard(NodeInfo state) {
@@ -79,8 +84,8 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Memory usage'),
-            Text(state.lastNodeInfoSnapshot!.usedMemory.toString())
+            Text(t.page.dashboard.memory_usage, textAlign: TextAlign.center),
+            Text(state.lastNodeInfoSnapshot!.usedMemory.toString() + 'MB')
           ],
         ),
       ),
@@ -93,7 +98,7 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Service Count'),
+            Text(t.page.dashboard.running_services, textAlign: TextAlign.center),
             Text(state.lastNodeInfoSnapshot!.currentServicesCount.toString())
           ],
         ),
@@ -107,47 +112,9 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Cpu Usage'),
+            Text(t.page.dashboard.cpu_usage, textAlign: TextAlign.center),
             Text(
                 '${state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!.toStringAsFixed(2)}%')
-          ],
-        ),
-      ),
-    );
-  }
-
-  Card versionTitleCard(NodeInfo state) {
-    return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Version Title'),
-            Text(((state.lastNodeInfoSnapshot ??
-                                NetworkClusterNodeInfoSnapshot())
-                            .version ??
-                        CloudNetVersion())
-                    .versionTitle ??
-                '')
-          ],
-        ),
-      ),
-    );
-  }
-
-  Card versionTypeCard(NodeInfo state) {
-    return Card(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Version Type'),
-            Text(((state.lastNodeInfoSnapshot ??
-                                NetworkClusterNodeInfoSnapshot())
-                            .version ??
-                        CloudNetVersion())
-                    .versionType ??
-                '')
           ],
         ),
       ),
@@ -164,9 +131,9 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Heap Usage'),
+            Text(t.page.dashboard.heap_usage, textAlign: TextAlign.center),
             Text(
-                '${(info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0)}Mb')
+                '${(info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0)}MB')
           ],
         ),
       ),

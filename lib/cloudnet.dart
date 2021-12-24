@@ -17,7 +17,7 @@ class CloudNet extends StatelessWidget {
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       theme: cloudnetTheme,
       darkTheme: cloudnetDarkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
