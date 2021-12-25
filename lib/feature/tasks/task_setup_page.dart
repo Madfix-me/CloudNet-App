@@ -1,8 +1,10 @@
 import 'package:CloudNet/apis/api_service.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/process_configuration.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/service_template.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_version.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/template_install.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:CloudNet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
@@ -24,7 +26,8 @@ class TaskSetupPage extends StatefulWidget {
 
 class _TaskSetupPageState extends State<TaskSetupPage> {
   int _index = 0;
-  ServiceVersionType serviceVersionType = const ServiceVersionType(environmentType: 'MINECRAFT_SERVER');
+  ServiceVersionType serviceVersionType =
+      const ServiceVersionType(environmentType: 'MINECRAFT_SERVER');
   ServiceVersion? selectedServiceVersion;
 
   bool _maintenance = false;
@@ -32,11 +35,16 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   bool _staticService = false;
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _memoryController = TextEditingController.fromValue(const TextEditingValue(text: '512'));
-  final TextEditingController _serviceCountController = TextEditingController.fromValue(const TextEditingValue(text: '1'));
-  final TextEditingController _startPortController = TextEditingController.fromValue(const TextEditingValue(text: '44955'));
-  final TextEditingController _javaExecutableController = TextEditingController.fromValue(const TextEditingValue(text: 'java'));
-  final TextEditingController _splitterController = TextEditingController.fromValue(const TextEditingValue(text: '-'));
+  final TextEditingController _memoryController =
+      TextEditingController.fromValue(const TextEditingValue(text: '512'));
+  final TextEditingController _serviceCountController =
+      TextEditingController.fromValue(const TextEditingValue(text: '1'));
+  final TextEditingController _startPortController =
+      TextEditingController.fromValue(const TextEditingValue(text: '44955'));
+  final TextEditingController _javaExecutableController =
+      TextEditingController.fromValue(const TextEditingValue(text: 'java'));
+  final TextEditingController _splitterController =
+      TextEditingController.fromValue(const TextEditingValue(text: '-'));
 
   final _nameFormKey = GlobalKey<FormState>();
   final _memoryFormKey = GlobalKey<FormState>();
@@ -51,9 +59,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   final _splitterFormKey = GlobalKey<FormState>();
 
   Step buildServiceVersionStep(List<ServiceVersionType> versions) {
-    final versionValues = buildVersions(
-        versions,
-        serviceVersionType);
+    final versionValues = buildVersions(versions, serviceVersionType);
     return Step(
       title: Text(t.page.tasks.setup.service_version),
       content: Form(
@@ -75,8 +81,10 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                     final version = values?[1];
                     setState(() {
                       selectedServiceVersion = versions
-                          .firstWhere(
-                              (element) => element.environmentType == serviceVersionType.environmentType && element.name == env)
+                          .firstWhere((element) =>
+                              element.environmentType ==
+                                  serviceVersionType.environmentType &&
+                              element.name == env)
                           .versions
                           ?.firstWhere((element) => element.name == version);
                     });
@@ -149,36 +157,97 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                         child: TextButton(
                           onPressed: () {
                             if (_index == (steps.length - 1)) {
-                              bool valid = _nameFormKey.currentState!.validate() &&
-                            _memoryFormKey.currentState!.validate() &&
-                            _maintenanceFormKey.currentState!.validate() &&
-                            _autoDeleteFormKey.currentState!.validate() &&
-                            _staticServiceFormKey.currentState!.validate() &&
-                            _serviceCountFormKey.currentState!.validate() &&
-                            _taskEnvironmentFormKey.currentState!.validate() &&
-                            _startPortFormKey.currentState!.validate() &&
-                            _javaExecutableFormKey.currentState!.validate() &&
-                            _serviceVersionFormKey.currentState!.validate() &&
-                            _splitterFormKey.currentState!.validate();
+                              bool valid =
+                                  _nameFormKey.currentState!.validate() &&
+                                      _memoryFormKey.currentState!.validate() &&
+                                      _maintenanceFormKey.currentState!
+                                          .validate() &&
+                                      _autoDeleteFormKey.currentState!
+                                          .validate() &&
+                                      _staticServiceFormKey.currentState!
+                                          .validate() &&
+                                      _serviceCountFormKey.currentState!
+                                          .validate() &&
+                                      _taskEnvironmentFormKey.currentState!
+                                          .validate() &&
+                                      _startPortFormKey.currentState!
+                                          .validate() &&
+                                      _javaExecutableFormKey.currentState!
+                                          .validate() &&
+                                      _serviceVersionFormKey.currentState!
+                                          .validate() &&
+                                      _splitterFormKey.currentState!.validate();
                               if (valid) {
+                                final api = ApiService();
+                                final name = _nameController.text;
+                                final install = TemplateInstall(
+                                    force: false,
+                                    serviceVersionType: serviceVersionType,
+                                    serviceVersion: selectedServiceVersion);
                                 ServiceTask task = ServiceTask(
-                                    name: _nameController.text,
-                                    javaCommand: _javaExecutableController.text,
-                                    maintenance: _maintenance,
-                                    minServiceCount: int.tryParse(_serviceCountController.text),
-                                    staticServices: _staticService,
-                                    autoDeleteOnStop: _autoDelete,
-                                    startPort: int.tryParse(_startPortController.text),
-                                    processConfiguration: ProcessConfiguration(
-                                        environment: serviceVersionType.environmentType,
-                                        maxHeapMemorySize: int.tryParse(_memoryController.text)
-                                    )
+                                  templates: List.empty(growable: true),
+                                  name: _nameController.text,
+                                  javaCommand: _javaExecutableController.text,
+                                  maintenance: _maintenance,
+                                  minServiceCount: int.tryParse(
+                                      _serviceCountController.text),
+                                  staticServices: _staticService,
+                                  autoDeleteOnStop: _autoDelete,
+                                  startPort:
+                                      int.tryParse(_startPortController.text),
+                                  processConfiguration: ProcessConfiguration(
+                                    environment:
+                                        serviceVersionType.environmentType,
+                                    maxHeapMemorySize:
+                                        int.tryParse(_memoryController.text),
+                                    jvmOptions: List.empty(),
+                                    processParameters: List.empty(),
+                                  ),
                                 );
-                                ApiService().tasksApi.createTask(task).then((value) {
+                                api.templateStorageApi
+                                    .getStorage()
+                                    .then((storageApi) {
+                                  for (var storage in storageApi.storages) {
+                                    print(storage);
+                                    api.templateApi
+                                        .create(storage, name, 'default')
+                                        .then((successTemp) {
+                                      final templates = task.templates;
+                                      templates?.add(
+                                        ServiceTemplate(
+                                            alwaysCopyToStaticServices: false,
+                                            name: 'default',
+                                            prefix: name,
+                                            storage: storage),
+                                      );
+                                      task.copyWith(templates: templates);
+                                      api.templateApi
+                                          .install(
+                                              install, storage, name, 'default')
+                                          .then((successInstall) {
+                                        SnackBar snackBar = SnackBar(
+                                          content: Text(t
+                                              .page.tasks.setup.snackbar
+                                              .template(
+                                                  storage: storage,
+                                                  name: name)),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      });
+                                    });
+                                  }
+                                });
 
+                                ApiService()
+                                    .tasksApi
+                                    .createTask(task)
+                                    .then((value) {
+                                  StoreProvider.dispatch(
+                                      context, UpdateTasksAction());
+                                  context.pop();
                                 });
                               }
-
                             } else {
                               if (isValid(_index)) {
                                 details.onStepContinue!();
@@ -546,18 +615,30 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
 
   bool isValid(int index) {
     switch (index) {
-      case 0: return _nameFormKey.currentState!.validate();
-      case 1: return _memoryFormKey.currentState!.validate();
-      case 2: return _maintenanceFormKey.currentState!.validate();
-      case 3: return _autoDeleteFormKey.currentState!.validate();
-      case 4: return _staticServiceFormKey.currentState!.validate();
-      case 5: return _serviceCountFormKey.currentState!.validate();
-      case 6: return _taskEnvironmentFormKey.currentState!.validate();
-      case 7: return _startPortFormKey.currentState!.validate();
-      case 8: return _javaExecutableFormKey.currentState!.validate();
-      case 9: return _serviceVersionFormKey.currentState!.validate();
-      case 10: return _splitterFormKey.currentState!.validate();
-      default: return false;
+      case 0:
+        return _nameFormKey.currentState!.validate();
+      case 1:
+        return _memoryFormKey.currentState!.validate();
+      case 2:
+        return _maintenanceFormKey.currentState!.validate();
+      case 3:
+        return _autoDeleteFormKey.currentState!.validate();
+      case 4:
+        return _staticServiceFormKey.currentState!.validate();
+      case 5:
+        return _serviceCountFormKey.currentState!.validate();
+      case 6:
+        return _taskEnvironmentFormKey.currentState!.validate();
+      case 7:
+        return _startPortFormKey.currentState!.validate();
+      case 8:
+        return _javaExecutableFormKey.currentState!.validate();
+      case 9:
+        return _serviceVersionFormKey.currentState!.validate();
+      case 10:
+        return _splitterFormKey.currentState!.validate();
+      default:
+        return false;
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:CloudNet/feature/tasks/task_setup_page.dart';
 import 'package:CloudNet/state/actions/app_actions.dart';
 import 'package:CloudNet/state/app_state.dart';
+import 'package:CloudNet/utils/dialogs.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/elusive_icons.dart';
@@ -84,9 +85,10 @@ class _TasksPageState extends State<TasksPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(t.general.formats.mb(value: task.processConfiguration!
-                                        .maxHeapMemorySize!
-                                        .toString()))
+                                    Text(t.general.formats.mb(
+                                        value: task.processConfiguration!
+                                            .maxHeapMemorySize!
+                                            .toString()))
                                   ],
                                 )
                               ],
@@ -100,7 +102,8 @@ class _TasksPageState extends State<TasksPage> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(t.page.tasks.overview.service_min_count),
+                                    Text(t
+                                        .page.tasks.overview.service_min_count),
                                   ],
                                 ),
                                 Column(
@@ -121,14 +124,17 @@ class _TasksPageState extends State<TasksPage> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(t.page.tasks.overview.auto_delete_on_stop),
+                                    Text(t.page.tasks.overview
+                                        .auto_delete_on_stop),
                                   ],
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.autoDeleteOnStop! ? t.general.yes : t.general.no)
+                                    Text(task.autoDeleteOnStop!
+                                        ? t.general.yes
+                                        : t.general.no)
                                   ],
                                 )
                               ],
@@ -155,7 +161,9 @@ class _TasksPageState extends State<TasksPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      task.staticServices! ? t.general.yes : t.general.no,
+                                      task.staticServices!
+                                          ? t.general.yes
+                                          : t.general.no,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -186,7 +194,9 @@ class _TasksPageState extends State<TasksPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      task.maintenance! ? t.general.yes : t.general.no,
+                                      task.maintenance!
+                                          ? t.general.yes
+                                          : t.general.no,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -204,14 +214,17 @@ class _TasksPageState extends State<TasksPage> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(t.page.tasks.overview.disable_ip_rewrite),
+                                    Text(t.page.tasks.overview
+                                        .disable_ip_rewrite),
                                   ],
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.disableIpRewrite! ? t.general.yes : t.general.no)
+                                    Text(task.disableIpRewrite!
+                                        ? t.general.yes
+                                        : t.general.no)
                                   ],
                                 )
                               ],
@@ -250,7 +263,21 @@ class _TasksPageState extends State<TasksPage> {
                                           icon: const Icon(Icons.edit),
                                         ),
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showDialog<AlertDialog>(
+                                              context: context,
+                                              builder: (context) {
+                                                return deleteDialog(
+                                                  context,
+                                                  onCancel: () {
+                                                    context.pop();
+                                                  },
+                                                  onDelete: () {},
+                                                  item: task.name ?? '',
+                                                );
+                                              },
+                                            );
+                                          },
                                           icon: const Icon(
                                             Icons.delete,
                                             color: Colors.red,

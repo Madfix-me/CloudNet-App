@@ -43,6 +43,9 @@
         "path": "Pfad",
         "service_version": "Service Version",
         "splitter": "Splitter",
+        "snackbar": {
+          "template": "Template(${storage}:${name}/default) wurde erstellt!"
+        },
         "question": {
           "task_name": "Wie sollte der Name der neuen Task lauten?",
           "memory": "Wie viel Arbeitsspeicher sollte die neue Task maximal haben? (in MB)",
@@ -73,6 +76,12 @@
     "formats": {
       "mb": "${value}MB",
       "percentage": "${value}%"
+    },
+    "dialogs": {
+      "delete": {
+        "title": "\"${item}\" Löschen?",
+        "content": "Bist du sicher, dass du \"${item}\" löschen willst?"
+      }
     }
   }
 }

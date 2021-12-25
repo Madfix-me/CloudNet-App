@@ -1,6 +1,7 @@
 import 'package:CloudNet/apis/cloudnetv3spec/model/group_configuration.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
+import 'package:CloudNet/apis/cloudnetv3spec/model/templatestorage.dart';
 import 'package:async_redux/async_redux.dart';
 import '/apis/api_service.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
@@ -14,7 +15,14 @@ class InitAppStateAction extends ReduxAction<AppState> {
     final List<ServiceTask> tasks = await ApiService().tasksApi.getTasks();
     final List<GroupConfiguration> groups = await ApiService().groupsApi.getGroups();
     final List<ServiceVersionType> versions = await ApiService().versionsApi.getVersions();
-    return state.copyWith(nodeInfo: nodeInfo, tasks: tasks, groups: groups, versions: versions);
+    final TemplateStorage templateStorage = await ApiService().templateStorageApi.getStorage();
+    return state.copyWith(
+        nodeInfo: nodeInfo,
+        tasks: tasks,
+        groups: groups,
+        versions: versions,
+        templateStorage: templateStorage
+    );
   }
 }
 

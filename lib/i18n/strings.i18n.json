@@ -43,13 +43,16 @@
         "path": "Path",
         "service_version": "Service Version",
         "splitter": "Splitter",
+        "snackbar": {
+          "template": "Template(${storage}:${name}/default) was created!"
+        },
         "question": {
           "task_name": "What should the name of the new task be?",
           "memory": "What amount of max memory should the new task have? (in MB)",
           "maintenance_default": "Should the task be in maintenance by default? (this prevents auto starting of the services)",
           "auto_delete": "Should the services be automatically unregistered out of the cloud after stopping them?",
           "static_service": "Should the services of this task be static that their files are never deleted",
-          "service_count" : "How many services of this task should be always online?",
+          "service_count": "How many services of this task should be always online?",
           "task_environment": "What should be the environment of this task?",
           "start_port": "What should be the start port of the task?",
           "java_executable": "What is the path to the Java executable?",
@@ -73,6 +76,12 @@
     "formats": {
       "mb": "${value}MB",
       "percentage": "${value}%"
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Delete *${item}*",
+        "content": "You are sure to delete *${item}* ?"
+      }
     }
   }
 }
