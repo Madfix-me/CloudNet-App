@@ -186,6 +186,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                     serviceVersion: selectedServiceVersion);
                                 ServiceTask task = ServiceTask(
                                   templates: List.empty(growable: true),
+                                  deployments: List.empty(growable: true),
                                   name: _nameController.text,
                                   javaCommand: _javaExecutableController.text,
                                   maintenance: _maintenance,
@@ -204,40 +205,45 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                     processParameters: List.empty(),
                                   ),
                                 );
-                                api.templateStorageApi
-                                    .getStorage()
-                                    .then((storageApi) {
-                                  for (var storage in storageApi.storages) {
-                                    print(storage);
-                                    api.templateApi
-                                        .create(storage, name, 'default')
-                                        .then((successTemp) {
-                                      final templates = task.templates;
-                                      templates?.add(
-                                        ServiceTemplate(
-                                            alwaysCopyToStaticServices: false,
-                                            name: 'default',
-                                            prefix: name,
-                                            storage: storage),
-                                      );
-                                      task.copyWith(templates: templates);
+                                api.templateStorageApi.getStorage().then(
+                                  (storageApi) {
+                                    for (var storage in storageApi.storages) {
+                                      print(storage);
                                       api.templateApi
-                                          .install(
-                                              install, storage, name, 'default')
-                                          .then((successInstall) {
-                                        SnackBar snackBar = SnackBar(
-                                          content: Text(t
-                                              .page.tasks.setup.snackbar
-                                              .template(
-                                                  storage: storage,
-                                                  name: name)),
-                                        );
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
-                                      });
-                                    });
-                                  }
-                                });
+                                          .create(storage, name, 'default')
+                                          .then(
+                                        (successTemp) {
+                                          final templates = task.templates;
+                                          templates?.add(
+                                            ServiceTemplate(
+                                                alwaysCopyToStaticServices:
+                                                    false,
+                                                name: 'default',
+                                                prefix: name,
+                                                storage: storage),
+                                          );
+                                          task.copyWith(templates: templates);
+                                          api.templateApi
+                                              .install(install, storage, name,
+                                                  'default')
+                                              .then(
+                                            (successInstall) {
+                                              SnackBar snackBar = SnackBar(
+                                                content: Text(t
+                                                    .page.tasks.setup.snackbar
+                                                    .template(
+                                                        storage: storage,
+                                                        name: name)),
+                                              );
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                            },
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                );
 
                                 ApiService()
                                     .tasksApi

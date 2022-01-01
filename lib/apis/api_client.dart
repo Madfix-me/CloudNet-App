@@ -3,8 +3,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:CloudNet/feature/login/login_handler.dart';
+import 'package:CloudNet/feature/login/login_page.dart';
+import 'package:CloudNet/utils/router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 
 typedef AccessTokenProvider = String? Function();
 typedef AccessBasicAuthProvider = String? Function();
@@ -32,8 +36,9 @@ class ApiClient {
             if (err.error is SocketException) {
               handler.reject(err);
             }
-            if (err.response?.statusCode != null && err.response!.statusCode == 401) {
-              handler.reject(err);
+            if (err.response?.statusCode != null && err.response!.statusCode == 403) {
+              //handler.reject(err);
+              router.go(LoginPage.route);
             }
           },
         ),
@@ -76,6 +81,7 @@ class ApiBasicClient {
               handler.reject(err);
             }
             if (err.response?.statusCode != null && err.response!.statusCode == 401) {
+
               handler.reject(err);
             }
             handler.reject(err);

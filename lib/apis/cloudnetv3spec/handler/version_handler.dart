@@ -10,7 +10,7 @@ class VersionsApi {
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/api/v2/serviceVersion');
+        queryParameters: queryParams, path: baseUri.path + '/api/v2/serviceversion');
     final val = await apiClient.dio
         .getUri(
       uri,

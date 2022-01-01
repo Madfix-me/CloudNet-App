@@ -10,7 +10,7 @@ class TemplateStorageApi {
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/api/v2/templateStorage');
+        queryParameters: queryParams, path: baseUri.path + '/api/v2/templatestorage');
     final val = await apiClient.dio
         .getUri(
       uri,
@@ -26,7 +26,7 @@ class TemplateStorageApi {
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/api/v2/templateStorage/$storage/templates');
+        queryParameters: queryParams, path: baseUri.path + '/api/v2/templatestorage/$storage/templates');
     final val = await apiClient.dio
         .getUri(
       uri,

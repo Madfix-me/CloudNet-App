@@ -146,19 +146,6 @@ class _LoginPageState extends State<LoginPage> {
     controller.clear();
   }
 
-  void submitValue() {
-    _formKey.currentState!.validate();
-  }
-
-  void navigation(int value) {
-    switch (value) {
-      case 1:
-        {
-          login();
-        }
-    }
-  }
-
   void login() {
     if (_loginFormKey.currentState!.validate()) {
       loginHandler
@@ -168,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
           )
           .then((value) => {
                 StoreProvider.dispatch(context, UpdateTokenInfoAction(value)),
+                StoreProvider.dispatch(context, InitAppStateAction()),
                 context.go(DashboardPage.route)
               })
           .catchError((dynamic e) {

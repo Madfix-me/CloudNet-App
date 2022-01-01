@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 
+import 'package:CloudNet/feature/login/login_page.dart';
+import 'package:CloudNet/utils/router.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -16,6 +18,13 @@ class LoginHandler extends ValueNotifier<bool> {
 
   String? accessToken() => _token ?? '';
 
+
+  void resetToken() {
+    _token = null;
+    _delete().then((value) {});
+  }
+
+
   Future<void> load() async {
     final storage = LocalStorage('token.json');
     await storage.ready;
@@ -23,12 +32,40 @@ class LoginHandler extends ValueNotifier<bool> {
     if (token != null && token is String) {
       _token = token;
     }
+    router.addListener(resetToken);
+  }
+
+  Future<void> _delete() async {
+    final storage = LocalStorage('token.json');
+    await storage.ready;
+    await storage.deleteItem('token');
   }
 
   Future<void> _save(String token) async {
     final storage = LocalStorage('token.json');
     await storage.ready;
     await storage.setItem('token', token);
+  }
+
+  Future<String> sessionRefresh() async {
+    final token = await Dio()
+        .postUri<String>(
+      Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/session/refresh'),
+      data: <String, dynamic>{},
+      options: Options(headers: <String, dynamic>{
+        'Authorization':
+        'Bearer $_token',
+      }),
+    )
+        .then((response) => response.data!).catchError((dynamic error) {
+          router.go(LoginPage.route);
+    });
+    final Map<String, dynamic> response =
+    jsonDecode(token) as Map<String, dynamic>;
+    _token = response['token'] as String;
+    await _save(_token!);
+    value = true;
+    return _token!;
   }
 
   Future<String> handleLogin(String username, String password) async {
@@ -42,11 +79,13 @@ class LoginHandler extends ValueNotifier<bool> {
           }),
         )
         .then((response) => response.data!);
+    router.addListener(resetToken);
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;
     await _save(_token!);
     value = true;
+
     return _token!;
   }
 

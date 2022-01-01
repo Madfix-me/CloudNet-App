@@ -23,6 +23,21 @@ class TasksPage extends StatefulWidget {
 class _TasksPageState extends State<TasksPage> {
   bool staticFilter = false;
   bool maintenanceFilter = false;
+  late ScrollController _scrollController;
+  bool _scorlling = false;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  void _scrollListener() {
+    setState(() {
+      _scorlling = _scrollController.position.pixels != 0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,40 +45,42 @@ class _TasksPageState extends State<TasksPage> {
       onInit: (store) {
         store.dispatch(InitAppStateAction());
       },
-      converter: (store) => store.state.tasks!.where((e) => filter(e)).toList(),
+      converter: (store) =>
+          store.state.tasks?.where((e) => filter(e)).toList() ?? List.empty(),
       builder: (context, tasks) => Stack(
         children: [
-          Column(
-            children: [
-              Wrap(
-                children: [
-                  FilterChip(
-                    label: Text(t.page.tasks.overview.static_service),
-                    selected: staticFilter,
-                    onSelected: (bool value) {
-                      setState(() {
-                        staticFilter = value;
-                      });
-                    },
-                  ),
-                  FilterChip(
-                    label: Text(t.page.tasks.overview.maintenance),
-                    selected: maintenanceFilter,
-                    onSelected: (bool value) {
-                      setState(() {
-                        maintenanceFilter = value;
-                      });
-                    },
-                  )
-                ],
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _pullRefresh,
+          RefreshIndicator(
+            onRefresh: _pullRefresh,
+            child: Column(
+              children: [
+                Wrap(
+                  children: [
+                    FilterChip(
+                      label: Text(t.page.tasks.overview.static_service),
+                      selected: staticFilter,
+                      onSelected: (bool value) {
+                        setState(() {
+                          staticFilter = value;
+                        });
+                      },
+                    ),
+                    FilterChip(
+                      label: Text(t.page.tasks.overview.maintenance),
+                      selected: maintenanceFilter,
+                      onSelected: (bool value) {
+                        setState(() {
+                          maintenanceFilter = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: tasks.length,
+                    controller: _scrollController,
                     itemBuilder: (context, i) {
                       final ServiceTask task = tasks[i];
                       return ExpansionTile(
@@ -295,19 +312,21 @@ class _TasksPageState extends State<TasksPage> {
                     },
                   ),
                 ),
-              ),
-            ],
-          ),
-          Positioned(
-            child: FloatingActionButton(
-              onPressed: () {
-                context.push(TaskSetupPage.route);
-              },
-              child: const Icon(Icons.add),
+              ],
             ),
-            bottom: 16,
-            right: 16,
           ),
+          _scorlling
+              ? Container()
+              : Positioned(
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      context.push(TaskSetupPage.route);
+                    },
+                    child: const Icon(Icons.add),
+                  ),
+                  bottom: 16,
+                  right: 16,
+                ),
         ],
       ),
     );
