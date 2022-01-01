@@ -32,7 +32,6 @@ class LoginHandler extends ValueNotifier<bool> {
     if (token != null && token is String) {
       _token = token;
     }
-    router.addListener(resetToken);
   }
 
   Future<void> _delete() async {
@@ -79,7 +78,6 @@ class LoginHandler extends ValueNotifier<bool> {
           }),
         )
         .then((response) => response.data!);
-    router.addListener(resetToken);
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;
