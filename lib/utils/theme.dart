@@ -20,7 +20,6 @@ ThemeData cloudnetTheme = ThemeData(
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: color.white,
-      statusBarIconBrightness: Brightness.dark,
     ),
     iconTheme: IconThemeData(color: color.black),
     actionsIconTheme: IconThemeData(
