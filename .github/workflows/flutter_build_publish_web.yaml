@@ -17,7 +17,7 @@ jobs:
       - run: flutter config --enable-web
       - run: flutter pub get
       - run: flutter pub run build_runner build --delete-conflicting-outputs
-      - run: flutter build web --release
+      - run: flutter build web --release --base-href /CloudNet-WebInterface/
       - run: |
           cd build/web
           git init
