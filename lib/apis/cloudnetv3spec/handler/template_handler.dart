@@ -5,17 +5,14 @@ class TemplateApi {
 
   TemplateApi(ApiClient apiClient) : apiClient = apiClient;
 
-  Future<Success> create(String storage,
-      String prefix, String name) async {
+  Future<Success> create(String storage, String prefix, String name) async {
     final queryParams = <String, dynamic>{};
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
         queryParameters: queryParams,
         path: baseUri.path + '/api/v2/template/$storage/$prefix/$name/create');
-    final val = await apiClient.dio
-        .getUri(uri)
-        .then((response) {
+    final val = await apiClient.dio.getUri(uri).then((response) {
       return Success.fromJson(response.data!);
     });
 

@@ -11,11 +11,7 @@ class TasksApi {
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
         queryParameters: queryParams, path: baseUri.path + '/api/v2/task');
-    final val = await apiClient.dio
-        .getUri(
-      uri,
-    )
-        .then((response) {
+    final val = await apiClient.dio.getUri(uri).then((response) {
       return TaskResponse.fromJson(response.data!).tasks!;
     });
 

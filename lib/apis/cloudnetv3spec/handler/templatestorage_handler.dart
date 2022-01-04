@@ -10,7 +10,8 @@ class TemplateStorageApi {
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/api/v2/templatestorage');
+        queryParameters: queryParams,
+        path: baseUri.path + '/api/v2/templatestorage');
     final val = await apiClient.dio
         .getUri(
       uri,
@@ -21,17 +22,15 @@ class TemplateStorageApi {
 
     return val;
   }
+
   Future<List<ServiceTemplate>> getTemplates(String storage) async {
     final queryParams = <String, dynamic>{};
 
     final baseUri = Uri.parse(apiClient.baseUrl);
     final uri = baseUri.replace(
-        queryParameters: queryParams, path: baseUri.path + '/api/v2/templatestorage/$storage/templates');
-    final val = await apiClient.dio
-        .getUri(
-      uri,
-    )
-        .then((response) {
+        queryParameters: queryParams,
+        path: baseUri.path + '/api/v2/templatestorage/$storage/templates');
+    final val = await apiClient.dio.getUri(uri).then((response) {
       return TemplateStorageResponse.fromJson(response.data!).templates;
     });
 
