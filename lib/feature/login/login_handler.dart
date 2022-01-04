@@ -9,6 +9,7 @@ import 'package:localstorage/localstorage.dart';
 import '/feature/node/node_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 LoginHandler loginHandler = LoginHandler();
 
@@ -16,7 +17,13 @@ class LoginHandler extends ValueNotifier<bool> {
   LoginHandler() : super(false);
   String? _token;
 
-  String? accessToken() => _token ?? '';
+  String? accessToken() {
+   if (_token == null) {
+     router.routerDelegate.navigatorKey.currentState?.context.go(LoginPage.route);
+   } else {
+     return _token;
+   }
+  }
 
 
   void resetToken() {
