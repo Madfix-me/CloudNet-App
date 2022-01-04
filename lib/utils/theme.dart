@@ -149,7 +149,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(k.radius.medium)),
     margin: k.edgeAll.medium / 2.0,
-    color: color.blackBlack,
+    color: ThemeData.fallback().cardTheme.color,
     elevation: 2.0,
     shadowColor: color.gray,
   ),
