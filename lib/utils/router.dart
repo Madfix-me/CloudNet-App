@@ -78,7 +78,7 @@ final router = GoRouter(
         }
         return MaterialPage<void>(
           key: state.pageKey,
-          child: MenuNodePage(node: node),
+          child: MenuNodePage(node: node ?? const MenuNode()),
         );
       },
     )
