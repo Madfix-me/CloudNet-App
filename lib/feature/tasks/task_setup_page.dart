@@ -208,7 +208,6 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                 api.templateStorageApi.getStorage().then(
                                   (storageApi) {
                                     for (var storage in storageApi.storages) {
-                                      print(storage);
                                       api.templateApi
                                           .create(storage, name, 'default')
                                           .then(
