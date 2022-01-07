@@ -64,7 +64,7 @@ class _NodesPageState extends State<NodesPage> {
               onPressed: () {
                 context.push(MenuNodePage.route, extra: null);
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
             right: 16,
             bottom: 16,
