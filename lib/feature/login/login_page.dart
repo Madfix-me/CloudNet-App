@@ -24,7 +24,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
-  final _formKey = GlobalKey<FormState>();
   final _loginFormKey = GlobalKey<FormState>();
   late bool ssl = false;
   List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
