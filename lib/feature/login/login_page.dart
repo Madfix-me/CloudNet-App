@@ -58,8 +58,14 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(e.name!),
             value: e.name!,
           ),
-        ).toList();
-        final String? value = nodeHandler.nodeUrl.name;
+        ).toSet().toList();
+        String? value;
+        if (nodeHandler.nodeUrl.name == null && menuNodes.isNotEmpty) {
+          value = nodes.first.name;
+        } else {
+          value = nodeHandler.nodeUrl.name;
+        }
+
         return Scaffold(
           appBar: AppBar(title: const Text(appTitle)),
           body: Center(
