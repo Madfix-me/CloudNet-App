@@ -70,7 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Card versionCard(NodeInfo state) {
     return Card(
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +91,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Card memoryCard(NodeInfo state) {
     return Card(
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +110,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Card serviceCard(NodeInfo state) {
     return Card(
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +129,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Card cpuCard(NodeInfo state) {
     return Card(
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +153,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Card heapCard(NodeInfo info) {
     return Card(
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
