@@ -10,10 +10,10 @@ class MenuNodePage extends StatefulWidget {
   const MenuNodePage({Key? key, required this.node}) : super(key: key);
   static const String route = '/menu-node';
   static const String name = 'menu-nod';
-  final MenuNode? node;
+  final MenuNode node;
 
   @override
-  State<StatefulWidget> createState() => _MenuNodePageState(node ?? MenuNode());
+  State<StatefulWidget> createState() => _MenuNodePageState(node);
 }
 
 class _MenuNodePageState extends State<MenuNodePage> {
@@ -114,7 +114,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
                       child: TextButton(
                         onPressed: () {
                           nodeHandler
