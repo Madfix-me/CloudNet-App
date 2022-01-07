@@ -1,6 +1,6 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:CloudNet/feature/node/nodes_page.dart';
-import 'package:CloudNet/state/actions/app_actions.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/feature/node/nodes_page.dart';
+import 'package:cloudnet/state/actions/app_actions.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:form_validator/form_validator.dart';
 import '/feature/dashboard/dashboard_page.dart';
@@ -10,7 +10,7 @@ import '/state/app_state.dart';
 import '/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

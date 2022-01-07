@@ -3,7 +3,7 @@ import '/utils/router.dart';
 import '/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

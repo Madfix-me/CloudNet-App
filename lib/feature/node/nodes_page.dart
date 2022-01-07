@@ -1,8 +1,7 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:CloudNet/feature/node/menu_node_page.dart';
-import 'package:CloudNet/utils/const.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/feature/node/menu_node_page.dart';
+import 'package:cloudnet/utils/const.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import 'node_handler.dart';

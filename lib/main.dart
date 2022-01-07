@@ -1,11 +1,11 @@
-import 'package:CloudNet/feature/login/login_handler.dart';
+import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:async_redux/async_redux.dart';
 import '/cloudnet.dart';
 import '/feature/node/node_handler.dart';
 import '/state/app_state.dart';
 import '/state/persistor.dart';
 import 'package:flutter/material.dart';
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

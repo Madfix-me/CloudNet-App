@@ -1,11 +1,11 @@
-import 'package:CloudNet/feature/dashboard/dashboard_page.dart';
-import 'package:CloudNet/feature/feature/groups_page.dart';
-import 'package:CloudNet/feature/node/node_handler.dart';
-import 'package:CloudNet/feature/tasks/task_setup_page.dart';
-import 'package:CloudNet/feature/tasks/tasks_page.dart';
-import 'package:CloudNet/state/actions/app_actions.dart';
-import 'package:CloudNet/state/app_state.dart';
-import 'package:CloudNet/utils/router.dart';
+import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
+import 'package:cloudnet/feature/feature/groups_page.dart';
+import 'package:cloudnet/feature/node/node_handler.dart';
+import 'package:cloudnet/feature/tasks/task_setup_page.dart';
+import 'package:cloudnet/feature/tasks/tasks_page.dart';
+import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/app_state.dart';
+import 'package:cloudnet/utils/router.dart';
 import 'package:async_redux/async_redux.dart';
 
 import '/apis/cloudnetv3spec/model/node_info.dart';

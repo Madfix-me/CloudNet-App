@@ -1,6 +1,6 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 AlertDialog deleteDialog(BuildContext context,
     {VoidCallback? onDelete, VoidCallback? onCancel, required String item}) {

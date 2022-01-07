@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 
-import 'package:CloudNet/feature/login/login_page.dart';
-import 'package:CloudNet/utils/router.dart';
+import 'package:cloudnet/feature/login/login_page.dart';
+import 'package:cloudnet/utils/router.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:localstorage/localstorage.dart';
 

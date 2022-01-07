@@ -1,10 +1,10 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:CloudNet/feature/feature/groups_page.dart';
-import 'package:CloudNet/feature/login/login_handler.dart';
-import 'package:CloudNet/feature/node/menu_node_page.dart';
-import 'package:CloudNet/feature/node/nodes_page.dart';
-import 'package:CloudNet/feature/tasks/task_setup_page.dart';
-import 'package:CloudNet/feature/tasks/tasks_page.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/feature/feature/groups_page.dart';
+import 'package:cloudnet/feature/login/login_handler.dart';
+import 'package:cloudnet/feature/node/menu_node_page.dart';
+import 'package:cloudnet/feature/node/nodes_page.dart';
+import 'package:cloudnet/feature/tasks/task_setup_page.dart';
+import 'package:cloudnet/feature/tasks/tasks_page.dart';
 
 import '/feature/dashboard/dashboard_page.dart';
 import '/feature/home/home_page_connector.dart';

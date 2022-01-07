@@ -1,8 +1,8 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:CloudNet/utils/const.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 import 'node_handler.dart';
 
@@ -119,7 +119,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                         onPressed: () {
                           nodeHandler
                               .deleteUrl(node)
-                              .then((value) => GoRouter.of(context).pop(context));
+                              .then((value) => GoRouter.of(context).pop());
                         },
                         child: Text(t.general.button.delete),
                       ),
@@ -136,7 +136,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                                 ssl: ssl);
                             nodeHandler
                                 .saveUrl(node)
-                                .then((value) => setState(() =>  GoRouter.of(context).pop(context)));
+                                .then((value) => setState(() =>  GoRouter.of(context).pop()));
                           }
                         },
                         child: Text(t.general.button.save),

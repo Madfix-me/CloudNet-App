@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/state/actions/app_actions.dart';
 import '/state/app_state.dart';
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);

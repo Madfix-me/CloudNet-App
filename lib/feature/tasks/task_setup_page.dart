@@ -1,18 +1,18 @@
-import 'package:CloudNet/apis/api_service.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/process_configuration.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_template.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_version.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/template_install.dart';
-import 'package:CloudNet/state/actions/app_actions.dart';
-import 'package:CloudNet/state/app_state.dart';
+import 'package:cloudnet/apis/api_service.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/process_configuration.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_template.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_version.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_version_type.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/template_install.dart';
+import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import '/utils/color.dart' as color;
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 class TaskSetupPage extends StatefulWidget {
   const TaskSetupPage({Key? key}) : super(key: key);

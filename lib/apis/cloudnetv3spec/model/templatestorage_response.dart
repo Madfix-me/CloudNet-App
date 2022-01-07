@@ -1,4 +1,4 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_template.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_template.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'templatestorage_response.freezed.dart';

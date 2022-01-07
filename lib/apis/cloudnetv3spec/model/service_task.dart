@@ -1,7 +1,7 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/process_configuration.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_deployment.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_remote_inclusion.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_template.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/process_configuration.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_deployment.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_remote_inclusion.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_template.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'service_task.g.dart';

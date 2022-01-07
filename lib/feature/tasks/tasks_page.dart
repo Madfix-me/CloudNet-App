@@ -1,14 +1,14 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_task.dart';
-import 'package:CloudNet/feature/tasks/task_setup_page.dart';
-import 'package:CloudNet/state/actions/app_actions.dart';
-import 'package:CloudNet/state/app_state.dart';
-import 'package:CloudNet/utils/dialogs.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
+import 'package:cloudnet/feature/tasks/task_setup_page.dart';
+import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/app_state.dart';
+import 'package:cloudnet/utils/dialogs.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:go_router/go_router.dart';
 import '/utils/color.dart' as color;
-import 'package:CloudNet/i18n/strings.g.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);

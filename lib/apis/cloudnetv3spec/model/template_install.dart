@@ -1,5 +1,5 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_version.dart';
-import 'package:CloudNet/apis/cloudnetv3spec/model/service_version_type.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_version.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_version_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'template_install.g.dart';

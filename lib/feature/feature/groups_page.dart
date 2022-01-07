@@ -1,6 +1,6 @@
-import 'package:CloudNet/apis/cloudnetv3spec/model/group_configuration.dart';
-import 'package:CloudNet/state/actions/app_actions.dart';
-import 'package:CloudNet/state/app_state.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/group_configuration.dart';
+import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
