@@ -10,7 +10,6 @@ import 'package:async_redux/async_redux.dart';
 
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/utils/const.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '/utils/color.dart' as color;
@@ -81,12 +80,12 @@ class _HomePageState extends State<HomePage> {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: color.blue,
             ),
             accountEmail: Text(nodeHandler.nodeUrl.name!),
-            accountName: Text('TheMeinerLP'),
-            currentAccountPicture: Image(
+            accountName: const Text('TheMeinerLP'),
+            currentAccountPicture: const Image(
                 image: NetworkImage(
                     'https://crafthead.net/avatar/05bf52c67bb04f1389510e1fd803df35')),
           ),
@@ -98,12 +97,12 @@ class _HomePageState extends State<HomePage> {
               Navigator.pop(context),
             },
           ),
-          ListTile(
-            title: const Text('Cluster'),
+          const ListTile(
+            title: Text('Cluster'),
             enabled: false,
           ),
-          ListTile(
-            title: const Text('Database'),
+          const ListTile(
+            title: Text('Database'),
             enabled: false,
           ),
           ListTile(
@@ -122,25 +121,25 @@ class _HomePageState extends State<HomePage> {
               Navigator.pop(context),
             },
           ),
-          ListTile(
-            title: const Text('Services'),
+          const ListTile(
+            title: Text('Services'),
             enabled: false,
             onTap: null,
           ),
-          ListTile(
-            title: const Text('Template Storage'),
+          const ListTile(
+            title: Text('Template Storage'),
             enabled: false,
           ),
-          ListTile(
-            title: const Text('Templates'),
+          const ListTile(
+            title: Text('Templates'),
             enabled: false,
           ),
-          ListTile(
-            title: const Text('Service Versions'),
+          const ListTile(
+            title: Text('Service Versions'),
             enabled: false,
           ),
-          ListTile(
-            title: const Text('Modules'),
+          const ListTile(
+            title: Text('Modules'),
             enabled: false,
           ),
         ],
