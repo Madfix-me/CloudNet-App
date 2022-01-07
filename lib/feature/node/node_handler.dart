@@ -28,7 +28,7 @@ class NodeHandler extends ValueNotifier<bool>{
     if (baseUrls != null && baseUrls is List) {
       nodeUrls = baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toSet();
     }
-    if (nodeUrl != null || nodeUrls.isNotEmpty) value = true;
+    if (nodeUrl.address != null || nodeUrls.isNotEmpty) value = true;
     notifyListeners();
   }
 
