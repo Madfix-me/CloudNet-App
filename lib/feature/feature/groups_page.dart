@@ -2,7 +2,6 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/group_configuration.dart';
 import 'package:cloudnet/state/actions/app_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GroupsPage extends StatefulWidget {
@@ -41,7 +40,7 @@ class _GroupsPageState extends State<GroupsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: [
+                                  children: const [
                                     Text('Environments Count'),
                                   ],
                                 ),
@@ -63,7 +62,7 @@ class _GroupsPageState extends State<GroupsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: [
+                                  children: const [
                                     Text('Deployment Count'),
                                   ],
                                 ),
@@ -84,7 +83,7 @@ class _GroupsPageState extends State<GroupsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: [
+                                  children: const [
                                     Text('Jvm Options Count'),
                                   ],
                                 ),
@@ -105,7 +104,7 @@ class _GroupsPageState extends State<GroupsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: [
+                                  children: const [
                                     Text('Templates Count'),
                                   ],
                                 ),
@@ -126,7 +125,7 @@ class _GroupsPageState extends State<GroupsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                  children: [
+                                  children: const [
                                     Text('Inclusions Count'),
                                   ],
                                 ),
