@@ -1,0 +1,111 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - test
+      - development
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: deployment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-11
+    env:
+      ALPHA_APPCENTER_API_TOKEN: ${{ secrets.ALPHA_APPCENTER_API_TOKEN }}
+      ALPHA_APPCENTER_OWNER_NAME: ${{ secrets.ALPHA_APPCENTER_OWNER_NAME }}
+
+#      IOS_FASTLANE_ISSUER_ID: ${{ secrets.IOS_FASTLANE_ISSUER_ID }}
+#      IOS_FASTLANE_KEY: ${{ secrets.IOS_FASTLANE_KEY }}
+#      IOS_FASTLANE_KEY_ID: ${{ secrets.IOS_FASTLANE_KEY_ID }}
+#      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+    steps:
+      - name: Clone Reposetory
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set env to Alpha
+        if: endsWith(github.ref, '/development')
+        run: |
+          echo "ENV_FLAVOR=dev" >> $GITHUB_ENV
+      - name: Set env to Beta
+        if: endsWith(github.ref, '/test')
+        run: |
+          echo "ENV_FLAVOR=beta" >> $GITHUB_ENV
+      - name: Set env to store
+        if: endsWith(github.ref, '/master')
+        run: |
+          echo "ENV_FLAVOR=store" >> $GITHUB_ENV
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - name: Cache Flutter
+        id: cache-flutter
+        uses: actions/cache@v2
+        with:
+          path: /Users/runner/hostedtoolcache/flutter
+          key: ${{ runner.os }}-flutter
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: Create Env file
+        uses: iamsauravsharma/create-dotenv@v1.2.0
+        with:
+          env-prefix: 'ENV_'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+#      - name: Setup keystore
+#        run: |
+#          echo $KEYSTORE_JKS | base64 -d > upload-keystore.jks
+#          echo $KEY_PROPERTIES | base64 -d > key.properties
+#        working-directory: android
+#        env:
+#          KEYSTORE_JKS: ${{ secrets.ANDROID_KEYSTORE_JKS }}
+#          KEY_PROPERTIES: ${{ secrets.ANDROID_KEY_PROPERTIES }}
+
+      - name: Select Xcode Version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.0'
+
+#      - name: Install SSH key
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.MATCH_REPO_SSH_KEY }}
+#          known_hosts: github.com
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.2'
+          bundler-cache: true
+
+      - name: Build Android
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: ${{ env.ENV_FLAVOR }}
+          subdirectory: 'android'
+
+#      - name: Build iOS
+#        uses: maierj/fastlane-action@v2.0.1
+#        with:
+#          lane: ${{ env.ENV_FLAVOR }}
+#          subdirectory: 'ios'
