@@ -7,7 +7,7 @@ import '/state/persistor.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
 
-Future<void> main() async {
+Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
   await nodeHandler.load();
