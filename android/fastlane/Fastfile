@@ -1,14 +1,14 @@
-if File.exist?('../.env')
-  open('../.env', 'r').readlines.each do |l|
-    kv = l.split('=')
-    ENV[kv[0]] = kv[1].chomp
-  end
-end
+
 
 default_platform(:android)
 
 platform :android do
-
+    if File.exist?('../../.env')
+      open('../../.env', 'r').readlines.each do |l|
+        kv = l.split('=')
+        ENV[kv[0]] = kv[1].chomp
+      end
+    end
   version_code = nil
   version_name = nil
 
@@ -23,7 +23,7 @@ platform :android do
     build(
       flavor: flavor,
     )
-    apkPath = "../../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
+    apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
     appcenter_upload(
       api_token: ENV["ALPHA_APPCENTER_API_TOKEN"],
       owner_name: ENV["ALPHA_APPCENTER_OWNER_NAME"],
