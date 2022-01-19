@@ -1,0 +1,62 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  version_code = nil
+  version_name = nil
+
+
+  before_all do
+    version_name = sh "grep 'version:' ../../pubspec.yaml | awk '{ print $2 }' | tr -d '\n'"
+    version_code = 203 + Integer(sh("git rev-list HEAD --first-parent --count"))
+  end
+
+  lane :alpha do
+    flavor = "alpha"
+    execute(
+      flavor: flavor,
+    )
+    apkPath = "../../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
+    appcenter_upload(
+      api_token: ENV["ALPHA_APPCENTER_API_TOKEN"],
+      owner_name: ENV["ALPHA_APPCENTER_OWNER_NAME"],
+      app_name: "CloudNet-Alpha-Android",
+      file: apkPath
+    )
+  end
+
+  lane :beta do
+    execute(
+      flavor: "beta",
+    )
+  end
+
+  lane :store do
+    execute(
+      flavor: "store",
+    )
+  end
+
+  desc "Build app with Flutter tool and archive with Gym"
+  lane :build do |options|
+    flavor = options[:flavor]
+
+    # build with flutter tool
+    sh ("cd ../.. && flutter build apk --release --flavor #{flavor} -t lib/main_#{flavor}.dart --build-number=#{version_code}")
+  end
+end
