@@ -36,7 +36,7 @@ jobs:
       - name: Set env to Alpha
         if: endsWith(github.ref, '/development')
         run: |
-          echo "ENV_FLAVOR=dev" >> $GITHUB_ENV
+          echo "ENV_FLAVOR=alpha" >> $GITHUB_ENV
       - name: Set env to Beta
         if: endsWith(github.ref, '/test')
         run: |
