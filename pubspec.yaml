@@ -1,9 +1,15 @@
 name: cloudnet
-description: The new webinterface and app for cloudnet
+description: A App to administarte cloudnet resources like permissions, servers and more
+authors:
+  - TheMeinerLP
+repository: https://github.com/TheMeinerLP/CloudNet-App
+homepage: https://cloudnetservice.eu/
+issue_tracker: https://github.com/TheMeinerLP/CloudNet-App/issues
+
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
   sdk: ">=2.14.0 <3.0.0"
