@@ -19,3 +19,7 @@
 - Manipulation of database entries.*
 - Easy setup routine for tasks and templates.
 - **Integration of Cloud Permission System**
+- Management of Templates and Files*
+- Integrated  Text Editor*
+
+* coming soon not implemented yet
