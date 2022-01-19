@@ -28,7 +28,7 @@ platform :android do
 
   lane :alpha do
     flavor = "alpha"
-    execute(
+    build(
       flavor: flavor,
     )
     apkPath = "../../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
@@ -41,13 +41,13 @@ platform :android do
   end
 
   lane :beta do
-    execute(
+    build(
       flavor: "beta",
     )
   end
 
   lane :store do
-    execute(
+    build(
       flavor: "store",
     )
   end
