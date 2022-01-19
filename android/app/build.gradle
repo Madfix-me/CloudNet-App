@@ -57,6 +57,26 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "flavor-type"
+
+    productFlavors {
+        alpha {
+            dimension "flavor-type"
+            applicationIdSuffix ".alpha"
+            resValue "string", "app_name", "CloudNet-Alpha"
+        }
+        beta {
+            dimension "flavor-type"
+            applicationIdSuffix ".test"
+            resValue "string", "app_name", "CloudNet-Beta"
+        }
+        store {
+            dimension "flavor-type"
+            applicationIdSuffix ".live"
+            resValue "string", "app_name", "CloudNet"
+        }
+    }
 }
 
 flutter {
