@@ -22,4 +22,4 @@
 - Management of Templates and Files*
 - Integrated  Text Editor*
 
- * coming soon not implemented yet
+\* coming soon not implemented yet
