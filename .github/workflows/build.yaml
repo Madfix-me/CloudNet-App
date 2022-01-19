@@ -66,6 +66,8 @@ jobs:
         uses: iamsauravsharma/create-dotenv@v1.2.0
         with:
           env-prefix: 'ENV_'
+      - name: Check dot file
+        run: cat .env
 
       - name: Install dependencies
         run: flutter pub get
