@@ -25,8 +25,8 @@ platform :android do
     )
     apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
     appcenter_upload(
-      api_token: ENV["ALPHA_APPCENTER_API_TOKEN"],
-      owner_name: ENV["ALPHA_APPCENTER_OWNER_NAME"],
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: ENV["APPCENTER_OWNER_NAME"],
       app_name: "CloudNet-Alpha-Android",
       file: apkPath
     )
@@ -36,11 +36,25 @@ platform :android do
     build(
       flavor: "beta",
     )
+    apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: ENV["APPCENTER_OWNER_NAME"],
+      app_name: "CloudNet-Beta-Android",
+      file: apkPath
+    )
   end
 
   lane :store do
     build(
       flavor: "store",
+    )
+    apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: ENV["APPCENTER_OWNER_NAME"],
+      app_name: "CloudNet-Beta-Android",
+      file: apkPath
     )
   end
 
