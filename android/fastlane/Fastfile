@@ -53,7 +53,7 @@ platform :android do
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
-      app_name: "CloudNet-Beta-Android",
+      app_name: "CloudNet-Store-Android",
       file: apkPath
     )
   end

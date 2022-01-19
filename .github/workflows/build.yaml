@@ -41,7 +41,7 @@ jobs:
         if: endsWith(github.ref, '/test')
         run: |
           echo "ENV_FLAVOR=beta" >> $GITHUB_ENV
-      - name: Set env to store
+      - name: Set env to Store
         if: endsWith(github.ref, '/master')
         run: |
           echo "ENV_FLAVOR=store" >> $GITHUB_ENV
