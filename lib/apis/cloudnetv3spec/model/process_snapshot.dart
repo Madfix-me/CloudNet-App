@@ -1,5 +1,3 @@
-
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'process_snapshot.g.dart';
@@ -7,7 +5,6 @@ part 'process_snapshot.freezed.dart';
 
 @freezed
 class ProcessSnapshot with _$ProcessSnapshot {
-
   factory ProcessSnapshot({
     @JsonKey(name: 'pid') int? pid,
     @JsonKey(name: 'cpuUsage') double? cpuUsage,
@@ -20,6 +17,6 @@ class ProcessSnapshot with _$ProcessSnapshot {
     @JsonKey(name: 'currentLoadedClassCount') int? currentLoadedClassCount,
   }) = _ProcessSnapshot;
 
-  factory ProcessSnapshot.fromJson(Map<String, dynamic> json) => _$ProcessSnapshotFromJson(json);
-
+  factory ProcessSnapshot.fromJson(Map<String, dynamic> json) =>
+      _$ProcessSnapshotFromJson(json);
 }

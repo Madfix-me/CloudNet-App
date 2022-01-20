@@ -8,13 +8,11 @@ part 'template_install.freezed.dart';
 
 @freezed
 class TemplateInstall with _$TemplateInstall {
-
   const factory TemplateInstall({
     @JsonKey(name: 'force') @Default(false) bool force,
     @JsonKey(name: 'type') ServiceVersionType? serviceVersionType,
     @JsonKey(name: 'version') ServiceVersion? serviceVersion,
-}) = _TemplateInstall;
-
+  }) = _TemplateInstall;
 
   factory TemplateInstall.fromJson(Map<String, dynamic> json) =>
       _$TemplateInstallFromJson(json);

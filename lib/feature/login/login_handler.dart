@@ -61,7 +61,8 @@ class LoginHandler extends ValueNotifier<bool> {
             'Authorization': 'Bearer $_token',
           }),
         )
-        .then((response) => response.data!).catchError((dynamic error) {
+        .then((response) => response.data!)
+        .catchError((dynamic error) {
       router.go(LoginPage.route);
     });
     final Map<String, dynamic> response =
@@ -81,16 +82,17 @@ class LoginHandler extends ValueNotifier<bool> {
       ),
     );
     dio.interceptors.add(
-        InterceptorsWrapper(
-          onError: (err, handler) {
-            if (err.error is SocketException) {
-              handler.reject(err);
-            }
-            if (err.response?.statusCode != null && err.response!.statusCode == 403) {
-              handler.reject(err);
-            }
-          },
-        ),
+      InterceptorsWrapper(
+        onError: (err, handler) {
+          if (err.error is SocketException) {
+            handler.reject(err);
+          }
+          if (err.response?.statusCode != null &&
+              err.response!.statusCode == 403) {
+            handler.reject(err);
+          }
+        },
+      ),
     );
     final token = await dio
         .postUri<String>(

@@ -28,7 +28,6 @@ class AppConfig {
   bool get isBeta => _config.isBeta;
 
   String get appName => _config.appName;
-
 }
 
 class _Config {
@@ -39,23 +38,22 @@ class _Config {
   });
 
   factory _Config.envAlpha() => _Config._(
-    isAlpha: true,
-    isBeta: false,
-    appName: 'CloudNet-Alpha',
-  );
+        isAlpha: true,
+        isBeta: false,
+        appName: 'CloudNet-Alpha',
+      );
 
   factory _Config.envBeta() => _Config._(
-    isAlpha: false,
-    isBeta: true,
-    appName: 'CloudNet-Beta',
-  );
+        isAlpha: false,
+        isBeta: true,
+        appName: 'CloudNet-Beta',
+      );
 
   factory _Config.envStore() => _Config._(
-    isAlpha: false,
-    isBeta: false,
-    appName: 'CloudNet',
-  );
-
+        isAlpha: false,
+        isBeta: false,
+        appName: 'CloudNet',
+      );
 
   final bool isAlpha;
   final bool isBeta;

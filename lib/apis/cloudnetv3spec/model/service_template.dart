@@ -10,7 +10,8 @@ class ServiceTemplate with _$ServiceTemplate {
     @JsonKey(name: 'prefix') String? prefix,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'storage') String? storage,
-    @JsonKey(name: 'alwaysCopyToStaticServices') bool? alwaysCopyToStaticServices,
+    @JsonKey(name: 'alwaysCopyToStaticServices')
+        bool? alwaysCopyToStaticServices,
   }) = _ServiceTemplate;
 
   factory ServiceTemplate.fromJson(Map<String, dynamic> json) =>

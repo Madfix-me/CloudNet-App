@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 const String appTitle = 'CloudNet';
 
-
 const radius = LayoutElement<double>(16.0, 8.0, 4.0);
-const edgeAll = LayoutElement<EdgeInsets>(EdgeInsets.all(24), EdgeInsets.all(16), EdgeInsets.all(4));
+const edgeAll = LayoutElement<EdgeInsets>(
+    EdgeInsets.all(24), EdgeInsets.all(16), EdgeInsets.all(4));
 const elevation = 0.0;
 const iconsSize = 24.0;
 

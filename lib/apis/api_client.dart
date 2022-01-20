@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -9,10 +7,7 @@ typedef AccessBasicAuthProvider = String? Function();
 typedef AccessBaseUrlProvider = String Function();
 
 class ApiClient {
-  ApiClient(
-      this.baseUrl,
-      this.tokenProvider
-  ) {
+  ApiClient(this.baseUrl, this.tokenProvider) {
     dio = Dio()
       ..options.baseUrl = baseUrl
       ..interceptors.add(
@@ -30,7 +25,8 @@ class ApiClient {
             if (err.error is SocketException) {
               handler.reject(err);
             }
-            if (err.response?.statusCode != null && err.response!.statusCode == 403) {
+            if (err.response?.statusCode != null &&
+                err.response!.statusCode == 403) {
               handler.reject(err);
             }
           },
@@ -51,11 +47,7 @@ class ApiClient {
 }
 
 class ApiBasicClient {
-  ApiBasicClient(
-      this.baseUrl,
-      this.basicAuthProvider
-      ) {
-
+  ApiBasicClient(this.baseUrl, this.basicAuthProvider) {
     dio = Dio()
       ..options.baseUrl = baseUrl
       ..interceptors.add(
@@ -73,8 +65,8 @@ class ApiBasicClient {
             if (err.error is SocketException) {
               handler.reject(err);
             }
-            if (err.response?.statusCode != null && err.response!.statusCode == 401) {
-
+            if (err.response?.statusCode != null &&
+                err.response!.statusCode == 401) {
               handler.reject(err);
             }
             handler.reject(err);

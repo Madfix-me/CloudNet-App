@@ -35,6 +35,7 @@ class _NodesPageState extends State<NodesPage> {
     nodeHandler.removeListener(updateNodes);
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

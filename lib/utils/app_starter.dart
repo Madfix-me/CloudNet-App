@@ -18,5 +18,6 @@ Future<void> startApp() async {
     persistor: persistor,
     initialState: initialState,
   );
-  runApp(StoreProvider<AppState>(store: store, child: TranslationProvider(child: const CloudNet())));
+  runApp(StoreProvider<AppState>(
+      store: store, child: TranslationProvider(child: const CloudNet())));
 }

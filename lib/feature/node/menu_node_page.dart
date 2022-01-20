@@ -101,10 +101,9 @@ class _MenuNodePageState extends State<MenuNodePage> {
                     Text(t.page.menu_node.ssl),
                     Switch(
                       value: ssl,
-                      onChanged: (value) =>
-                      {
+                      onChanged: (value) => {
                         setState(
-                              () {
+                          () {
                             ssl = value;
                           },
                         )
@@ -142,23 +141,18 @@ class _MenuNodePageState extends State<MenuNodePage> {
                             if (node.address != null) {
                               nodeHandler.deleteUrl(node).then((value) => null);
                             }
-                            nodeHandler
-                                .saveUrl(newNode)
-                                .then((value) =>
-                                setState(() => GoRouter.of(context).pop()),);
+                            nodeHandler.saveUrl(newNode).then(
+                                  (value) => setState(
+                                      () => GoRouter.of(context).pop()),
+                                );
                           }
                         },
                         child: Text(t.general.button.save),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Theme
-                                .of(context)
-                                .colorScheme
-                                .secondary),
-                            foregroundColor: MaterialStateProperty.all(Theme
-                                .of(context)
-                                .colorScheme
-                                .onSecondary)
-                        ),
+                            backgroundColor: MaterialStateProperty.all(
+                                Theme.of(context).colorScheme.secondary),
+                            foregroundColor: MaterialStateProperty.all(
+                                Theme.of(context).colorScheme.onSecondary)),
                       ),
                     )
                   ],

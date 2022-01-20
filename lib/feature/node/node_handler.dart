@@ -6,7 +6,7 @@ import 'package:localstorage/localstorage.dart';
 
 NodeHandler nodeHandler = NodeHandler();
 
-class NodeHandler extends ValueNotifier<bool>{
+class NodeHandler extends ValueNotifier<bool> {
   NodeHandler() : super(false);
 
   MenuNode nodeUrl = const MenuNode();
@@ -15,8 +15,6 @@ class NodeHandler extends ValueNotifier<bool>{
   String currentBaseUrl() => nodeUrl.toUrl();
   String currentWebsocketUrl() => nodeUrl.toWebSocketUrl();
   Set<MenuNode> baseUrls() => nodeUrls;
-
-
 
   Future<void> load() async {
     final storage = LocalStorage('urls.json');
@@ -27,7 +25,8 @@ class NodeHandler extends ValueNotifier<bool>{
     }
     final dynamic baseUrls = await storage.getItem('baseUrls');
     if (baseUrls != null && baseUrls is List) {
-      nodeUrls = baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toSet();
+      nodeUrls =
+          baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toSet();
     }
     if (nodeUrl.address != null || nodeUrls.isNotEmpty) value = true;
     notifyListeners();
@@ -69,6 +68,7 @@ extension UrlCreator on MenuNode {
   String toUrl() {
     return '${ssl ?? false ? 'https' : 'http'}://$address:$port';
   }
+
   String toWebSocketUrl() {
     return '${ssl ?? false ? 'wss' : 'ws'}://$address:$port';
   }

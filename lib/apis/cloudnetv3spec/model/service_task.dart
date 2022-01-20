@@ -15,7 +15,8 @@ class ServiceTask with _$ServiceTask {
     @JsonKey(name: 'includes') List<ServiceRemoteInclusion>? includes,
     @JsonKey(name: 'templates') List<ServiceTemplate>? templates,
     @JsonKey(name: 'deployments') List<ServiceDeployment>? deployments,
-    @JsonKey(name: 'processConfiguration') ProcessConfiguration? processConfiguration,
+    @JsonKey(name: 'processConfiguration')
+        ProcessConfiguration? processConfiguration,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'minServiceCount') int? minServiceCount,
     @JsonKey(name: 'startPort') int? startPort,

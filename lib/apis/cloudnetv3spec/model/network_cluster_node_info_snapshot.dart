@@ -1,5 +1,3 @@
-
-
 import '/apis/cloudnetv3spec/model/cloudnet_version.dart';
 import '/apis/cloudnetv3spec/model/process_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,7 +9,6 @@ part 'network_cluster_node_info_snapshot.freezed.dart';
 
 @freezed
 class NetworkClusterNodeInfoSnapshot with _$NetworkClusterNodeInfoSnapshot {
-
   factory NetworkClusterNodeInfoSnapshot({
     @JsonKey(name: 'creationTime') int? creationTime,
     @JsonKey(name: 'startupMillis') int? startupMillis,
@@ -22,8 +19,10 @@ class NetworkClusterNodeInfoSnapshot with _$NetworkClusterNodeInfoSnapshot {
     @JsonKey(name: 'node') NetworkClusterNode? node,
     @JsonKey(name: 'version') CloudNetVersion? version,
     @JsonKey(name: 'processSnapshot') ProcessSnapshot? processSnapshot,
-    @JsonKey(name: 'maxCPUUsageToStartServices') double? maxCPUUsageToStartServices,
+    @JsonKey(name: 'maxCPUUsageToStartServices')
+        double? maxCPUUsageToStartServices,
   }) = _NetworkClusterNodeInfoSnapshot;
 
-  factory NetworkClusterNodeInfoSnapshot.fromJson(Map<String, dynamic> json) => _$NetworkClusterNodeInfoSnapshotFromJson(json);
+  factory NetworkClusterNodeInfoSnapshot.fromJson(Map<String, dynamic> json) =>
+      _$NetworkClusterNodeInfoSnapshotFromJson(json);
 }
