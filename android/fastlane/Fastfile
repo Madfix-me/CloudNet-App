@@ -26,7 +26,10 @@ platform :android do
       flavor: flavor,
     )
     apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
-    puts ENV
+    puts "Token"
+    puts ENV["APPCENTER_API_TOKEN"] != nil
+    puts "Owner"
+    puts ENV["APPCENTER_OWNER_NAME"] != nil
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
