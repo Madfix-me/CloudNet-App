@@ -123,7 +123,9 @@ ThemeData cloudnetDarkTheme = ThemeData(
     backgroundColor: color.primary,
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.0)),
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(24.0),
+      ),
     ),
     toolbarHeight: k.navbarHeight,
     titleTextStyle: const TextStyle(
@@ -144,10 +146,15 @@ ThemeData cloudnetDarkTheme = ThemeData(
     // actionsIconTheme: null,
   ),
   dialogTheme: DialogTheme(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4.0),
+    ),
+  ),
   drawerTheme: const DrawerThemeData(
       shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.0)),
+    borderRadius: BorderRadius.vertical(
+      bottom: Radius.circular(24.0),
+    ),
   )),
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: color.primary,
@@ -161,7 +168,9 @@ ThemeData cloudnetDarkTheme = ThemeData(
     size: k.iconsSize,
   ),
   cardTheme: CardTheme(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4.0),
+    ),
     margin: k.edgeAll.medium / 2.0,
     color: ThemeData.fallback().cardTheme.color,
     elevation: 2.0,
@@ -175,7 +184,9 @@ ThemeData cloudnetDarkTheme = ThemeData(
     decoration: const ShapeDecoration(
       color: color.gray,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(0)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(0),
+        ),
       ),
     ),
   ),
@@ -188,7 +199,10 @@ ThemeData cloudnetDarkTheme = ThemeData(
       backgroundColor: color.white.withOpacity(0.56),
       side: const BorderSide(color: color.primary),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(k.radius.medium))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(k.radius.medium),
+        ),
+      ),
       padding: k.edgeAll.medium,
     ),
   ),
