@@ -8,114 +8,127 @@ final _lightSchema = ColorScheme.fromSwatch(
     accentColor: color.seconday,
     brightness: Brightness.light);
 ThemeData cloudnetTheme = ThemeData(
-    appBarTheme: AppBarTheme(
-      backgroundColor: color.blue,
-      elevation: k.elevation,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+  appBarTheme: AppBarTheme(
+    backgroundColor: color.blue,
+    elevation: k.elevation,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(24),
       ),
-      toolbarHeight: k.navbarHeight,
-      titleTextStyle: const TextStyle(
-        fontFamily: fontFamily,
-        color: color.white,
-        fontWeight: FontWeight.w600,
-        fontSize: 24.0,
-        height: 1.25,
-      ),
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: color.primary.shade900,
-      ),
-      iconTheme: const IconThemeData(color: color.blackBlack),
-      actionsIconTheme: const IconThemeData(
-        color: color.blackBlack,
-        size: 24.0,
-      ),
-      // actionsIconTheme: null,
     ),
-    dialogTheme: DialogTheme(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-    colorScheme: ColorScheme(
-        brightness: _lightSchema.brightness,
-        onPrimary: _lightSchema.onPrimary,
-        background: _lightSchema.background,
-        error: _lightSchema.error,
-        onBackground: _lightSchema.onBackground,
-        onError: _lightSchema.onError,
-        onSecondary: color.blackBlack,
-        onSurface: _lightSchema.onSurface,
-        primary: _lightSchema.primary,
-        primaryVariant: _lightSchema.primaryVariant,
-        secondary: _lightSchema.secondary,
-        secondaryVariant: _lightSchema.secondaryVariant,
-        surface: _lightSchema.surface),
-    scaffoldBackgroundColor: color.lightGray,
-    backgroundColor: color.lightGray,
-    iconTheme: const IconThemeData(
-      color: color.blackBlack,
-      size: k.iconsSize,
-    ),
-    cardTheme: CardTheme(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-      margin: k.edgeAll.medium / 2.0,
+    toolbarHeight: k.navbarHeight,
+    titleTextStyle: const TextStyle(
+      fontFamily: fontFamily,
       color: color.white,
-      elevation: 2.0,
-      shadowColor: color.gray,
+      fontWeight: FontWeight.w600,
+      fontSize: 24.0,
+      height: 1.25,
     ),
-    tooltipTheme: TooltipThemeData(
-      waitDuration: k.transitionDuration,
-      margin: k.edgeAll.small,
-      padding: k.edgeAll.small,
-      showDuration: k.transitionDuration,
-      decoration: ShapeDecoration(
-        color: color.gray,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(k.radius.small)),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: color.primary.shade900,
+    ),
+    iconTheme: const IconThemeData(color: color.blackBlack),
+    actionsIconTheme: const IconThemeData(
+      color: color.blackBlack,
+      size: 24.0,
+    ),
+    // actionsIconTheme: null,
+  ),
+  dialogTheme: DialogTheme(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  colorScheme: ColorScheme(
+      brightness: _lightSchema.brightness,
+      onPrimary: _lightSchema.onPrimary,
+      background: _lightSchema.background,
+      error: _lightSchema.error,
+      onBackground: _lightSchema.onBackground,
+      onError: _lightSchema.onError,
+      onSecondary: color.blackBlack,
+      onSurface: _lightSchema.onSurface,
+      primary: _lightSchema.primary,
+      primaryVariant: _lightSchema.primaryVariant,
+      secondary: _lightSchema.secondary,
+      secondaryVariant: _lightSchema.secondaryVariant,
+      surface: _lightSchema.surface),
+  scaffoldBackgroundColor: color.lightGray,
+  backgroundColor: color.lightGray,
+  iconTheme: const IconThemeData(
+    color: color.blackBlack,
+    size: k.iconsSize,
+  ),
+  cardTheme: CardTheme(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4.0),
+    ),
+    margin: k.edgeAll.medium / 2.0,
+    color: color.white,
+    elevation: 2.0,
+    shadowColor: color.gray,
+  ),
+  tooltipTheme: TooltipThemeData(
+    waitDuration: k.transitionDuration,
+    margin: k.edgeAll.small,
+    padding: k.edgeAll.small,
+    showDuration: k.transitionDuration,
+    decoration: ShapeDecoration(
+      color: color.gray,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(k.radius.small),
         ),
       ),
     ),
-    toggleButtonsTheme: const ToggleButtonsThemeData(selectedColor: color.blue),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        elevation: 0.0,
-        visualDensity: VisualDensity.comfortable,
-        textStyle: cloudnetText.button,
-        primary: color.blue,
-        backgroundColor: color.white.withOpacity(0.56),
-        side: const BorderSide(color: color.blue),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(k.radius.medium))),
-        padding: k.edgeAll.medium,
+  ),
+  toggleButtonsTheme: const ToggleButtonsThemeData(selectedColor: color.blue),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      elevation: 0.0,
+      visualDensity: VisualDensity.comfortable,
+      textStyle: cloudnetText.button,
+      primary: color.blue,
+      backgroundColor: color.white.withOpacity(0.56),
+      side: const BorderSide(color: color.blue),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(k.radius.medium),
+        ),
       ),
+      padding: k.edgeAll.medium,
     ),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(color.primary),
-        foregroundColor: MaterialStateProperty.all(color.blackBlack),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(color.primary),
+      foregroundColor: MaterialStateProperty.all(color.blackBlack),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
         ),
       ),
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        primary: color.blue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      primary: color.blue,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
       ),
     ),
-    inputDecorationTheme: const InputDecorationTheme(
-      border: UnderlineInputBorder(),
-      focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: color.blue),
-      ),
-      contentPadding: EdgeInsets.all(10.0),
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    border: UnderlineInputBorder(),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: color.blue),
     ),
-    textTheme: cloudnetText,
-    floatingActionButtonTheme:
-        const FloatingActionButtonThemeData(foregroundColor: color.blackBlack));
+    contentPadding: EdgeInsets.all(10.0),
+  ),
+  textTheme: cloudnetText,
+  floatingActionButtonTheme:
+      const FloatingActionButtonThemeData(foregroundColor: color.blackBlack),
+);
 
 ThemeData cloudnetDarkTheme = ThemeData(
   brightness: Brightness.dark,
