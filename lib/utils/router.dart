@@ -89,8 +89,8 @@ final router = GoRouter(
   ),
   redirect: (GoRouterState state) {
     final bool loggedIn = nodeHandler.hasBaseUrl() &&
-        !loginHandler.isExpired() &&
-        loginHandler.accessToken() != null;
+        loginHandler.accessToken() != null &&
+        !loginHandler.isExpired();
     final bool goingToLogin = state.location == LoginPage.route ||
         state.location == NodesPage.route ||
         state.location == MenuNodePage.route;
