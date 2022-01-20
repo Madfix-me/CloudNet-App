@@ -24,7 +24,7 @@ class _TasksPageState extends State<TasksPage> {
   bool staticFilter = false;
   bool maintenanceFilter = false;
   late ScrollController _scrollController;
-  bool _scorlling = false;
+  bool _scrolling = false;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _TasksPageState extends State<TasksPage> {
 
   void _scrollListener() {
     setState(() {
-      _scorlling = _scrollController.position.pixels != 0;
+      _scrolling = _scrollController.position.pixels != 0;
     });
   }
 
@@ -252,58 +252,31 @@ class _TasksPageState extends State<TasksPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Elusive.wrench,
-                                            color: task.maintenance!
-                                                ? null
-                                                : color.gray,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.edit),
                                 ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.edit),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            showDialog<AlertDialog>(
-                                              context: context,
-                                              builder: (context) {
-                                                return deleteDialog(
-                                                  context,
-                                                  onCancel: () {
-                                                    context.pop();
-                                                  },
-                                                  onDelete: () {},
-                                                  item: task.name ?? '',
-                                                );
-                                              },
-                                            );
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog<AlertDialog>(
+                                      context: context,
+                                      builder: (context) {
+                                        return deleteDialog(
+                                          context,
+                                          onCancel: () {
+                                            context.pop();
                                           },
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                )
+                                          onDelete: () {},
+                                          item: task.name ?? '',
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -315,7 +288,7 @@ class _TasksPageState extends State<TasksPage> {
               ],
             ),
           ),
-          _scorlling
+          _scrolling
               ? Container()
               : Positioned(
                   child: FloatingActionButton(
