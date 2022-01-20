@@ -13,6 +13,7 @@ class NodeHandler extends ValueNotifier<bool>{
   Set<MenuNode> nodeUrls = {};
 
   String currentBaseUrl() => nodeUrl.toUrl();
+  String currentWebsocketUrl() => nodeUrl.toWebSocketUrl();
   Set<MenuNode> baseUrls() => nodeUrls;
 
 
@@ -67,5 +68,8 @@ class NodeHandler extends ValueNotifier<bool>{
 extension UrlCreator on MenuNode {
   String toUrl() {
     return '${ssl ?? false ? 'https' : 'http'}://$address:$port';
+  }
+  String toWebSocketUrl() {
+    return '${ssl ?? false ? 'wss' : 'ws'}://$address:$port';
   }
 }
