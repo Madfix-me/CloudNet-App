@@ -3,24 +3,14 @@
 default_platform(:android)
 
 platform :android do
-    if File.exist?('../.env')
-      open('../.env', 'r').readlines.each do |l|
-        kv = l.split('=')
-        ENV[kv[0]] = kv[1].chomp
-      end
-    end
-   if File.exist?('.env')
-         open('.env', 'r').readlines.each do |l|
-           kv = l.split('=')
-           ENV[kv[0]] = kv[1].chomp
-         end
-       end
    if File.exist?('../../.env')
-            open('../../.env', 'r').readlines.each do |l|
-              kv = l.split('=')
-              ENV[kv[0]] = kv[1].chomp
-            end
-          end
+        open('../../.env', 'r').readlines.each do |l|
+          kv = l.split('=')
+          puts kv[1].chomp
+          puts kv[0]
+          ENV[kv[0]] = kv[1].chomp
+        end
+      end
   version_code = nil
   version_name = nil
 
@@ -36,6 +26,7 @@ platform :android do
       flavor: flavor,
     )
     apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
+    puts ENV
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
