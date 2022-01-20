@@ -37,14 +37,27 @@ class _DashboardPageState extends State<DashboardPage> {
       converter: (store) => store.state.nodeInfo ?? NodeInfo(),
       builder: (context, nodeInfo) => RefreshIndicator(
         onRefresh: _pullRefresh,
-        child: GridView.builder(
-          itemCount: 5,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
-          itemBuilder: (context, index) {
-            return AspectRatio(
-                aspectRatio: 1, child: buildCard(index, nodeInfo));
-          },
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+              ],
+            ),
+            Expanded(
+              child: GridView.builder(
+                itemCount: 5,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return AspectRatio(
+                      aspectRatio: 1, child: buildCard(index, nodeInfo));
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -80,7 +93,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline5,
               ),
-              Text(state.version!, textAlign: TextAlign.center)
+              Text(state.version.revision, textAlign: TextAlign.center)
             ],
           ),
         ),
@@ -99,7 +112,8 @@ class _DashboardPageState extends State<DashboardPage> {
               Text(t.page.dashboard.memory_usage,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline5),
-              Text(t.general.formats.mb(value: state.lastNodeInfoSnapshot!.usedMemory.toString()))
+              Text(t.general.formats
+                  .mb(value: state.lastNodeInfoSnapshot!.usedMemory.toString()))
             ],
           ),
         ),
@@ -137,8 +151,9 @@ class _DashboardPageState extends State<DashboardPage> {
               Text(t.page.dashboard.cpu_usage,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline5),
-              Text(
-                  t.general.formats.percentage(value: state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!.toStringAsFixed(2)))
+              Text(t.general.formats.percentage(
+                  value: state.lastNodeInfoSnapshot!.processSnapshot!.cpuUsage!
+                      .toStringAsFixed(2)))
             ],
           ),
         ),
@@ -163,9 +178,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline5,
               ),
-              Text(
-                t.general.formats.mb(value: (info.nodeInfoSnapshot!.processSnapshot!.heapUsageMemory! / 1024 / 1024).toStringAsFixed(0))
-              )
+              Text(t.general.formats.mb(
+                  value: (info.nodeInfoSnapshot!.processSnapshot!
+                              .heapUsageMemory! /
+                          1024 /
+                          1024)
+                      .toStringAsFixed(0)))
             ],
           ),
         ),

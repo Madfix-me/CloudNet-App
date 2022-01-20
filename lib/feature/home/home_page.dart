@@ -199,6 +199,12 @@ class _HomePageState extends State<HomePage> {
         AppConfig().appName,
       ),
       centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.exit_to_app),
+        )
+      ],
     );
   }
 

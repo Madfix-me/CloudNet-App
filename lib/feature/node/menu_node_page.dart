@@ -1,4 +1,5 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/utils/app_config.dart';
 import 'package:cloudnet/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,7 +40,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
         TextEditingValue(text: (newNode.port ?? 2812).toString()));
     return Scaffold(
       appBar: AppBar(
-        title: const Text(appTitle),
+        title: Text(AppConfig().appName),
+        centerTitle: true,
       ),
       body: Center(
         child: Form(

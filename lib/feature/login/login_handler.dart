@@ -61,7 +61,9 @@ class LoginHandler extends ValueNotifier<bool> {
             'Authorization': 'Bearer $_token',
           }),
         )
-        .then((response) => response.data!);
+        .then((response) => response.data!).catchError((dynamic error) {
+      router.go(LoginPage.route);
+    });
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;

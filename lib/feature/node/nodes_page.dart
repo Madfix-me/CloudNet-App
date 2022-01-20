@@ -1,5 +1,6 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:cloudnet/feature/node/menu_node_page.dart';
+import 'package:cloudnet/utils/app_config.dart';
 import 'package:cloudnet/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,7 +40,8 @@ class _NodesPageState extends State<NodesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(appTitle),
+        title: Text(AppConfig().appName),
+        centerTitle: true,
       ),
       body: Stack(
         children: [
