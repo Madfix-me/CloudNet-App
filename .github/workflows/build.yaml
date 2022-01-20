@@ -19,8 +19,8 @@ jobs:
     name: Build
     runs-on: macos-11
     env:
-      ENV_APPCENTER_API_TOKEN: ${{ secrets.APPCENTER_API_TOKEN }}
-      ENV_APPCENTER_OWNER_NAME: ${{ secrets.APPCENTER_OWNER_NAME }}
+      APPCENTER_API_TOKEN: ${{ secrets.APPCENTER_API_TOKEN }}
+      APPCENTER_OWNER_NAME: ${{ secrets.APPCENTER_OWNER_NAME }}
 
 #      IOS_FASTLANE_ISSUER_ID: ${{ secrets.IOS_FASTLANE_ISSUER_ID }}
 #      IOS_FASTLANE_KEY: ${{ secrets.IOS_FASTLANE_KEY }}

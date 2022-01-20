@@ -3,14 +3,6 @@
 default_platform(:android)
 
 platform :android do
-   if File.exist?('../../.env')
-        open('../../.env', 'r').readlines.each do |l|
-          kv = l.split('=')
-          puts kv[1].chomp
-          puts kv[0]
-          ENV[kv[0]] = kv[1].chomp
-        end
-      end
   version_code = nil
   version_name = nil
 
