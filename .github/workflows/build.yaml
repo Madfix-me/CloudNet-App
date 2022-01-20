@@ -18,6 +18,7 @@ jobs:
   build:
     name: Build
     runs-on: macos-11
+    environment: fastlane
     env:
       APPCENTER_API_TOKEN: ${{ secrets.APPCENTER_API_TOKEN }}
       APPCENTER_OWNER_NAME: ${{ secrets.APPCENTER_OWNER_NAME }}
