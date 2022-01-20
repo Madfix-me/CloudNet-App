@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 
 import 'package:cloudnet/feature/login/login_page.dart';
 import 'package:cloudnet/utils/router.dart';
@@ -18,19 +18,18 @@ class LoginHandler extends ValueNotifier<bool> {
   String? _token;
 
   String? accessToken() {
-   if (_token == null) {
-     router.routerDelegate.navigatorKey.currentState?.context.go(LoginPage.route);
-   } else {
-     return _token;
-   }
+    if (_token == null) {
+      router.routerDelegate.navigatorKey.currentState?.context
+          .go(LoginPage.route);
+    } else {
+      return _token;
+    }
   }
-
 
   void resetToken() {
     _token = null;
     _delete().then((value) {});
   }
-
 
   Future<void> load() async {
     final storage = LocalStorage('token.json');
@@ -56,18 +55,15 @@ class LoginHandler extends ValueNotifier<bool> {
   Future<String> sessionRefresh() async {
     final token = await Dio()
         .postUri<String>(
-      Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/session/refresh'),
-      data: <String, dynamic>{},
-      options: Options(headers: <String, dynamic>{
-        'Authorization':
-        'Bearer $_token',
-      }),
-    )
-        .then((response) => response.data!).catchError((dynamic error) {
-          router.go(LoginPage.route);
-    });
+          Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/session/refresh'),
+          data: <String, dynamic>{},
+          options: Options(headers: <String, dynamic>{
+            'Authorization': 'Bearer $_token',
+          }),
+        )
+        .then((response) => response.data!);
     final Map<String, dynamic> response =
-    jsonDecode(token) as Map<String, dynamic>;
+        jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;
     await _save(_token!);
     value = true;
@@ -75,7 +71,28 @@ class LoginHandler extends ValueNotifier<bool> {
   }
 
   Future<String> handleLogin(String username, String password) async {
-    final token = await Dio()
+    final dio = Dio();
+    dio.interceptors.add(
+      LogInterceptor(
+        responseBody: true,
+        requestBody: true,
+      ),
+    );
+    dio.interceptors.add(
+        InterceptorsWrapper(
+          onError: (err, handler) {
+            if (err.error is SocketException) {
+              print(err.error);
+              handler.reject(err);
+            }
+            if (err.response?.statusCode != null && err.response!.statusCode == 403) {
+              print(err.error);
+              handler.reject(err);
+            }
+          },
+        ),
+    );
+    final token = await dio
         .postUri<String>(
           Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/auth'),
           data: <String, dynamic>{},
@@ -84,7 +101,9 @@ class LoginHandler extends ValueNotifier<bool> {
                 'Basic ${base64.encode(utf8.encode('$username:$password'))}',
           }),
         )
-        .then((response) => response.data!);
+        .then((response) => response.data!)
+        .catchError((dynamic error) => {print(error)});
+
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;

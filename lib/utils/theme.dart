@@ -8,7 +8,7 @@ ThemeData cloudnetTheme = ThemeData(
     backgroundColor: color.blue,
     elevation: k.elevation,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
     ),
     toolbarHeight: k.navbarHeight,
     titleTextStyle: TextStyle(
@@ -19,7 +19,7 @@ ThemeData cloudnetTheme = ThemeData(
       height: 1.25,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: color.white,
+      statusBarColor: color.blue,
     ),
     iconTheme: IconThemeData(color: color.black),
     actionsIconTheme: IconThemeData(
@@ -31,7 +31,7 @@ ThemeData cloudnetTheme = ThemeData(
   dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
   colorScheme: ColorScheme.fromSwatch(
-    accentColor: color.blue,
+    accentColor: color.seconday,
     backgroundColor: color.lightGray,
   ),
   scaffoldBackgroundColor: color.lightGray,
@@ -78,7 +78,7 @@ ThemeData cloudnetTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(color.blue),
+      backgroundColor: MaterialStateProperty.all(color.seconday),
       foregroundColor: MaterialStateProperty.all(color.white),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
@@ -100,18 +100,18 @@ ThemeData cloudnetTheme = ThemeData(
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: color.blue),
     ),
-    contentPadding: EdgeInsets.all(8.0),
+    contentPadding: EdgeInsets.all(10.0),
   ),
   textTheme: cloudnetText,
 );
 
 ThemeData cloudnetDarkTheme = ThemeData(
   brightness: Brightness.dark,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: color.lightBlue,
+  appBarTheme: AppBarTheme(
+    backgroundColor: color.primary,
     elevation: k.elevation,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.0)),
     ),
     toolbarHeight: k.navbarHeight,
     titleTextStyle: TextStyle(
@@ -122,8 +122,8 @@ ThemeData cloudnetDarkTheme = ThemeData(
       height: 1.25,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: color.blackBlack,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: color.primary.shade800,
+      statusBarBrightness: Brightness.dark
     ),
     iconTheme: IconThemeData(color: color.white),
     actionsIconTheme: IconThemeData(
@@ -133,16 +133,21 @@ ThemeData cloudnetDarkTheme = ThemeData(
     // actionsIconTheme: null,
   ),
   dialogTheme: DialogTheme(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),
+  drawerTheme: DrawerThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.0)),
+    )
+  ),
   colorScheme: ColorScheme.fromSwatch(
-      accentColor: color.lightBlue,
-      backgroundColor: color.blackBlack,
+      primarySwatch: color.primary,
+      accentColor: color.seconday,
       brightness: Brightness.dark,
   ),
-  scaffoldBackgroundColor: color.blackBlack,
-  backgroundColor: color.blackBlack,
+  //scaffoldBackgroundColor: color.blackBlack,
+  //backgroundColor: color.blackBlack,
   iconTheme: const IconThemeData(
-    color: color.lightBlue,
+    color: color.white,
     size: k.iconsSize,
   ),
   cardTheme: CardTheme(
@@ -161,7 +166,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
     decoration: ShapeDecoration(
       color: color.gray,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(k.radius.small)),
+        borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
     ),
   ),
@@ -172,7 +177,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
       textStyle: cloudnetText.button,
       primary: color.lightBlue,
       backgroundColor: color.white.withOpacity(0.56),
-      side: const BorderSide(color: color.lightBlue),
+      side: const BorderSide(color: color.primary),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(k.radius.medium))),
       padding: k.edgeAll.medium,
@@ -180,7 +185,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(color.lightBlue),
+      backgroundColor: MaterialStateProperty.all(color.primary),
       foregroundColor: MaterialStateProperty.all(color.white),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
@@ -191,18 +196,20 @@ ThemeData cloudnetDarkTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: color.lightBlue,
+      primary: color.primary,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(0.0),
       ),
     ),
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    border: OutlineInputBorder(),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: color.lightBlue),
+  inputDecorationTheme: InputDecorationTheme(
+    border: UnderlineInputBorder(
+      borderSide: BorderSide(color: color.primary),
     ),
-    enabledBorder: OutlineInputBorder(
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: color.primary),
+    ),
+    enabledBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: color.gray),
     ),
     hintStyle: TextStyle(

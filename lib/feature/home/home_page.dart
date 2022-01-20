@@ -1,12 +1,16 @@
+import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
+import 'package:cloudnet/feature/node/nodes_page.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
 import 'package:cloudnet/state/actions/app_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
+import 'package:cloudnet/utils/app_config.dart';
 import 'package:cloudnet/utils/router.dart';
 import 'package:async_redux/async_redux.dart';
+import 'package:form_validator/form_validator.dart';
 
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/utils/const.dart';
@@ -29,6 +33,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
+  bool showNodeDetails = false;
 
   @override
   void initState() {
@@ -49,15 +55,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, NodeInfo>(
-        onInit: (store) {
-      store.dispatch(InitAppStateAction());
-    },
-    converter: (store) => store.state.nodeInfo ?? NodeInfo(),
-    builder: (context, nodeInfo) => Scaffold(
-      body: widget.child,
-      appBar: _appBar(nodeInfo),
-      drawer: isSetupPage() ? null : buildDrawer(),
-    ),);
+      onInit: (store) {
+        store.dispatch(InitAppStateAction());
+      },
+      converter: (store) => store.state.nodeInfo ?? NodeInfo(),
+      builder: (context, nodeInfo) => Scaffold(
+        body: widget.child,
+        appBar: _appBar(nodeInfo),
+        drawer: isSetupPage() ? null : buildDrawer(),
+      ),
+    );
   }
 
   bool isSetupPage() {
@@ -74,74 +81,113 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Widget _buildDetailsList() {
+    final detailsNodes = nodes
+        .map(
+          (e) => ListTile(
+            title: Text(
+              e.name ?? '',
+              style: TextStyle(
+                color: _isSelectedNode(e)
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
+              ),
+            ),
+            leading: Icon(
+              Icons.cloud,
+            ),
+          ),
+        )
+        .toSet()
+        .toList();
+    return ListView(
+      children: detailsNodes,
+    );
+  }
+
+  bool _isSelectedNode(MenuNode e) {
+    return nodeHandler.nodeUrl.name != null &&
+        (nodeHandler.nodeUrl.name == (e.name ?? ''));
+  }
+
+  Widget _buildDrawerList() {
+    return ListView(
+      children: [
+        ListTile(
+          title: const Text('Node'),
+          selected: router.location == DashboardPage.route,
+          onTap: () => {
+            context.go(DashboardPage.route),
+            Navigator.pop(context),
+          },
+        ),
+        const ListTile(
+          title: Text('Cluster'),
+          enabled: false,
+        ),
+        const ListTile(
+          title: Text('Database'),
+          enabled: false,
+        ),
+        ListTile(
+          title: const Text('Groups'),
+          selected: router.location == GroupsPage.route,
+          onTap: () => {
+            context.go(GroupsPage.route),
+            Navigator.pop(context),
+          },
+        ),
+        ListTile(
+          title: const Text('Tasks'),
+          selected: router.location == TasksPage.route,
+          onTap: () => {
+            context.go(TasksPage.route),
+            Navigator.pop(context),
+          },
+        ),
+        const ListTile(
+          title: Text('Services'),
+          enabled: false,
+          onTap: null,
+        ),
+        const ListTile(
+          title: Text('Template Storage'),
+          enabled: false,
+        ),
+        const ListTile(
+          title: Text('Templates'),
+          enabled: false,
+        ),
+        const ListTile(
+          title: Text('Service Versions'),
+          enabled: false,
+        ),
+        const ListTile(
+          title: Text('Modules'),
+          enabled: false,
+        ),
+      ],
+    );
+  }
+
   Drawer buildDrawer() {
-    final router = GoRouter.of(context);
     return Drawer(
-      child: ListView(
+      child: Column(
         children: [
           UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(
-              color: color.blue,
+            currentAccountPicture: Image(
+              image: _getProfileIcon(),
             ),
+            accountName: Text(nodeHandler.nodeUrl.toUrl()),
             accountEmail: Text(nodeHandler.nodeUrl.name!),
-            accountName: const Text('TheMeinerLP'),
-            currentAccountPicture: const Image(
-                image: NetworkImage(
-                    'https://crafthead.net/avatar/05bf52c67bb04f1389510e1fd803df35')),
-          ),
-          ListTile(
-            title: const Text('Node'),
-            selected: router.location == DashboardPage.route,
-            onTap: () => {
-              context.go(DashboardPage.route),
-              Navigator.pop(context),
+            onDetailsPressed: () {
+              setState(() {
+                showNodeDetails = !showNodeDetails;
+              });
             },
           ),
-          const ListTile(
-            title: Text('Cluster'),
-            enabled: false,
-          ),
-          const ListTile(
-            title: Text('Database'),
-            enabled: false,
-          ),
-          ListTile(
-            title: const Text('Groups'),
-            selected: router.location == GroupsPage.route,
-            onTap: () => {
-              context.go(GroupsPage.route),
-              Navigator.pop(context),
-            },
-          ),
-          ListTile(
-            title: const Text('Tasks'),
-            selected: router.location == TasksPage.route,
-            onTap: () => {
-              context.go(TasksPage.route),
-              Navigator.pop(context),
-            },
-          ),
-          const ListTile(
-            title: Text('Services'),
-            enabled: false,
-            onTap: null,
-          ),
-          const ListTile(
-            title: Text('Template Storage'),
-            enabled: false,
-          ),
-          const ListTile(
-            title: Text('Templates'),
-            enabled: false,
-          ),
-          const ListTile(
-            title: Text('Service Versions'),
-            enabled: false,
-          ),
-          const ListTile(
-            title: Text('Modules'),
-            enabled: false,
-          ),
+          Expanded(
+              child: showNodeDetails ? _buildDetailsList() : _buildDrawerList())
         ],
       ),
     );
@@ -149,7 +195,20 @@ class _HomePageState extends State<HomePage> {
 
   AppBar? _appBar(NodeInfo nodeInfo) {
     return AppBar(
-      title: isSetupPage() ? const Text(appTitle) : Text('Node: ${nodeInfo.lastNodeInfoSnapshot?.node?.uniqueId}'),
+      title: Text(
+        AppConfig().appName,
+      ),
+      centerTitle: true,
     );
+  }
+
+  AssetImage _getProfileIcon() {
+    if (AppConfig().isAlpha) {
+      return const AssetImage('.github/assets/img/TeamDiscord-Icon.png');
+    }
+    if (AppConfig().isBeta) {
+      return const AssetImage('.github/assets/img/Discord-Icon.png');
+    }
+    return const AssetImage('.github/assets/img/Logo.png');
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:cloudnet/feature/node/nodes_page.dart';
 import 'package:cloudnet/state/actions/app_actions.dart';
 import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/utils/app_config.dart';
 import 'package:form_validator/form_validator.dart';
 import '/feature/dashboard/dashboard_page.dart';
 import '/feature/login/login_handler.dart';
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final _loginFormKey = GlobalKey<FormState>();
   late bool ssl = false;
   List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
+
   @override
   void initState() {
     nodeHandler.addListener(updateNodes);
@@ -53,12 +55,15 @@ class _LoginPageState extends State<LoginPage> {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
-        final menuNodes = nodes.map(
-          (e) => DropdownMenuItem<String>(
-            child: Text(e.name!),
-            value: e.name!,
-          ),
-        ).toSet().toList();
+        final menuNodes = nodes
+            .map(
+              (e) => DropdownMenuItem<String>(
+                child: Text(e.name!),
+                value: e.name!,
+              ),
+            )
+            .toSet()
+            .toList();
         String? value;
         if (nodeHandler.nodeUrl.name == null && menuNodes.isNotEmpty) {
           value = nodes.first.name;
@@ -67,7 +72,10 @@ class _LoginPageState extends State<LoginPage> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: const Text(appTitle)),
+          appBar: AppBar(
+            title: Text(AppConfig().appName),
+            centerTitle: true,
+          ),
           body: Center(
             child: Form(
               key: _loginFormKey,
@@ -85,9 +93,9 @@ class _LoginPageState extends State<LoginPage> {
                             items: menuNodes,
                             value: value,
                             onChanged: (String? value) {
-                              nodeHandler.selectCurrentUrl(
-                                  nodeHandler.nodeUrls.firstWhere(
-                                          (element) => element.name == value));
+                              nodeHandler.selectCurrentUrl(nodeHandler.nodeUrls
+                                  .firstWhere(
+                                      (element) => element.name == value));
                             },
                           ),
                         ),
@@ -155,8 +163,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_loginFormKey.currentState!.validate()) {
       loginHandler
           .handleLogin(
-            _passwordController.text,
             _usernameController.text,
+            _passwordController.text,
           )
           .then((value) => {
                 StoreProvider.dispatch(context, UpdateTokenInfoAction(value)),
@@ -164,10 +172,12 @@ class _LoginPageState extends State<LoginPage> {
                 context.go(DashboardPage.route)
               })
           .catchError((dynamic e) {
+            print(e);
         SnackBar snackBar = SnackBar(
           content: Text(t.page.login.username_password_wrong),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Future<dynamic>.value();
       });
     }
   }

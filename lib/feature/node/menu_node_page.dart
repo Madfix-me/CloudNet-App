@@ -18,22 +18,25 @@ class MenuNodePage extends StatefulWidget {
 
 class _MenuNodePageState extends State<MenuNodePage> {
   MenuNode node;
+  late MenuNode newNode;
   late TextEditingController _nameController;
   late TextEditingController _addressController;
   late TextEditingController _portController;
   final _formKey = GlobalKey<FormState>();
   late bool ssl = node.ssl ?? false;
 
-  _MenuNodePageState(this.node);
+  _MenuNodePageState(this.node) {
+    newNode = node;
+  }
 
   @override
   Widget build(BuildContext context) {
     _nameController = TextEditingController.fromValue(
-        TextEditingValue(text: node.name ?? ''));
+        TextEditingValue(text: newNode.name ?? ''));
     _addressController = TextEditingController.fromValue(
-        TextEditingValue(text: node.address ?? ''));
+        TextEditingValue(text: newNode.address ?? ''));
     _portController = TextEditingController.fromValue(
-        TextEditingValue(text: (node.port ?? 2812).toString()));
+        TextEditingValue(text: (newNode.port ?? 2812).toString()));
     return Scaffold(
       appBar: AppBar(
         title: const Text(appTitle),
@@ -97,9 +100,10 @@ class _MenuNodePageState extends State<MenuNodePage> {
                     Text(t.page.menu_node.ssl),
                     Switch(
                       value: ssl,
-                      onChanged: (value) => {
+                      onChanged: (value) =>
+                      {
                         setState(
-                          () {
+                              () {
                             ssl = value;
                           },
                         )
@@ -118,7 +122,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                       child: TextButton(
                         onPressed: () {
                           nodeHandler
-                              .deleteUrl(node)
+                              .deleteUrl(newNode)
                               .then((value) => GoRouter.of(context).pop());
                         },
                         child: Text(t.general.button.delete),
@@ -129,17 +133,31 @@ class _MenuNodePageState extends State<MenuNodePage> {
                       child: TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            node = node.copyWith(
+                            newNode = newNode.copyWith(
                                 name: _nameController.text,
                                 address: _addressController.text,
                                 port: int.tryParse(_portController.text),
                                 ssl: ssl);
+                            if (node.address != null) {
+                              nodeHandler.deleteUrl(node).then((value) => null);
+                            }
                             nodeHandler
-                                .saveUrl(node)
-                                .then((value) => setState(() =>  GoRouter.of(context).pop()));
+                                .saveUrl(newNode)
+                                .then((value) =>
+                                setState(() => GoRouter.of(context).pop()),);
                           }
                         },
                         child: Text(t.general.button.save),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Theme
+                                .of(context)
+                                .colorScheme
+                                .secondary),
+                            foregroundColor: MaterialStateProperty.all(Theme
+                                .of(context)
+                                .colorScheme
+                                .onSecondary)
+                        ),
                       ),
                     )
                   ],
