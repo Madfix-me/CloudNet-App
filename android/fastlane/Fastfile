@@ -30,9 +30,11 @@ platform :android do
     puts ENV["APPCENTER_API_TOKEN"] != nil
     puts "Owner"
     puts ENV["APPCENTER_OWNER_NAME"] != nil
+    token = ENV["APPCENTER_API_TOKEN"]
+    owner = ENV["APPCENTER_OWNER_NAME"]
     appcenter_upload(
-      api_token: ENV["APPCENTER_API_TOKEN"],
-      owner_name: ENV["APPCENTER_OWNER_NAME"],
+      api_token: token,
+      owner_name: owner,
       app_name: "CloudNet-Alpha-Android",
       file: apkPath
     )
