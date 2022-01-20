@@ -17,6 +17,9 @@ platform :android do
     build(
       flavor: flavor,
     )
+    ensure_env_vars(
+      env_vars: ['APPCENTER_API_TOKEN','APPCENTER_OWNER_NAME']
+    )
     apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
     appcenter_upload(
       api_token: ENV['APPCENTER_API_TOKEN'],

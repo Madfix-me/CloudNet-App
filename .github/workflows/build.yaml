@@ -105,6 +105,9 @@ jobs:
         with:
           lane: ${{ env.ENV_FLAVOR }}
           subdirectory: 'android'
+        env:
+          APPCENTER_API_TOKEN: ${{ secrets.APPCENTER_API_TOKEN }}
+          APPCENTER_OWNER_NAME: ${{ secrets.APPCENTER_OWNER_NAME }}
 
 #      - name: Build iOS
 #        uses: maierj/fastlane-action@v2.0.1
