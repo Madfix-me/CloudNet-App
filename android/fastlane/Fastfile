@@ -18,18 +18,14 @@ platform :android do
       flavor: flavor,
     )
     apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
-
-    token = ENV["APPCENTER_API_TOKEN"]
-    owner = ENV["APPCENTER_OWNER_NAME"]
-    puts "Token"
-    puts token
-    puts "Owner"
-    puts owner
     appcenter_upload(
-      api_token: token,
-      owner_name: owner,
+      api_token: ENV['APPCENTER_API_TOKEN'],
+      owner_name: ENV['APPCENTER_OWNER_NAME'],
       app_name: "CloudNet-Alpha-Android",
-      file: apkPath
+      file: apkPath,
+      notify_testers: true,
+      app_os: 'Android',
+      owner_type: "user"
     )
   end
 
