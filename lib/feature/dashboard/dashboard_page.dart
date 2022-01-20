@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import '/apis/cloudnetv3spec/model/node_info.dart';
 import '/state/actions/app_actions.dart';
 import '/state/app_state.dart';
@@ -30,36 +33,50 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, NodeInfo>(
+    return StoreConnector<AppState, AppState>(
       onInit: (store) {
         store.dispatch(InitAppStateAction());
       },
-      converter: (store) => store.state.nodeInfo ?? NodeInfo(),
-      builder: (context, nodeInfo) => RefreshIndicator(
-        onRefresh: _pullRefresh,
-        child: Flex(
-          direction: Axis.vertical,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+      converter: (store) => store.state,
+      builder: (context, state) {
+        print(state.token);
+        return RefreshIndicator(
+          onRefresh: _pullRefresh,
+          child: Flex(
+            direction: Axis.vertical,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
                   IconButton(onPressed: () {}, icon: Icon(Icons.edit))
-              ],
-            ),
-            Expanded(
-              child: GridView.builder(
-                itemCount: 5,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (context, index) {
-                  return AspectRatio(
-                      aspectRatio: 1, child: buildCard(index, nodeInfo));
-                },
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+              FutureBuilder(
+                future: WebSocket.connect(nodeHandler.currentWebsocketUrl() + '/api/v2/node/liveConsole',
+                    headers: <String, dynamic>{
+                      'Authorization': 'Bearer ${state.token}',
+                    }),
+                builder: (BuildContext context, AsyncSnapshot<WebSocket> snapshot) {
+                  print(snapshot.error);
+                  print(snapshot.hasData);
+                  return Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: StreamBuilder<String>(
+                        stream: snapshot.data?.cast(),
+                        builder: (context, ss) {
+                          return Text(ss.hasData ? '${ss.data}' : 'TEST');
+                        },
+                      ),
+                    ),
+                  );
+                },
+              )
+
+            ],
+          ),
+        );
+      },
     );
   }
 
