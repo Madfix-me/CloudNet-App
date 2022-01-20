@@ -59,7 +59,7 @@ jobs:
           key: ${{ runner.os }}-flutter
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2.2.0
         with:
           channel: 'stable'
 
