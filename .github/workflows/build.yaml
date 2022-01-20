@@ -101,13 +101,14 @@ jobs:
           bundler-cache: true
 
       - name: Build Android
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: ${{ env.ENV_FLAVOR }}
-          subdirectory: 'android'
+        uses: maierj/fastlane-action@v2.1.0
         env:
           APPCENTER_API_TOKEN: ${{ secrets.APPCENTER_API_TOKEN }}
           APPCENTER_OWNER_NAME: ${{ secrets.APPCENTER_OWNER_NAME }}
+        with:
+          lane: ${{ env.ENV_FLAVOR }}
+          subdirectory: 'android'
+
 
 #      - name: Build iOS
 #        uses: maierj/fastlane-action@v2.0.1
