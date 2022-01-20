@@ -5,9 +5,7 @@ import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttericon/elusive_icons.dart';
 import 'package:go_router/go_router.dart';
-import '/utils/color.dart' as color;
 import 'package:cloudnet/i18n/strings.g.dart';
 
 class TasksPage extends StatefulWidget {
