@@ -2,7 +2,6 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
-import 'package:cloudnet/feature/node/nodes_page.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
 import 'package:cloudnet/state/actions/app_actions.dart';
@@ -10,13 +9,10 @@ import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/utils/app_config.dart';
 import 'package:cloudnet/utils/router.dart';
 import 'package:async_redux/async_redux.dart';
-import 'package:form_validator/form_validator.dart';
 
 import '/apis/cloudnetv3spec/model/node_info.dart';
-import '/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '/utils/color.dart' as color;
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -93,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     : null,
               ),
             ),
-            leading: Icon(
+            leading: const Icon(
               Icons.cloud,
             ),
           ),

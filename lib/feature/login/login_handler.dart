@@ -84,11 +84,9 @@ class LoginHandler extends ValueNotifier<bool> {
         InterceptorsWrapper(
           onError: (err, handler) {
             if (err.error is SocketException) {
-              print(err.error);
               handler.reject(err);
             }
             if (err.response?.statusCode != null && err.response!.statusCode == 403) {
-              print(err.error);
               handler.reject(err);
             }
           },
@@ -103,8 +101,7 @@ class LoginHandler extends ValueNotifier<bool> {
                 'Basic ${base64.encode(utf8.encode('$username:$password'))}',
           }),
         )
-        .then((response) => response.data!)
-        .catchError((dynamic error) => {print(error)});
+        .then((response) => response.data!);
 
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;

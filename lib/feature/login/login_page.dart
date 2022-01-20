@@ -8,7 +8,6 @@ import '/feature/dashboard/dashboard_page.dart';
 import '/feature/login/login_handler.dart';
 import '/feature/node/node_handler.dart';
 import '/state/app_state.dart';
-import '/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
@@ -172,7 +171,6 @@ class _LoginPageState extends State<LoginPage> {
                 context.go(DashboardPage.route)
               })
           .catchError((dynamic e) {
-            print(e);
         SnackBar snackBar = SnackBar(
           content: Text(t.page.login.username_password_wrong),
         );

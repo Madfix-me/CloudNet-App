@@ -11,11 +11,11 @@ ThemeData cloudnetTheme = ThemeData(
     appBarTheme: AppBarTheme(
       backgroundColor: color.blue,
       elevation: k.elevation,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       toolbarHeight: k.navbarHeight,
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         fontFamily: fontFamily,
         color: color.white,
         fontWeight: FontWeight.w600,
@@ -25,8 +25,8 @@ ThemeData cloudnetTheme = ThemeData(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: color.primary.shade900,
       ),
-      iconTheme: IconThemeData(color: color.blackBlack),
-      actionsIconTheme: IconThemeData(
+      iconTheme: const IconThemeData(color: color.blackBlack),
+      actionsIconTheme: const IconThemeData(
         color: color.blackBlack,
         size: 24.0,
       ),
@@ -115,18 +115,18 @@ ThemeData cloudnetTheme = ThemeData(
     ),
     textTheme: cloudnetText,
     floatingActionButtonTheme:
-        FloatingActionButtonThemeData(foregroundColor: color.blackBlack));
+        const FloatingActionButtonThemeData(foregroundColor: color.blackBlack));
 
 ThemeData cloudnetDarkTheme = ThemeData(
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
     backgroundColor: color.primary,
     elevation: k.elevation,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.0)),
     ),
     toolbarHeight: k.navbarHeight,
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       fontFamily: fontFamily,
       color: color.white,
       fontWeight: FontWeight.w600,
@@ -136,8 +136,8 @@ ThemeData cloudnetDarkTheme = ThemeData(
     systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: color.primary.shade800,
         statusBarBrightness: Brightness.dark),
-    iconTheme: IconThemeData(color: color.white),
-    actionsIconTheme: IconThemeData(
+    iconTheme: const IconThemeData(color: color.white),
+    actionsIconTheme: const IconThemeData(
       color: color.white,
       size: 24.0,
     ),
@@ -145,7 +145,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
   ),
   dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),
-  drawerTheme: DrawerThemeData(
+  drawerTheme: const DrawerThemeData(
       shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.0)),
   )),
@@ -172,7 +172,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
     margin: k.edgeAll.small,
     padding: k.edgeAll.small,
     showDuration: k.transitionDuration,
-    decoration: ShapeDecoration(
+    decoration: const ShapeDecoration(
       color: color.gray,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(0)),
@@ -211,7 +211,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
       ),
     ),
   ),
-  inputDecorationTheme: InputDecorationTheme(
+  inputDecorationTheme: const InputDecorationTheme(
     border: UnderlineInputBorder(
       borderSide: BorderSide(color: color.primary),
     ),

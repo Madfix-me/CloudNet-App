@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';

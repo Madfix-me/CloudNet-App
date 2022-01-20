@@ -1,6 +1,5 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:cloudnet/utils/app_config.dart';
-import 'package:cloudnet/utils/const.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
