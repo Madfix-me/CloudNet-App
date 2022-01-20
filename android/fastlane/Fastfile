@@ -15,6 +15,12 @@ platform :android do
            ENV[kv[0]] = kv[1].chomp
          end
        end
+   if File.exist?('../../.env')
+            open('../../.env', 'r').readlines.each do |l|
+              kv = l.split('=')
+              ENV[kv[0]] = kv[1].chomp
+            end
+          end
   version_code = nil
   version_name = nil
 
@@ -33,6 +39,12 @@ platform :android do
     appcenter_upload(
       api_token: ENV["ENV_APPCENTER_API_TOKEN"],
       owner_name: ENV["ENV_APPCENTER_OWNER_NAME"],
+      app_name: "CloudNet-Alpha-Android",
+      file: apkPath
+    )
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: ENV["APPCENTER_OWNER_NAME"],
       app_name: "CloudNet-Alpha-Android",
       file: apkPath
     )
