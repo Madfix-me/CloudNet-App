@@ -15,42 +15,58 @@ import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', redirect: (_) => DashboardPage.route, routes: []),
+    GoRoute(
+      path: '/',
+      redirect: (_) => DashboardPage.route,
+      routes: [],
+    ),
     GoRoute(
       path: DashboardPage.route,
       name: DashboardPage.name,
       pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const HomePageConnector(child: DashboardPage()),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child)),
+        key: state.pageKey,
+        child: const HomePageConnector(
+          child: DashboardPage(),
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
     ),
     GoRoute(
       path: TaskSetupPage.route,
       name: TaskSetupPage.name,
       pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const HomePageConnector(child: TaskSetupPage()),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child)),
+        key: state.pageKey,
+        child: const HomePageConnector(
+          child: TaskSetupPage(),
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
     ),
     GoRoute(
       path: GroupsPage.route,
       name: GroupsPage.name,
       pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const HomePageConnector(child: GroupsPage()),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child)),
+        key: state.pageKey,
+        child: const HomePageConnector(
+          child: GroupsPage(),
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
     ),
     GoRoute(
       path: TasksPage.route,
       name: TasksPage.name,
       pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const HomePageConnector(child: TasksPage()),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child)),
+        key: state.pageKey,
+        child: const HomePageConnector(
+          child: TasksPage(),
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
     ),
     GoRoute(
       path: LoginPage.route,
@@ -78,14 +94,18 @@ final router = GoRouter(
         }
         return MaterialPage<void>(
           key: state.pageKey,
-          child: MenuNodePage(node: node ?? const MenuNode()),
+          child: MenuNodePage(
+            node: node ?? const MenuNode(),
+          ),
         );
       },
     )
   ],
   errorPageBuilder: (context, state) => MaterialPage<void>(
     key: state.pageKey,
-    child: Text(state.error.toString()),
+    child: Text(
+      state.error.toString(),
+    ),
   ),
   redirect: (GoRouterState state) {
     final bool loggedIn = nodeHandler.hasBaseUrl() &&
