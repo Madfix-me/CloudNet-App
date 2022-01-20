@@ -30,6 +30,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   fluttericon: ^2.0.0
   easy_rich_text: ^1.0.2
+  web_socket_channel: ^2.1.0
 
 
 dev_dependencies:
