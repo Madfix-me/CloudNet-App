@@ -37,12 +37,6 @@ platform :android do
     )
     apkPath = "../build/app/outputs/apk/#{flavor}/release/app-#{flavor}-release.apk"
     appcenter_upload(
-      api_token: ENV["ENV_APPCENTER_API_TOKEN"],
-      owner_name: ENV["ENV_APPCENTER_OWNER_NAME"],
-      app_name: "CloudNet-Alpha-Android",
-      file: apkPath
-    )
-    appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
       app_name: "CloudNet-Alpha-Android",
