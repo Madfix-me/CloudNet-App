@@ -15,7 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Launcher icons
 - Fastlane with App Center Integration
 - Alpha, Beta and Store editions
-- 
+- Freezed implantation
+- Redux implementation
+- JWT integration
+- Node handling for multiple login options
 
 ### Changed
 - Colors and gui shape
