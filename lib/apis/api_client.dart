@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'package:cloudnet/feature/login/login_page.dart';
+import 'package:cloudnet/utils/router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 
 typedef AccessTokenProvider = String? Function();
 typedef AccessBasicAuthProvider = String? Function();
@@ -13,12 +16,15 @@ class ApiClient {
       ..interceptors.add(
         InterceptorsWrapper(
           onRequest: (options, handler) async {
+            dio.lock();
             final token = tokenProvider();
             if (token != null) {
               options.headers['Authorization'] = 'Bearer $token';
-              handler.next(options);
+              dio.unlock();
+              return handler.next(options);
             } else {
-              handler.reject(DioError(requestOptions: options));
+              dio.unlock();
+              return handler.reject(DioError(requestOptions: options));
             }
           },
           onError: (err, handler) {
@@ -27,7 +33,8 @@ class ApiClient {
             }
             if (err.response?.statusCode != null &&
                 err.response!.statusCode == 403) {
-              handler.reject(err);
+              router.routerDelegate.navigatorKey.currentState?.context
+                  .go(LoginPage.route);
             }
           },
         ),
