@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloudnet/feature/login/login_page.dart';
+import 'package:cloudnet/feature/login/login_page_connector.dart';
 import 'package:cloudnet/utils/router.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:localstorage/localstorage.dart';
@@ -20,7 +21,7 @@ class LoginHandler extends ValueNotifier<bool> {
   String? accessToken() {
     if (_token == null) {
       router.routerDelegate.navigatorKey.currentState?.context
-          .go(LoginPage.route);
+          .go(LoginPageConnector.route);
     } else {
       return _token;
     }
@@ -63,7 +64,7 @@ class LoginHandler extends ValueNotifier<bool> {
         )
         .then((response) => response.data!)
         .catchError((dynamic error) {
-      router.go(LoginPage.route);
+      router.go(LoginPageConnector.route);
     });
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;

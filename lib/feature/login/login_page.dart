@@ -1,7 +1,7 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
 import 'package:cloudnet/feature/node/nodes_page.dart';
-import 'package:cloudnet/state/actions/app_actions.dart';
 import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/utils/app_config.dart';
 import 'package:form_validator/form_validator.dart';
 import '/feature/dashboard/dashboard_page.dart';
@@ -13,63 +13,53 @@ import 'package:go_router/go_router.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-  static const String route = '/login';
-  static const String name = 'login';
+  const LoginPage({
+    required this.nodes,
+    required this.node,
+    Key? key,
+  }) : super(key: key);
+  final List<CloudNetNode> nodes;
+  final CloudNetNode? node;
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController _usernameController;
-  late TextEditingController _passwordController;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
-  late bool ssl = false;
-  List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
 
   @override
   void initState() {
-    nodeHandler.addListener(updateNodes);
     super.initState();
-  }
-
-  void updateNodes() {
-    setState(() {
-      nodes = nodeHandler.nodeUrls.toList();
-    });
   }
 
   @override
   void dispose() {
-    nodeHandler.removeListener(updateNodes);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _usernameController = TextEditingController();
-    _passwordController = TextEditingController();
-
+    final menuNodes = widget.nodes
+        .map(
+          (e) => DropdownMenuItem<String>(
+            child: Text(e.name!),
+            value: e.name!,
+          ),
+        )
+        .toSet()
+        .toList();
+    String? value;
+    if (nodeHandler.nodeUrl.name == null && menuNodes.isNotEmpty) {
+      value = widget.nodes.first.name;
+    } else {
+      value = nodeHandler.nodeUrl.name;
+    }
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
-        final menuNodes = nodes
-            .map(
-              (e) => DropdownMenuItem<String>(
-                child: Text(e.name!),
-                value: e.name!,
-              ),
-            )
-            .toSet()
-            .toList();
-        String? value;
-        if (nodeHandler.nodeUrl.name == null && menuNodes.isNotEmpty) {
-          value = nodes.first.name;
-        } else {
-          value = nodeHandler.nodeUrl.name;
-        }
-
         return Scaffold(
           appBar: AppBar(
             title: Text(AppConfig().appName),
@@ -166,8 +156,7 @@ class _LoginPageState extends State<LoginPage> {
             _passwordController.text,
           )
           .then((value) => {
-                StoreProvider.dispatch(context, UpdateTokenInfoAction(value)),
-                StoreProvider.dispatch(context, InitAppStateAction()),
+                StoreProvider.dispatch(context, UpdateToken(value)),
                 context.go(DashboardPage.route)
               })
           .catchError((dynamic e) {
