@@ -147,7 +147,7 @@ class _TasksPageState extends State<TasksPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.autoDeleteOnStop!
+                                    Text(task.autoDeleteOnStop
                                         ? t.general.yes
                                         : t.general.no)
                                   ],
@@ -176,7 +176,7 @@ class _TasksPageState extends State<TasksPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      task.staticServices!
+                                      task.staticServices
                                           ? t.general.yes
                                           : t.general.no,
                                       style: const TextStyle(
@@ -209,7 +209,7 @@ class _TasksPageState extends State<TasksPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      task.maintenance!
+                                      task.maintenance
                                           ? t.general.yes
                                           : t.general.no,
                                       style: const TextStyle(
@@ -237,7 +237,7 @@ class _TasksPageState extends State<TasksPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(task.disableIpRewrite!
+                                    Text(task.disableIpRewrite
                                         ? t.general.yes
                                         : t.general.no)
                                   ],
@@ -251,7 +251,9 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context.push('/tasks/task-edit', extra: task);
+                                  },
                                   icon: const Icon(Icons.edit),
                                 ),
                                 IconButton(

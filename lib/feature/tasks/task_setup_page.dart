@@ -17,7 +17,7 @@ import 'package:cloudnet/i18n/strings.g.dart';
 class TaskSetupPage extends StatefulWidget {
   const TaskSetupPage({Key? key}) : super(key: key);
 
-  static const String route = '/task-setup';
+  static const String route = 'task-setup';
   static const String name = 'task-setup';
 
   @override
@@ -213,7 +213,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                           .then(
                                         (successTemp) {
                                           final templates = task.templates;
-                                          templates?.add(
+                                          templates.add(
                                             ServiceTemplate(
                                                 alwaysCopyToStaticServices:
                                                     false,

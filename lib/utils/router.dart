@@ -1,8 +1,10 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/home/home_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/node/menu_node_page.dart';
+import 'package:cloudnet/feature/tasks/edit_task_page.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
 
@@ -32,18 +34,6 @@ final router = GoRouter(
       ),
     ),
     GoRoute(
-      path: TaskSetupPage.route,
-      name: TaskSetupPage.name,
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
-        key: state.pageKey,
-        child: const HomePage(
-          child: TaskSetupPage(),
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
-      ),
-    ),
-    GoRoute(
       path: GroupsPage.route,
       name: GroupsPage.name,
       pageBuilder: (context, state) => CustomTransitionPage<void>(
@@ -66,6 +56,32 @@ final router = GoRouter(
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
       ),
+      routes: [
+        GoRoute(
+          path: TaskSetupPage.route,
+          name: TaskSetupPage.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: const HomePage(
+              child: TaskSetupPage(),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child),
+          ),
+        ),
+        GoRoute(
+          path: EditTaskPage.route,
+          name: EditTaskPage.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: HomePage(
+              child: EditTaskPage(task: (state.extra as ServiceTask)),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child),
+          ),
+        )
+      ]
     ),
     GoRoute(
       path: LoginPage.route,
