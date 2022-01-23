@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/api_service.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
@@ -27,32 +28,42 @@ class InitMetaInformation extends ReduxAction<AppState> {
   }
 }
 
-class UpdateToken extends ReduxAction<NodeState> {
+class UpdateToken extends ReduxAction<AppState> {
   final String token;
 
   UpdateToken(this.token);
 
   @override
-  Future<NodeState?> reduce() async {
+  Future<AppState?> reduce() async {
     return state.copyWith(
-        node: state.node
-            ?.copyWith(token: token, loggedin: true, connected: true));
+      nodeState: state.nodeState.copyWith(
+        node: state.nodeState.node
+            ?.copyWith(token: token, loggedin: true, connected: true),
+      ),
+    );
   }
 }
 
-class UpdateNodeInfo extends ReduxAction<NodeState> {
+class UpdateNodeInfo extends ReduxAction<AppState> {
   @override
-  Future<NodeState?> reduce() async {
+  Future<AppState?> reduce() async {
     final nodeInfo = await ApiService().nodeApi.getNode();
-    return state.copyWith(node: state.node?.copyWith(nodeInfo: nodeInfo));
+    return state.copyWith(
+      nodeState: state.nodeState
+          .copyWith(node: state.nodeState.node?.copyWith(nodeInfo: nodeInfo)),
+    );
   }
 }
 
-class UpdateTasks extends ReduxAction<NodeState> {
+class UpdateTasks extends ReduxAction<AppState> {
   @override
-  Future<NodeState?> reduce() async {
+  Future<AppState?> reduce() async {
     final nodeTasks = await ApiService().tasksApi.getTasks();
-    return state.copyWith(node: state.node?.copyWith(tasks: nodeTasks));
+    return state.copyWith(
+      nodeState: state.nodeState.copyWith(
+        node: state.nodeState.node?.copyWith(tasks: nodeTasks),
+      ),
+    );
   }
 }
 
@@ -81,11 +92,11 @@ class UpdateCloudNetNode extends ReduxAction<AppState> {
     nodes.remove(oldNode);
     nodes.add(newNode);
     if (oldNode == state.nodeState.node) {
-      return state.copyWith(nodeState: state.nodeState.copyWith(nodes: nodes, node: newNode));
+      return state.copyWith(
+          nodeState: state.nodeState.copyWith(nodes: nodes, node: newNode));
     } else {
       return state.copyWith(nodeState: state.nodeState.copyWith(nodes: nodes));
     }
-
   }
 }
 
@@ -115,8 +126,10 @@ class SelectCloudNetNode extends ReduxAction<AppState> {
   @override
   Future<AppState> reduce() async {
     final _node = node.copyWith(loggedin: false, connected: false, token: null);
-    final newState = state.copyWith(nodeState: state.nodeState.copyWith(node: _node));
+    final newState =
+        state.copyWith(nodeState: state.nodeState.copyWith(node: _node));
     await nodeHandler.load(newState);
+    await loginHandler.load(newState);
     return newState;
   }
 }

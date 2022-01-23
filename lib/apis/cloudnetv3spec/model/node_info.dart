@@ -5,6 +5,7 @@ import '/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'node_info.freezed.dart';
+
 part 'node_info.g.dart';
 
 @freezed

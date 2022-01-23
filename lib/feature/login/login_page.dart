@@ -17,7 +17,6 @@ class LoginPage extends StatefulWidget {
   static const String route = '/login';
   static const String name = 'login';
 
-
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
@@ -26,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
-
 
   @override
   void initState() {
@@ -40,9 +38,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    return StoreConnector<AppState, NodeState>(
-      converter: (store) => store.state.nodeState,
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
       builder: (context, state) {
         return Center(
           child: Form(
@@ -59,8 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: t.page.login.username,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.clear),
-                        onPressed: () =>
-                            _clearInputField(_usernameController),
+                        onPressed: () => _clearInputField(_usernameController),
                       ),
                     ),
                   ),
@@ -77,8 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: t.page.login.password,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.clear),
-                        onPressed: () =>
-                            _clearInputField(_passwordController),
+                        onPressed: () => _clearInputField(_passwordController),
                       ),
                     ),
                   ),
@@ -108,12 +103,12 @@ class _LoginPageState extends State<LoginPage> {
                 StoreProvider.dispatch(context, UpdateToken(value)),
                 context.go(DashboardPage.route)
               })
-          .catchError((dynamic e) {
+          .onError((error, stackTrace) {
         SnackBar snackBar = SnackBar(
           content: Text(t.page.login.username_password_wrong),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Future<dynamic>.value();
+        return Future.error(error!, stackTrace);
       });
     }
   }

@@ -46,25 +46,6 @@ class LoginHandler extends ValueNotifier<bool> {
 
   Future<String> handleLogin(String username, String password) async {
     final dio = Dio();
-    dio.interceptors.add(
-      LogInterceptor(
-        responseBody: true,
-        requestBody: true,
-      ),
-    );
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onError: (err, handler) {
-          if (err.error is SocketException) {
-            handler.reject(err);
-          }
-          if (err.response?.statusCode != null &&
-              err.response!.statusCode == 403) {
-            handler.reject(err);
-          }
-        },
-      ),
-    );
     final token = await dio
         .postUri<String>(
           Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/auth'),

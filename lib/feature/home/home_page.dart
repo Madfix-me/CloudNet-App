@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   SelectCloudNetNode(e),
                 );
+                context.go(LoginPage.route);
                 Navigator.pop(context);
               });
             },

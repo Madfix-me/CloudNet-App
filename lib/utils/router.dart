@@ -106,15 +106,9 @@ final router = GoRouter(
         !loginHandler.isExpired() && loginHandler.accessToken() != null;
     final bool goingToLogin = state.location == LoginPage.route ||
         state.location == MenuNodePage.route;
-    //final bool goingToLogin = state.location == LoginPage.route ||
-    //    state.location == MenuNodePage.route;
 
     // the user is not set a node url headed to /login, they need to set it
     if (!loggedIn && !goingToLogin) return LoginPage.route;
-
-    // the user is logged in and headed to /login, no need to login again
-    if (loggedIn && !goingToLogin) return DashboardPage.route;
-
     // no need to redirect at all
     return null;
   },
