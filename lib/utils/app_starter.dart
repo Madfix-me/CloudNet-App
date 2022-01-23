@@ -10,14 +10,16 @@ import 'package:cloudnet/i18n/strings.g.dart';
 Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
-  await nodeHandler.load();
-  await loginHandler.load();
+
+
   final persistor = AppPersistor();
   final initialState = await persistor.readState();
   final store = Store<AppState>(
     persistor: persistor,
     initialState: initialState,
   );
+  await nodeHandler.load(store.state);
+  await loginHandler.load(store.state);
   runApp(StoreProvider<AppState>(
       store: store, child: TranslationProvider(child: const CloudNet())));
 }

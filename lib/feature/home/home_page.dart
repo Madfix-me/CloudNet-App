@@ -1,27 +1,28 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
+import 'package:cloudnet/feature/login/login_handler.dart';
+import 'package:cloudnet/feature/login/login_page.dart';
+import 'package:cloudnet/feature/node/menu_node_page.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
-import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
+import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/app_config.dart';
+import 'package:cloudnet/utils/dialogs.dart';
 import 'package:cloudnet/utils/router.dart';
 import 'package:async_redux/async_redux.dart';
-
-import '/apis/cloudnetv3spec/model/node_info.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
-    required this.nodeInfo,
     required this.child,
   }) : super(key: key);
 
-  final NodeInfo? nodeInfo;
   final Widget child;
 
   @override
@@ -29,7 +30,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<MenuNode> nodes = nodeHandler.nodeUrls.toList();
   bool showNodeDetails = false;
 
   @override
@@ -50,15 +50,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, NodeInfo>(
-      onInit: (store) {
-        store.dispatch(InitAppStateAction());
-      },
-      converter: (store) => store.state.nodeInfo ?? NodeInfo(),
-      builder: (context, nodeInfo) => Scaffold(
+    return StoreConnector<AppState, NodeState>(
+      converter: (store) => store.state.nodeState,
+      builder: (context, state) => Scaffold(
         body: widget.child,
-        appBar: _appBar(nodeInfo),
-        drawer: isSetupPage() ? null : buildDrawer(),
+        appBar: _appBar(),
+        drawer: buildDrawer(state),
       ),
     );
   }
@@ -77,36 +74,75 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _buildDetailsList() {
-    final detailsNodes = nodes
+  Widget _buildDetailsList(NodeState state) {
+    final detailsNodes = state.nodes
         .map(
           (e) => ListTile(
             title: Text(
               e.name ?? '',
-              style: TextStyle(
-                color: _isSelectedNode(e)
-                    ? Theme.of(context).colorScheme.primary
-                    : null,
-              ),
             ),
             leading: const Icon(
               Icons.cloud,
             ),
+            selected: _isSelectedNode(e),
+            trailing: IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog<AlertDialog>(
+                  context: context,
+                  builder: (context) {
+                    return deleteDialog(
+                      context,
+                      onCancel: () {
+                        Navigator.pop(context);
+                      },
+                      onDelete: () {
+                        StoreProvider.dispatch(context, RemoveCloudNetNode(e));
+                        Navigator.pop(context);
+                      },
+                      item: e.name ?? '',
+                    );
+                  },
+                );
+              },
+            ),
+            onLongPress: () => router.push(MenuNodePage.route, extra: e),
+            onTap: () {
+              setState(() {
+                StoreProvider.dispatch(
+                  context,
+                  SelectCloudNetNode(e),
+                );
+                Navigator.pop(context);
+              });
+            },
           ),
         )
         .toSet()
         .toList();
+    detailsNodes.add(
+      ListTile(
+        title: const Text('Add node'),
+        onTap: () => router.push(MenuNodePage.route, extra: null),
+        leading: const Icon(
+          Icons.add,
+        ),
+      ),
+    );
     return ListView(
       children: detailsNodes,
     );
   }
 
-  bool _isSelectedNode(MenuNode e) {
-    return nodeHandler.nodeUrl.name != null &&
-        (nodeHandler.nodeUrl.name == (e.name ?? ''));
+  bool _isSelectedNode(CloudNetNode e) {
+    return nodeHandler.currentNode() != null &&
+        (nodeHandler.currentNode()?.name == (e.name ?? ''));
   }
 
   Widget _buildDrawerList() {
+    final enabled =
+        !loginHandler.isExpired() && router.location != LoginPage.route;
     return ListView(
       children: [
         ListTile(
@@ -116,6 +152,7 @@ class _HomePageState extends State<HomePage> {
             context.go(DashboardPage.route),
             Navigator.pop(context),
           },
+          enabled: enabled,
         ),
         const ListTile(
           title: Text('Cluster'),
@@ -132,6 +169,7 @@ class _HomePageState extends State<HomePage> {
             context.go(GroupsPage.route),
             Navigator.pop(context),
           },
+          enabled: enabled,
         ),
         ListTile(
           title: const Text('Tasks'),
@@ -140,6 +178,7 @@ class _HomePageState extends State<HomePage> {
             context.go(TasksPage.route),
             Navigator.pop(context),
           },
+          enabled: enabled,
         ),
         const ListTile(
           title: Text('Services'),
@@ -166,7 +205,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Drawer buildDrawer() {
+  Drawer buildDrawer(NodeState state) {
     return Drawer(
       child: Column(
         children: [
@@ -174,8 +213,10 @@ class _HomePageState extends State<HomePage> {
             currentAccountPicture: Image(
               image: _getProfileIcon(),
             ),
-            accountName: Text(nodeHandler.nodeUrl.toUrl()),
-            accountEmail: Text(nodeHandler.nodeUrl.name!),
+            accountName:
+                Text(nodeHandler.currentNode()?.toUrl() ?? 'No url provided'),
+            accountEmail:
+                Text(nodeHandler.currentNode()?.name ?? 'No node provided'),
             onDetailsPressed: () {
               setState(() {
                 showNodeDetails = !showNodeDetails;
@@ -183,24 +224,26 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           Expanded(
-              child: showNodeDetails ? _buildDetailsList() : _buildDrawerList())
+              child: showNodeDetails
+                  ? _buildDetailsList(state)
+                  : _buildDrawerList())
         ],
       ),
     );
   }
 
-  AppBar? _appBar(NodeInfo nodeInfo) {
+  AppBar? _appBar() {
     return AppBar(
       title: Text(
         AppConfig().appName,
       ),
       centerTitle: true,
-      actions: [
+      actions: !loginHandler.isExpired() && loginHandler.accessToken() != null ? [
         IconButton(
           onPressed: () {},
           icon: const Icon(Icons.exit_to_app),
         )
-      ],
+      ] : [],
     );
   }
 

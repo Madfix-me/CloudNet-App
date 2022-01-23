@@ -1,16 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloudnet/feature/login/login_page.dart';
-import 'package:cloudnet/feature/login/login_page_connector.dart';
-import 'package:cloudnet/utils/router.dart';
+import 'package:cloudnet/state/app_state.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:localstorage/localstorage.dart';
 
 import '/feature/node/node_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
 
 LoginHandler loginHandler = LoginHandler();
 
@@ -19,41 +15,19 @@ class LoginHandler extends ValueNotifier<bool> {
   String? _token;
 
   String? accessToken() {
-    if (_token == null) {
-      router.routerDelegate.navigatorKey.currentState?.context
-          .go(LoginPageConnector.route);
-    } else {
-      return _token;
-    }
+    return _token;
   }
 
   void resetToken() {
     _token = null;
-    _delete().then((value) {});
   }
 
-  Future<void> load() async {
-    final storage = LocalStorage('token.json');
-    await storage.ready;
-    final dynamic token = await storage.getItem('token');
-    if (token != null && token is String) {
-      _token = token;
+  Future<void> load(AppState state) async {
+    if (state.nodeState.node != null) {
+      _token = state.nodeState.node?.token;
     }
   }
-
-  Future<void> _delete() async {
-    final storage = LocalStorage('token.json');
-    await storage.ready;
-    await storage.deleteItem('token');
-  }
-
-  Future<void> _save(String token) async {
-    final storage = LocalStorage('token.json');
-    await storage.ready;
-    await storage.setItem('token', token);
-  }
-
-  Future<String> sessionRefresh() async {
+  /*Future<String> sessionRefresh() async {
     final token = await Dio()
         .postUri<String>(
           Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/session/refresh'),
@@ -62,17 +36,13 @@ class LoginHandler extends ValueNotifier<bool> {
             'Authorization': 'Bearer $_token',
           }),
         )
-        .then((response) => response.data!)
-        .catchError((dynamic error) {
-      router.go(LoginPageConnector.route);
-    });
+        .then((response) => response.data!);
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;
-    await _save(_token!);
     value = true;
     return _token!;
-  }
+  }*/
 
   Future<String> handleLogin(String username, String password) async {
     final dio = Dio();
@@ -109,7 +79,6 @@ class LoginHandler extends ValueNotifier<bool> {
     final Map<String, dynamic> response =
         jsonDecode(token) as Map<String, dynamic>;
     _token = response['token'] as String;
-    await _save(_token!);
     value = true;
 
     return _token!;

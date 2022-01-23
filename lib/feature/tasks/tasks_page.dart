@@ -1,6 +1,6 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
-import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
 import 'package:async_redux/async_redux.dart';
@@ -41,10 +41,10 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<ServiceTask>>(
       onInit: (store) {
-        store.dispatch(InitAppStateAction());
+        store.dispatch(InitMetaInformation());
       },
       converter: (store) =>
-          store.state.tasks?.where((e) => filter(e)).toList() ?? List.empty(),
+          store.state.nodeState.node?.tasks.where((e) => filter(e)).toList() ?? List.empty(),
       builder: (context, tasks) => Stack(
         children: [
           RefreshIndicator(
@@ -304,7 +304,7 @@ class _TasksPageState extends State<TasksPage> {
   }
 
   Future<void> _pullRefresh() async {
-    StoreProvider.dispatch(context, UpdateTasksAction());
+    StoreProvider.dispatch(context, UpdateTasks());
   }
 
   bool filter(ServiceTask element) {

@@ -1,9 +1,6 @@
 import 'dart:io';
-import 'package:cloudnet/feature/login/login_page.dart';
-import 'package:cloudnet/utils/router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:go_router/go_router.dart';
 
 typedef AccessTokenProvider = String? Function();
 typedef AccessBasicAuthProvider = String? Function();
@@ -33,8 +30,6 @@ class ApiClient {
             }
             if (err.response?.statusCode != null &&
                 err.response!.statusCode == 403) {
-              router.routerDelegate.navigatorKey.currentState?.context
-                  .go(LoginPage.route);
             }
           },
         ),

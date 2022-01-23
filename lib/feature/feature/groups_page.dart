@@ -1,5 +1,5 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/group_configuration.dart';
-import 'package:cloudnet/state/actions/app_actions.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +19,9 @@ class _GroupsPageState extends State<GroupsPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<GroupConfiguration>>(
         onInit: (store) {
-          store.dispatch(InitAppStateAction());
+          store.dispatch(InitMetaInformation());
         },
-        converter: (store) => store.state.groups ?? List.empty(),
+        converter: (store) => store.state.nodeState.node?.groups ?? List.empty(),
         builder: (context, groups) => Stack(
               children: [
                 RefreshIndicator(

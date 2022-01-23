@@ -1,75 +1,36 @@
-import 'package:cloudnet/apis/cloudnetv3spec/cloudnetv3specapi.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/state/app_state.dart';
 
-import '/apis/cloudnetv3spec/model/menu_node.dart';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 
 NodeHandler nodeHandler = NodeHandler();
 
 class NodeHandler extends ValueNotifier<bool> {
   NodeHandler() : super(false);
 
-  MenuNode nodeUrl = const MenuNode();
-  Set<MenuNode> nodeUrls = {};
+  String currentBaseUrl() => _node!.toUrl();
+  String currentWebsocketUrl() => _node!.toWebSocketUrl();
+  CloudNetNode? currentNode() => _node;
+  CloudNetNode? _node;
 
-  String currentBaseUrl() => nodeUrl.toUrl();
-  String currentWebsocketUrl() => nodeUrl.toWebSocketUrl();
-  Set<MenuNode> baseUrls() => nodeUrls;
-
-  Future<void> load() async {
-    final storage = LocalStorage('urls.json');
-    await storage.ready;
-    final dynamic current = await storage.getItem('currentBaseUrl');
-    if (current != null && current is Json) {
-      nodeUrl = MenuNode.fromJson(current);
+  Future<void> load(AppState state) async {
+    if (state.nodeState.node != null) {
+      _node = state.nodeState.node!;
     }
-    final dynamic baseUrls = await storage.getItem('baseUrls');
-    if (baseUrls != null && baseUrls is List) {
-      nodeUrls =
-          baseUrls.map((dynamic e) => MenuNode.fromJson(e as Json)).toSet();
-    }
-    if (nodeUrl.address != null || nodeUrls.isNotEmpty) value = true;
-    notifyListeners();
-  }
-
-  Future<void> saveUrl(MenuNode url) async {
-    final storage = LocalStorage('urls.json');
-    nodeUrls.add(url);
-    await storage.ready;
-    await storage.setItem('baseUrls', nodeUrls.toList());
-    value = true;
-    notifyListeners();
-  }
-
-  Future<void> deleteUrl(MenuNode url) async {
-    final storage = LocalStorage('urls.json');
-    nodeUrls.remove(url);
-    await storage.ready;
-    await storage.setItem('baseUrls', nodeUrls.toList());
-    value = true;
-    notifyListeners();
-  }
-
-  Future<void> selectCurrentUrl(MenuNode url) async {
-    final storage = LocalStorage('urls.json');
-    nodeUrl = url;
-    await storage.ready;
-    await storage.setItem('currentBaseUrl', nodeUrl);
-    value = true;
     notifyListeners();
   }
 
   bool hasBaseUrl() {
-    return nodeUrls.isNotEmpty && nodeUrl.name != null;
+    return _node?.name != null;
   }
 }
 
-extension UrlCreator on MenuNode {
+extension UrlCreator on CloudNetNode {
   String toUrl() {
-    return '${ssl ?? false ? 'https' : 'http'}://$address:$port';
+    return '${ssl ? 'https' : 'http'}://$host:$port';
   }
 
   String toWebSocketUrl() {
-    return '${ssl ?? false ? 'wss' : 'ws'}://$address:$port';
+    return '${ssl ? 'wss' : 'ws'}://$host:$port';
   }
 }

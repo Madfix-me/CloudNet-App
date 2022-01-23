@@ -1,48 +1,47 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/menu_node.dart';
-import 'package:cloudnet/utils/app_config.dart';
+import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
+import 'package:cloudnet/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
 
-import 'node_handler.dart';
-
 class MenuNodePage extends StatefulWidget {
-  const MenuNodePage({Key? key, required this.node}) : super(key: key);
-  static const String route = '/menu-node';
-  static const String name = 'menu-nod';
-  final MenuNode node;
+  const MenuNodePage({required this.node, Key? key}) : super(key: key);
+  static const String route = '/node';
+  static const String name = 'nod';
+  final CloudNetNode? node;
 
   @override
-  State<StatefulWidget> createState() => _MenuNodePageState(node);
+  State<StatefulWidget> createState() => _MenuNodePageState();
 }
 
 class _MenuNodePageState extends State<MenuNodePage> {
-  MenuNode node;
-  late MenuNode newNode;
+  CloudNetNode? oldNode;
+  CloudNetNode newNode = const CloudNetNode();
   late TextEditingController _nameController;
   late TextEditingController _addressController;
   late TextEditingController _portController;
   final _formKey = GlobalKey<FormState>();
-  late bool ssl = node.ssl ?? false;
+  late bool ssl = oldNode?.ssl ?? false;
 
-  _MenuNodePageState(this.node) {
-    newNode = node;
+  @override
+  void initState() {
+    oldNode = widget.node;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _nameController = TextEditingController.fromValue(
-        TextEditingValue(text: newNode.name ?? ''));
+        TextEditingValue(text: oldNode?.name ?? ''));
     _addressController = TextEditingController.fromValue(
-        TextEditingValue(text: newNode.address ?? ''));
+        TextEditingValue(text: oldNode?.host ?? ''));
     _portController = TextEditingController.fromValue(
-        TextEditingValue(text: (newNode.port ?? 2812).toString()));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppConfig().appName),
-        centerTitle: true,
-      ),
-      body: Center(
+        TextEditingValue(text: (oldNode?.port ?? 2812).toString()));
+    return StoreConnector<AppState, AppState>(
+      builder: (context, vm) => Center(
         child: Form(
           key: _formKey,
           child: Column(
@@ -121,11 +120,9 @@ class _MenuNodePageState extends State<MenuNodePage> {
                       margin: const EdgeInsets.symmetric(horizontal: 2),
                       child: TextButton(
                         onPressed: () {
-                          nodeHandler
-                              .deleteUrl(newNode)
-                              .then((value) => GoRouter.of(context).pop());
+                          GoRouter.of(context).pop();
                         },
-                        child: Text(t.general.button.delete),
+                        child: Text(t.general.button.cancel),
                       ),
                     ),
                     Container(
@@ -135,16 +132,18 @@ class _MenuNodePageState extends State<MenuNodePage> {
                           if (_formKey.currentState!.validate()) {
                             newNode = newNode.copyWith(
                                 name: _nameController.text,
-                                address: _addressController.text,
+                                host: _addressController.text,
                                 port: int.tryParse(_portController.text),
                                 ssl: ssl);
-                            if (node.address != null) {
-                              nodeHandler.deleteUrl(node).then((value) => null);
+                            if (oldNode != null) {
+                              StoreProvider.dispatch(context,
+                                  UpdateCloudNetNode(oldNode!, newNode));
+                              Navigator.pop(context);
+                            } else {
+                              StoreProvider.dispatch(
+                                  context, AddCloudNetNode(newNode));
+                              context.go(DashboardPage.route);
                             }
-                            nodeHandler.saveUrl(newNode).then(
-                                  (value) => setState(
-                                      () => GoRouter.of(context).pop()),
-                                );
                           }
                         },
                         child: Text(t.general.button.save),
@@ -162,6 +161,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
           ),
         ),
       ),
+      converter: (store) => store.state,
     );
   }
 

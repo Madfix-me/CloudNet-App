@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
+import 'package:cloudnet/state/node_state.dart';
 import 'package:flutter/material.dart';
-import '/state/actions/app_actions.dart';
 import '/state/app_state.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -28,11 +29,11 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AppState>(
+    return StoreConnector<AppState, NodeState>(
       onInit: (store) {
-        store.dispatch(InitAppStateAction());
+        store.dispatch(InitMetaInformation());
       },
-      converter: (store) => store.state,
+      converter: (store) => store.state.nodeState,
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: _pullRefresh,
@@ -46,7 +47,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _pullRefresh() async {
-    StoreProvider.dispatch(context, UpdateNodeInfoAction());
+    StoreProvider.dispatch(context, UpdateNodeInfo());
   }
 /*
   Card buildCard(int index, NodeInfo info) {

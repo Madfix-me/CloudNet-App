@@ -5,9 +5,9 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/service_template.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/service_version.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/service_version_type.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/template_install.dart';
-import 'package:cloudnet/state/actions/app_actions.dart';
-import 'package:cloudnet/state/app_state.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
@@ -103,9 +103,9 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<ServiceVersionType>>(
       onInit: (store) {
-        store.dispatch(InitAppStateAction());
+        store.dispatch(InitMetaInformation());
       },
-      converter: (store) => store.state.versions ?? List.empty(),
+      converter: (store) => store.state.nodeState.node?.versions ?? List.empty(),
       builder: (context, versions) {
         final steps = <Step>[
           buildTaskNameStep(),
@@ -249,7 +249,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                     .createTask(task)
                                     .then((value) {
                                   StoreProvider.dispatch(
-                                      context, UpdateTasksAction());
+                                      context, UpdateTasks());
                                   context.pop();
                                 });
                               }
