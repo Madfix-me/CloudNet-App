@@ -248,7 +248,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
     enabledBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: color.gray),
     ),
-    hintStyle: TextStyle(
+    /*hintStyle: TextStyle(
       fontFamily: fontFamily,
       color: color.white,
       fontWeight: FontWeight.w600,
@@ -261,7 +261,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
       fontWeight: FontWeight.w600,
       fontSize: 12.0,
       height: 1.25,
-    ),
+    ),*/
     contentPadding: EdgeInsets.all(8.0),
   ),
   textTheme: cloudnetDarkText,

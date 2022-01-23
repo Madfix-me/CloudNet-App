@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDetailsList(NodeState state) {
-    final detailsNodes = state.nodes
+    final List<Widget> detailsNodes = List.empty(growable: true);
+    detailsNodes.addAll(state.nodes
         .map(
           (e) => ListTile(
             title: Text(
@@ -86,7 +87,7 @@ class _HomePageState extends State<HomePage> {
             ),
             selected: _isSelectedNode(e),
             trailing: IconButton(
-              icon: const Icon(Icons.delete),
+              icon: const Icon(Icons.delete_forever_outlined),
               onPressed: () {
                 Navigator.pop(context);
                 showDialog<AlertDialog>(
@@ -106,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
+              color: Theme.of(context).errorColor,
             ),
             onLongPress: () => router.push(MenuNodePage.route, extra: e),
             onTap: () {
@@ -121,7 +123,8 @@ class _HomePageState extends State<HomePage> {
           ),
         )
         .toSet()
-        .toList();
+        .toList());
+    detailsNodes.add(const Divider());
     detailsNodes.add(
       ListTile(
         title: const Text('Add node'),
@@ -239,12 +242,14 @@ class _HomePageState extends State<HomePage> {
         AppConfig().appName,
       ),
       centerTitle: true,
-      actions: !loginHandler.isExpired() && loginHandler.accessToken() != null ? [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.exit_to_app),
-        )
-      ] : [],
+      actions: !loginHandler.isExpired() && loginHandler.accessToken() != null
+          ? [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.exit_to_app),
+              )
+            ]
+          : [],
     );
   }
 

@@ -48,7 +48,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: const EdgeInsets.all(4),
+                margin: const EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
                 child: TextFormField(
                   controller: _nameController,
                   keyboardType: TextInputType.name,
@@ -63,7 +63,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(4),
+                margin: const EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
                 child: TextFormField(
                   controller: _addressController,
                   keyboardType: TextInputType.name,
@@ -78,7 +78,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(4),
+                margin: const EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
                 child: TextFormField(
                   controller: _portController,
                   keyboardType: TextInputType.number,
@@ -93,7 +93,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.all(4),
+                margin: const EdgeInsets.all(16),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -117,41 +117,39 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 2),
-                      child: TextButton(
+                      margin: const EdgeInsets.symmetric(horizontal: 64),
+                      child: IconButton(
                         onPressed: () {
                           GoRouter.of(context).pop();
                         },
-                        child: Text(t.general.button.cancel),
+                        icon: const Icon(Icons.close),
+                          iconSize: Theme.of(context).iconTheme.size! * 2,
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 2),
-                      child: TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            newNode = newNode.copyWith(
-                                name: _nameController.text,
-                                host: _addressController.text,
-                                port: int.tryParse(_portController.text),
-                                ssl: ssl);
-                            if (oldNode != null) {
-                              StoreProvider.dispatch(context,
-                                  UpdateCloudNetNode(oldNode!, newNode));
-                              Navigator.pop(context);
-                            } else {
-                              StoreProvider.dispatch(
-                                  context, AddCloudNetNode(newNode));
-                              context.go(DashboardPage.route);
+                      margin: const EdgeInsets.symmetric(horizontal: 64),
+                      child: IconButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              newNode = newNode.copyWith(
+                                  name: _nameController.text,
+                                  host: _addressController.text,
+                                  port: int.tryParse(_portController.text),
+                                  ssl: ssl);
+                              if (oldNode != null) {
+                                StoreProvider.dispatch(context,
+                                    UpdateCloudNetNode(oldNode!, newNode));
+                                Navigator.pop(context);
+                              } else {
+                                StoreProvider.dispatch(
+                                    context, AddCloudNetNode(newNode));
+                                context.go(DashboardPage.route);
+                              }
                             }
-                          }
-                        },
-                        child: Text(t.general.button.save),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).colorScheme.secondary),
-                            foregroundColor: MaterialStateProperty.all(
-                                Theme.of(context).colorScheme.onSecondary)),
+                          },
+                          icon: Icon(Icons.done,
+                              color: Theme.of(context).colorScheme.secondary),
+                        iconSize: Theme.of(context).iconTheme.size! * 2,
                       ),
                     )
                   ],
