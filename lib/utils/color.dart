@@ -16,30 +16,8 @@ const black = Color(0xFF616161);
 const blackBlack = Color(0xFF000000);
 const trans = Color(0x00000000);
 
-const int _bluePrimaryValue = 0xFF0277BD;
-const primary = MaterialColor(_bluePrimaryValue, <int, Color>{
-  50: Color(0xFFe2f5fc),
-  100: Color(0xFFb5e4f7),
-  200: Color(0xFF87d3f2),
-  300: Color(0xFF5ec1ec),
-  400: Color(0xFF44b4e9),
-  500: Color(_bluePrimaryValue),
-  600: Color(0xFF309ad6),
-  700: Color(0xFF2a87c3),
-  800: Color(0xFF2676af),
-  900: Color(0xFF1e568c),
-});
+
+const Color primary = Colors.blue;
 const int _redSecondaryValue = 0xFFc23234; // 0xFFc23234
-const secondary = MaterialColor(_redSecondaryValue, <int, Color>{
-  50: Color(0xFFfeecef),
-  100: Color(0xFFfcced5),
-  200: Color(0xFFeb9c9f),
-  300: Color(0xFFe0777a),
-  400: Color(0xFFeb595a),
-  500: Color(0xFFf04a43),
-  600: Color(0xFFE14141),
-  700: Color(0xFFcf383a),
-  800: Color(_redSecondaryValue),
-  900: Color(0xFFb22929),
-});
+const secondary = Colors.redAccent;
 const seconday = secondary;

@@ -19,7 +19,8 @@
       "username": "Benutzername",
       "password": "Passwort",
       "login": "Einloggen",
-      "username_password_wrong": "Passwort oder Benutzername ist falsch!"
+      "username_password_wrong": "Passwort oder Benutzername ist falsch!",
+      "no_rest_api_installed": ""
     },
     "tasks": {
       "overview": {

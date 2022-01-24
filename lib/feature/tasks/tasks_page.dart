@@ -7,6 +7,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
+import 'package:search_choices/search_choices.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -23,11 +24,26 @@ class _TasksPageState extends State<TasksPage> {
   bool maintenanceFilter = false;
   late ScrollController _scrollController;
   bool _scrolling = false;
+  final List<DropdownMenuItem<String>> searchItems = List.empty(growable: true);
+  List<int> selectedItemsMultiDialog = List.empty();
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    searchItems.add(
+      DropdownMenuItem<String>(
+        child: Text(t.page.tasks.overview.static_service),
+        value: 'static_service',
+      ),
+    );
+    searchItems.add(
+      DropdownMenuItem<String>(
+        child: Text(t.page.tasks.overview.maintenance),
+        value: 'maintenance',
+      ),
+    );
+
     super.initState();
   }
 
@@ -44,34 +60,66 @@ class _TasksPageState extends State<TasksPage> {
         store.dispatch(InitMetaInformation());
       },
       converter: (store) =>
-          store.state.nodeState.node?.tasks.where((e) => filter(e)).toList() ?? List.empty(),
+          store.state.nodeState.node?.tasks.where((e) => filter(e)).toList() ??
+          List.empty(),
       builder: (context, tasks) => Stack(
         children: [
           RefreshIndicator(
             onRefresh: _pullRefresh,
             child: Column(
               children: [
-                Wrap(
-                  children: [
-                    FilterChip(
-                      label: Text(t.page.tasks.overview.static_service),
-                      selected: staticFilter,
-                      onSelected: (bool value) {
-                        setState(() {
-                          staticFilter = value;
-                        });
-                      },
-                    ),
-                    FilterChip(
-                      label: Text(t.page.tasks.overview.maintenance),
-                      selected: maintenanceFilter,
-                      onSelected: (bool value) {
-                        setState(() {
-                          maintenanceFilter = value;
-                        });
-                      },
-                    )
-                  ],
+                SearchChoices<String>.multiple(
+                  items: searchItems,
+                  hint: const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Text("Select your filter"),
+                  ),
+                  searchHint: 'Select your filter',
+                  selectedItems: selectedItemsMultiDialog,
+                  isExpanded: true,
+                  onChanged: (List<int> value) {
+                    setState(() {
+                      selectedItemsMultiDialog = value;
+                    });
+                  },
+                  displayItem: (Widget item, bool selected) {
+                    return Row(
+                      children: [
+                        selected
+                            ? const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                              )
+                            : const Icon(
+                                Icons.check_box_outline_blank,
+                                color: Colors.grey,
+                              ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: item,
+                        ),
+                      ],
+                    );
+                  },
+                  selectedValueWidgetFn: (String item) {
+                    return Container(
+                      margin: const EdgeInsets.all(4),
+                      child: Chip(
+                        padding: const EdgeInsets.all(6.0),
+                        label: searchItems
+                            .where((element) => element.value == item)
+                            .first
+                            .child,
+                      ),
+                    );
+                  },
+                  selectedAggregateWidgetFn: (List<Widget> list) {
+                    return Row(
+                      children: [
+                        Wrap(children: list),
+                      ],
+                    );
+                  },
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -252,7 +300,8 @@ class _TasksPageState extends State<TasksPage> {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    context.push('/tasks/task-edit', extra: task);
+                                    context.push('/tasks/task-edit',
+                                        extra: task);
                                   },
                                   icon: const Icon(Icons.edit),
                                 ),
@@ -310,6 +359,7 @@ class _TasksPageState extends State<TasksPage> {
   }
 
   bool filter(ServiceTask element) {
+
     if (staticFilter == false && maintenanceFilter == false) {
       return true;
     }

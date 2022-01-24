@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 final _lightSchema = ColorScheme.fromSwatch(
-    primarySwatch: color.primary,
+    primarySwatch: Colors.blue,
     accentColor: color.seconday,
     brightness: Brightness.light);
 ThemeData cloudnetTheme = ThemeData(
@@ -25,7 +25,7 @@ ThemeData cloudnetTheme = ThemeData(
       height: 1.25,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: color.primary.shade900,
+      statusBarColor: Colors.blue.shade900,
     ),
     iconTheme: const IconThemeData(color: color.blackBlack),
     actionsIconTheme: const IconThemeData(
@@ -149,7 +149,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
       height: 1.25,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: color.primary.shade800,
+        statusBarColor: Colors.blue.shade800,
         statusBarBrightness: Brightness.dark),
     iconTheme: const IconThemeData(color: color.white),
     actionsIconTheme: const IconThemeData(
@@ -170,8 +170,8 @@ ThemeData cloudnetDarkTheme = ThemeData(
     ),
   )),
   colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: color.primary,
-    accentColor: color.seconday,
+    primarySwatch: Colors.blue,
+    accentColor: Colors.redAccent,
     brightness: Brightness.dark,
   ),
   //scaffoldBackgroundColor: color.blackBlack,
