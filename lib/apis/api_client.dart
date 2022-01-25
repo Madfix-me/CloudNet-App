@@ -1,6 +1,10 @@
 import 'dart:io';
+import 'package:cloudnet/feature/login/login_page.dart';
+import 'package:cloudnet/utils/router.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 typedef AccessTokenProvider = String? Function();
 typedef AccessBasicAuthProvider = String? Function();
@@ -30,6 +34,11 @@ class ApiClient {
             }
             if (err.response?.statusCode != null &&
                 err.response!.statusCode == 403) {
+              router.routerDelegate.navigatorKey.currentContext?.go(LoginPage.route);
+              SnackBar snackBar = SnackBar(
+                content: Text('An error was conrrurent. Login out'),
+              );
+              ScaffoldMessenger.of(router.routerDelegate.navigatorKey.currentContext!).showSnackBar(snackBar);
             }
           },
         ),

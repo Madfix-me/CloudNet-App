@@ -9,6 +9,7 @@ class NetworkClusterNode with _$NetworkClusterNode {
   factory NetworkClusterNode({
     @JsonKey(name: 'uniqueId') String? uniqueId,
     @JsonKey(name: 'listeners') List<HostAndPort>? listeners,
+    @JsonKey(name: 'properties') @Default(<String, dynamic>{})Map<String,dynamic>? properties,
   }) = _NetworkClusterNode;
 
   factory NetworkClusterNode.fromJson(Map<String, dynamic> json) =>

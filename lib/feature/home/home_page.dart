@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node_app_config.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
@@ -214,8 +217,8 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            currentAccountPicture: Image(
-              image: _getProfileIcon(),
+            currentAccountPicture: CircleAvatar(
+              child: _getProfileIcon(state),
             ),
             accountName:
                 Text(nodeHandler.currentNode()?.toUrl() ?? 'No url provided'),
@@ -253,13 +256,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  AssetImage _getProfileIcon() {
+  Image _getProfileIcon(NodeState state) {
+    if (state.node != null && state.node?.nodeInfo != null) {
+      final CloudNetAppConfig cloudNetProperties = CloudNetAppConfig.fromJson(
+          state.node?.nodeInfo?.nodeInfoSnapshot?.node
+              ?.properties!['cloudnet_app'] as Map<String, dynamic>);
+      return Image.memory(base64Decode(
+          cloudNetProperties.appIcon.replaceAll("data:image/png;base64,", "")));
+    }
     if (AppConfig().isAlpha) {
-      return const AssetImage('.github/assets/img/TeamDiscord-Icon.png');
+      return Image.asset('.github/assets/img/TeamDiscord-Icon.png');
     }
     if (AppConfig().isBeta) {
-      return const AssetImage('.github/assets/img/Discord-Icon.png');
+      return Image.asset('.github/assets/img/Discord-Icon.png');
     }
-    return const AssetImage('.github/assets/img/Logo.png');
+    return Image.asset('.github/assets/img/Logo.png');
   }
 }

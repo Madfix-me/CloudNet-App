@@ -3,13 +3,9 @@ import '/utils/const.dart' as k;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final _lightSchema = ColorScheme.fromSwatch(
-    primarySwatch: Colors.blue,
-    accentColor: color.seconday,
-    brightness: Brightness.light);
 ThemeData cloudnetTheme = ThemeData(
   appBarTheme: AppBarTheme(
-    backgroundColor: color.blue,
+    backgroundColor: color.lightPrimary,
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -25,7 +21,7 @@ ThemeData cloudnetTheme = ThemeData(
       height: 1.25,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: Colors.blue.shade900,
+      statusBarColor: color.lightPrimary.shade900,
     ),
     iconTheme: const IconThemeData(color: color.blackBlack),
     actionsIconTheme: const IconThemeData(
@@ -39,20 +35,10 @@ ThemeData cloudnetTheme = ThemeData(
       borderRadius: BorderRadius.circular(10),
     ),
   ),
-  colorScheme: ColorScheme(
-      brightness: _lightSchema.brightness,
-      onPrimary: _lightSchema.onPrimary,
-      background: _lightSchema.background,
-      error: _lightSchema.error,
-      onBackground: _lightSchema.onBackground,
-      onError: _lightSchema.onError,
-      onSecondary: color.blackBlack,
-      onSurface: _lightSchema.onSurface,
-      primary: _lightSchema.primary,
-      primaryVariant: _lightSchema.primaryVariant,
-      secondary: _lightSchema.secondary,
-      secondaryVariant: _lightSchema.secondaryVariant,
-      surface: _lightSchema.surface),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: color.lightPrimary,
+    accentColor: color.lightSecondary.shade700
+  ),
   scaffoldBackgroundColor: color.lightGray,
   backgroundColor: color.lightGray,
   iconTheme: const IconThemeData(
@@ -82,15 +68,15 @@ ThemeData cloudnetTheme = ThemeData(
       ),
     ),
   ),
-  toggleButtonsTheme: const ToggleButtonsThemeData(selectedColor: color.blue),
+  toggleButtonsTheme: const ToggleButtonsThemeData(selectedColor: color.lightPrimary),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       elevation: 0.0,
       visualDensity: VisualDensity.comfortable,
       textStyle: cloudnetText.button,
-      primary: color.blue,
+      primary: color.lightPrimary,
       backgroundColor: color.white.withOpacity(0.56),
-      side: const BorderSide(color: color.blue),
+      side: const BorderSide(color: color.lightPrimary),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(k.radius.medium),
@@ -101,7 +87,7 @@ ThemeData cloudnetTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(color.primary),
+      backgroundColor: MaterialStateProperty.all(color.lightPrimary),
       foregroundColor: MaterialStateProperty.all(color.blackBlack),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
@@ -112,7 +98,7 @@ ThemeData cloudnetTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: color.blue,
+      primary: color.lightPrimary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -121,7 +107,7 @@ ThemeData cloudnetTheme = ThemeData(
   inputDecorationTheme: const InputDecorationTheme(
     border: UnderlineInputBorder(),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: color.blue),
+      borderSide: BorderSide(color: color.lightPrimary),
     ),
     contentPadding: EdgeInsets.all(10.0),
   ),
@@ -133,7 +119,7 @@ ThemeData cloudnetTheme = ThemeData(
 ThemeData cloudnetDarkTheme = ThemeData(
   brightness: Brightness.dark,
   appBarTheme: AppBarTheme(
-    backgroundColor: color.primary,
+    backgroundColor: color.darkPrimary,
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -149,7 +135,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
       height: 1.25,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.blue.shade800,
+        statusBarColor: color.darkPrimary.shade800,
         statusBarBrightness: Brightness.dark),
     iconTheme: const IconThemeData(color: color.white),
     actionsIconTheme: const IconThemeData(
@@ -170,8 +156,8 @@ ThemeData cloudnetDarkTheme = ThemeData(
     ),
   )),
   colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: Colors.blue,
-    accentColor: Colors.redAccent,
+    primarySwatch: color.darkPrimary,
+    accentColor: color.darkSecondary.shade800,
     brightness: Brightness.dark,
   ),
   //scaffoldBackgroundColor: color.blackBlack,
@@ -208,9 +194,9 @@ ThemeData cloudnetDarkTheme = ThemeData(
       elevation: 0.0,
       visualDensity: VisualDensity.comfortable,
       textStyle: cloudnetText.button,
-      primary: color.lightBlue,
+      primary: color.darkPrimary,
       backgroundColor: color.white.withOpacity(0.56),
-      side: const BorderSide(color: color.primary),
+      side: const BorderSide(color: color.darkPrimary),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(k.radius.medium),
@@ -221,7 +207,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(color.primary),
+      backgroundColor: MaterialStateProperty.all(color.darkPrimary.shade800),
       foregroundColor: MaterialStateProperty.all(color.white),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
@@ -232,20 +218,20 @@ ThemeData cloudnetDarkTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: color.primary,
+      primary: color.darkPrimary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0.0),
       ),
     ),
   ),
-  inputDecorationTheme: const InputDecorationTheme(
+  inputDecorationTheme: InputDecorationTheme(
     border: UnderlineInputBorder(
-      borderSide: BorderSide(color: color.primary),
+      borderSide: BorderSide(color: color.darkPrimary.shade800),
     ),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: color.primary),
+      borderSide: BorderSide(color: color.darkPrimary.shade800),
     ),
-    enabledBorder: UnderlineInputBorder(
+    enabledBorder: const UnderlineInputBorder(
       borderSide: BorderSide(color: color.gray),
     ),
     /*hintStyle: TextStyle(
@@ -263,6 +249,13 @@ ThemeData cloudnetDarkTheme = ThemeData(
       height: 1.25,
     ),*/
     contentPadding: EdgeInsets.all(8.0),
+  ),
+  switchTheme: SwitchThemeData(
+    trackColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.selected)) {
+        return color.darkPrimary;
+      }
+    })
   ),
   textTheme: cloudnetDarkText,
 );

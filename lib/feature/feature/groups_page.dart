@@ -15,11 +15,23 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
+
+  void _onError(dynamic error) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+        content: Text("Error Occurred")));
+  }
+
+  void _onCompleted() {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+        content: new Text("Item Completed")));
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<GroupConfiguration>>(
         onInit: (store) {
-          store.dispatch(InitMetaInformation());
+          store.dispatch(InitMetaInformation(_onCompleted, _onError));
         },
         converter: (store) => store.state.nodeState.node?.groups ?? List.empty(),
         builder: (context, groups) => Stack(

@@ -53,11 +53,24 @@ class _TasksPageState extends State<TasksPage> {
     });
   }
 
+  void _onError(dynamic error) {
+    SnackBar snackBar = SnackBar(
+      content: Text('An error concurrent'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _onCompleted() {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+        content: new Text("Item Completed")));
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<ServiceTask>>(
       onInit: (store) {
-        store.dispatch(InitMetaInformation());
+        store.dispatch(InitMetaInformation(_onCompleted, _onError));
       },
       converter: (store) =>
           store.state.nodeState.node?.tasks.where((e) => filter(e)).toList() ??

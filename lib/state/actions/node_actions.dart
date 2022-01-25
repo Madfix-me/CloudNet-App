@@ -8,7 +8,18 @@ import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 
+
+typedef void VoidCallback();
+typedef void ErrorCallback(dynamic error);
+
 class InitMetaInformation extends ReduxAction<AppState> {
+
+  VoidCallback onCompeleted;
+  ErrorCallback onError;
+
+
+  InitMetaInformation(this.onCompeleted, this.onError);
+
   @override
   Future<AppState?> reduce() async {
     final nodeInfo = await ApiService().nodeApi.getNode();
@@ -26,6 +37,8 @@ class InitMetaInformation extends ReduxAction<AppState> {
           templateStorage: templateStorage),
     ));
   }
+
+
 }
 
 class UpdateToken extends ReduxAction<AppState> {
