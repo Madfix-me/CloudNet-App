@@ -117,7 +117,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 64),
+                      margin: const EdgeInsets.symmetric(horizontal: 32),
                       child: IconButton(
                         onPressed: () {
                           GoRouter.of(context).pop();
@@ -127,7 +127,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 64),
+                      margin: const EdgeInsets.symmetric(horizontal: 32),
                       child: IconButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
