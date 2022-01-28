@@ -183,27 +183,76 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         Text('Deployments'),
                         ListView(
                           shrinkWrap: true,
-                          children: List<Widget>.generate(task.deployments.length, (index) {
-                            final deployment = task.deployments[index];
-                            final format = '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
-                            return Card(
-                              child: ListTile(
-                                title: Text( format),
-                                subtitle: deployment.excludes?.isNotEmpty == true ? ListView(
-                                  shrinkWrap: true,
-                                  children: List<Widget>.generate(deployment.excludes?.length ?? 0, (index) {
-                                    return Text('- ${deployment.excludes?[index]}');
-                                  }),
-                                ) : null,
-                              ),
-                            );
-                          }),
+                          children: task.deployments.isNotEmpty
+                              ? List<Widget>.generate(task.deployments.length,
+                                  (index) {
+                                  final deployment = task.deployments[index];
+                                  final format =
+                                      '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
+                                  return Card(
+                                    child: ListTile(
+                                      title: Text(format),
+                                      subtitle: deployment
+                                                  .excludes?.isNotEmpty ==
+                                              true
+                                          ? ListView(
+                                              shrinkWrap: true,
+                                              children: List<Widget>.generate(
+                                                  deployment.excludes?.length ??
+                                                      0, (index) {
+                                                return Text(
+                                                    '- ${deployment.excludes?[index]}');
+                                              }),
+                                            )
+                                          : null,
+                                    ),
+                                  );
+                                })
+                              : [
+                                  const Card(
+                                    child: ListTile(
+                                      title: Text('No deployments'),
+                                    ),
+                                  ),
+                                ],
                         )
                       ],
                     ),
                   )
                 ],
-              )
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text('Includes'),
+                        ListView(
+                          shrinkWrap: true,
+                          children: task.includes.isNotEmpty
+                              ? List<Widget>.generate(task.includes.length,
+                                  (index) {
+                                  final include = task.includes[index];
+                                  return Card(
+                                    child: ListTile(
+                                      title: Text(include.url ?? ''),
+                                      subtitle: Text('-> ${include.destination}'),
+                                    ),
+                                  );
+                                })
+                              : [
+                                  const Card(
+                                    child: ListTile(
+                                      title: Text('No inclusions'),
+                                    ),
+                                  ),
+                                ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
           config != null
