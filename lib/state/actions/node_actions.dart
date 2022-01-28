@@ -138,9 +138,8 @@ class SelectCloudNetNode extends ReduxAction<AppState> {
 
   @override
   Future<AppState> reduce() async {
-    final _node = node.copyWith(loggedin: false, connected: false, token: null);
     final newState =
-        state.copyWith(nodeState: state.nodeState.copyWith(node: _node));
+        state.copyWith(nodeState: state.nodeState.copyWith(node: node));
     await nodeHandler.load(newState);
     await loginHandler.load(newState);
     return newState;
