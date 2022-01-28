@@ -258,11 +258,15 @@ class _HomePageState extends State<HomePage> {
 
   Image _getProfileIcon(NodeState state) {
     if (state.node != null && state.node?.nodeInfo != null) {
-      final CloudNetAppConfig cloudNetProperties = CloudNetAppConfig.fromJson(
-          state.node?.nodeInfo?.nodeInfoSnapshot?.node
-              ?.properties!['cloudnet_app'] as Map<String, dynamic>);
-      return Image.memory(base64Decode(
-          cloudNetProperties.appIcon.replaceAll("data:image/png;base64,", "")));
+      if (state.node?.nodeInfo?.nodeInfoSnapshot?.node?.properties
+              ?.containsKey('cloudnet_app') ==
+          true) {
+        final CloudNetAppConfig cloudNetProperties = CloudNetAppConfig.fromJson(
+            state.node?.nodeInfo?.nodeInfoSnapshot?.node
+                ?.properties!['cloudnet_app'] as Map<String, dynamic>);
+        return Image.memory(base64Decode(cloudNetProperties.appIcon
+            .replaceAll("data:image/png;base64,", "")));
+      }
     }
     if (AppConfig().isAlpha) {
       return Image.asset('.github/assets/img/TeamDiscord-Icon.png');
