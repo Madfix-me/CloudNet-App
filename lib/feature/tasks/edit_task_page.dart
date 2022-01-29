@@ -1,7 +1,6 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/smart_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class EditTaskPage extends StatefulWidget {
   const EditTaskPage({required this.task, Key? key}) : super(key: key);
