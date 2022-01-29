@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloudnet/state/app_state.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
