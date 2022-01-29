@@ -3,8 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'node_state.freezed.dart';
 part 'node_state.g.dart';
-
-
 @freezed
 class NodeState with _$NodeState {
 
