@@ -27,7 +27,7 @@ class LoginHandler extends ValueNotifier<bool> {
       _token = state.nodeState.node?.token;
     }
   }
-  /*Future<String> sessionRefresh() async {
+  Future<String> sessionRefresh() async {
     final token = await Dio()
         .postUri<String>(
           Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/session/refresh'),
@@ -42,7 +42,7 @@ class LoginHandler extends ValueNotifier<bool> {
     _token = response['token'] as String;
     value = true;
     return _token!;
-  }*/
+  }
 
   Future<String> handleLogin(String username, String password) async {
     final dio = Dio();
