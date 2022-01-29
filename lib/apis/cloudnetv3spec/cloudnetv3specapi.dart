@@ -3,10 +3,10 @@ library cloudnetv3specapi;
 import '/apis/api_client.dart';
 
 //import '/apis/cloudnetv3spec/model/cloudnet_version.dart';
-//import '/apis/cloudnetv3spec/model/host_and_port.dart';
+import '/apis/cloudnetv3spec/model/cloudnet/host_and_port.dart';
 //import '/apis/cloudnetv3spec/model/network_cluster_node.dart';
 //import '/apis/cloudnetv3spec/model/network_cluster_node_info_snapshot.dart';
-import '/apis/cloudnetv3spec/model/node_info.dart';
+import 'model/cloudnet/node_info.dart';
 import '/apis/cloudnetv3spec/model/service_task.dart';
 import '/apis/cloudnetv3spec/model/task_response.dart';
 import '/apis/cloudnetv3spec/model/group_response.dart';
