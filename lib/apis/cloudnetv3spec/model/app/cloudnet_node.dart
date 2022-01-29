@@ -1,4 +1,4 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/group_configuration.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/node_info.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/service_version_type.dart';

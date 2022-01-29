@@ -1,4 +1,4 @@
-import '/apis/cloudnetv3spec/model/cloudnet_version.dart';
+import 'cloudnet_version.dart';
 import '/apis/cloudnetv3spec/model/process_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
