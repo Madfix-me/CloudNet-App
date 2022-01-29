@@ -9,6 +9,7 @@ part 'templatestorage_response.g.dart';
 class TemplateStorageResponse with _$TemplateStorageResponse {
   const factory TemplateStorageResponse({
     @JsonKey(name: 'success') @Default(false) bool success,
+    @JsonKey(name: 'reason') String? reason,
     @JsonKey(name: 'templates')
     @Default(<ServiceTemplate>[])
         List<ServiceTemplate> templates,

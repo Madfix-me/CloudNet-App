@@ -8,7 +8,8 @@ part 'service_version_type_response.freezed.dart';
 @freezed
 class ServiceVersionTypeResponse with _$ServiceVersionTypeResponse {
   const factory ServiceVersionTypeResponse({
-    @JsonKey(name: 'success') bool? success,
+    @JsonKey(name: 'success') @Default(false) bool success,
+    @JsonKey(name: 'reason') @Default('') String reason,
     @JsonKey(name: 'versions')
     @Default(<String, ServiceVersionType>{})
         Map<String, ServiceVersionType> versions,

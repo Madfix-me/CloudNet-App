@@ -8,8 +8,8 @@ part 'group_response.g.dart';
 @freezed
 class GroupResponse with _$GroupResponse {
   const factory GroupResponse({
-    @JsonKey(name: 'success') bool? success,
-    @JsonKey(name: 'reason') String? reason,
+    @JsonKey(name: 'success') @Default(false) bool success,
+    @JsonKey(name: 'reason') @Default('') String reason,
     @JsonKey(name: 'groups')
     @Default(<GroupConfiguration>[])
         List<GroupConfiguration> groups,
