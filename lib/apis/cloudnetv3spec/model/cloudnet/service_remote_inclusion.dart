@@ -7,7 +7,7 @@ part 'service_remote_inclusion.g.dart';
 @freezed
 class ServiceRemoteInclusion with _$ServiceRemoteInclusion {
   const factory ServiceRemoteInclusion({
-    @JsonKey(name: 'properties') Map<String, dynamic>? properties,
+    @JsonKey(name: 'properties') @Default(<String, dynamic>{}) Map<String, dynamic> properties,
     @JsonKey(name: 'url') String? url,
     @JsonKey(name: 'destination') String? destination,
   }) = _ServiceRemoteInclusion;

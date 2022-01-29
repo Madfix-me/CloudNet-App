@@ -1,5 +1,5 @@
 import 'cloudnet_version.dart';
-import '/apis/cloudnetv3spec/model/process_snapshot.dart';
+import 'process_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'network_cluster_node.dart';

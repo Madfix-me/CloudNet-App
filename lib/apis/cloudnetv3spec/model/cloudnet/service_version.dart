@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../cloudnetv3specapi.dart';
+import '../../cloudnetv3specapi.dart';
 
 part 'service_version.freezed.dart';
 

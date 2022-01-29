@@ -1,8 +1,8 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/node_info.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_version_type.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/templatestorage.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_version_type.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/templatestorage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'cloudnet_node.freezed.dart';

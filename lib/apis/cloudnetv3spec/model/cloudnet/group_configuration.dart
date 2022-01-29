@@ -1,6 +1,6 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_deployment.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_remote_inclusion.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_template.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_deployment.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_remote_inclusion.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'group_configuration.g.dart';
