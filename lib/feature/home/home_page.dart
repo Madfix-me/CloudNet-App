@@ -6,7 +6,7 @@ import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/login/login_page.dart';
-import 'package:cloudnet/feature/node/menu_node_page.dart';
+import 'package:cloudnet/feature/node/node_page.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';

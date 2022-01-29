@@ -3,7 +3,7 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/home/home_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
-import 'package:cloudnet/feature/node/menu_node_page.dart';
+import 'package:cloudnet/feature/node/node_page.dart';
 import 'package:cloudnet/feature/tasks/edit_task_page.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
