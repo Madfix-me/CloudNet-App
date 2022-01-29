@@ -2,7 +2,6 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_permission.dar
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'permission_group_response.freezed.dart';
-
 part 'permission_group_response.g.dart';
 
 @freezed

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'host_and_port.g.dart';
 part 'host_and_port.freezed.dart';
+part 'host_and_port.g.dart';
 
 @freezed
 class HostAndPort with _$HostAndPort {

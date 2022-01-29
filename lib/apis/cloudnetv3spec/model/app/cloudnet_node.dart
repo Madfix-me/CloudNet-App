@@ -8,10 +8,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'cloudnet_node.freezed.dart';
 part 'cloudnet_node.g.dart';
 
-
 @freezed
 class CloudNetNode with _$CloudNetNode {
-
   const factory CloudNetNode({
     @JsonKey(name: 'ssl') @Default(false) bool ssl,
     @JsonKey(name: 'connected') @Default(false) bool connected,
@@ -22,11 +20,14 @@ class CloudNetNode with _$CloudNetNode {
     @JsonKey(name: 'token') String? token,
     @JsonKey(name: 'node_info') NodeInfo? nodeInfo,
     @JsonKey(name: 'tasks') @Default(<ServiceTask>[]) List<ServiceTask> tasks,
-    @JsonKey(name: 'groups') @Default(<GroupConfiguration>[]) List<GroupConfiguration> groups,
-    @JsonKey(name: 'versions') @Default(<ServiceVersionType>[]) List<ServiceVersionType> versions,
+    @JsonKey(name: 'groups')
+    @Default(<GroupConfiguration>[])
+        List<GroupConfiguration> groups,
+    @JsonKey(name: 'versions')
+    @Default(<ServiceVersionType>[])
+        List<ServiceVersionType> versions,
     @JsonKey(name: 'template_storage') TemplateStorage? templateStorage,
-}) = _CloudNetNode;
-
+  }) = _CloudNetNode;
 
   factory CloudNetNode.fromJson(Map<String, dynamic> json) =>
       _$CloudNetNodeFromJson(json);

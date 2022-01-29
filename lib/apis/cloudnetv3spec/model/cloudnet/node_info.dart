@@ -1,11 +1,10 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/host_and_port.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/version.dart';
-
-import 'network_cluster_node_info_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'node_info.freezed.dart';
+import 'network_cluster_node_info_snapshot.dart';
 
+part 'node_info.freezed.dart';
 part 'node_info.g.dart';
 
 @freezed

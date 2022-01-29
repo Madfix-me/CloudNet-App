@@ -2,7 +2,6 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dar
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'templatestorage_response.freezed.dart';
-
 part 'templatestorage_response.g.dart';
 
 @freezed

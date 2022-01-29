@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'cloudnet_node_app_config.freezed.dart';
-
 part 'cloudnet_node_app_config.g.dart';
 
 @freezed

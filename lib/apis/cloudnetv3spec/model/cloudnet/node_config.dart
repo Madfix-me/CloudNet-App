@@ -4,9 +4,8 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/network_cluster_node
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/node_ssl_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'node_config.g.dart';
-
 part 'node_config.freezed.dart';
+part 'node_config.g.dart';
 
 @freezed
 class NodeConfig with _$NodeConfig {

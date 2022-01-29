@@ -7,7 +7,6 @@ part 'module.g.dart';
 
 @freezed
 class Module with _$Module {
-
   const factory Module({
     @JsonKey(name: 'runtimeModule') bool? runtimeModule,
     @JsonKey(name: 'storesSensitiveData') bool? storesSensitiveData,
@@ -19,12 +18,17 @@ class Module with _$Module {
     @JsonKey(name: 'author') String? author,
     @JsonKey(name: 'website') String? website,
     @JsonKey(name: 'dataFolder') String? dataFolder,
-    @JsonKey(name: 'repositories')@Default(<ModuleRepository>[])List<ModuleRepository> repositories,
-    @JsonKey(name: 'dependencies') @Default(<ModuleDependency>[])List<ModuleDependency> dependencies,
+    @JsonKey(name: 'repositories')
+    @Default(<ModuleRepository>[])
+        List<ModuleRepository> repositories,
+    @JsonKey(name: 'dependencies')
+    @Default(<ModuleDependency>[])
+        List<ModuleDependency> dependencies,
     @JsonKey(name: 'minJavaVersionId') int? minJavaVersionId,
-    @JsonKey(name: 'properties') @Default(<String, dynamic>{}) Map<String,dynamic> properties,
-}) = _Module;
-
+    @JsonKey(name: 'properties')
+    @Default(<String, dynamic>{})
+        Map<String, dynamic> properties,
+  }) = _Module;
 
   factory Module.fromJson(Map<String, dynamic> json) => _$ModuleFromJson(json);
 }

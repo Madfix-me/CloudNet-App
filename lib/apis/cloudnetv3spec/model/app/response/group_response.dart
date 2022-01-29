@@ -2,7 +2,6 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'group_response.freezed.dart';
-
 part 'group_response.g.dart';
 
 @freezed
