@@ -1,3 +1,4 @@
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/thread.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'process_snapshot.g.dart';
@@ -15,6 +16,7 @@ class ProcessSnapshot with _$ProcessSnapshot {
     @JsonKey(name: 'unloadedClassCount') int? unloadedClassCount,
     @JsonKey(name: 'totalLoadedClassCount') int? totalLoadedClassCount,
     @JsonKey(name: 'currentLoadedClassCount') int? currentLoadedClassCount,
+    @JsonKey(name: 'threads') @Default(<Thread>[]) List<Thread> threads
   }) = _ProcessSnapshot;
 
   factory ProcessSnapshot.fromJson(Map<String, dynamic> json) =>

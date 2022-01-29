@@ -1,4 +1,6 @@
-import 'cloudnet_version.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/module.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/version.dart';
+
 import 'process_snapshot.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,9 +18,11 @@ class NetworkClusterNodeInfoSnapshot with _$NetworkClusterNodeInfoSnapshot {
     @JsonKey(name: 'usedMemory') int? usedMemory,
     @JsonKey(name: 'reservedMemory') int? reservedMemory,
     @JsonKey(name: 'currentServicesCount') int? currentServicesCount,
+    @JsonKey(name: 'drain') @Default(false) bool drain,
     @JsonKey(name: 'node') NetworkClusterNode? node,
-    @JsonKey(name: 'version') CloudNetVersion? version,
+    @JsonKey(name: 'version') Version? version,
     @JsonKey(name: 'processSnapshot') ProcessSnapshot? processSnapshot,
+    @JsonKey(name: 'module') @Default(<Module>[])List<Module>? modules,
     @JsonKey(name: 'maxCPUUsageToStartServices')
         double? maxCPUUsageToStartServices,
   }) = _NetworkClusterNodeInfoSnapshot;
