@@ -1,10 +1,10 @@
 import 'package:cloudnet/apis/api_service.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/process_configuration.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_template.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_version.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_version_type.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/template_install.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/process_configuration.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_version.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_version_type.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/template_install.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/state/app_state.dart';

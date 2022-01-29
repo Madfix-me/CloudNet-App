@@ -1,4 +1,4 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';

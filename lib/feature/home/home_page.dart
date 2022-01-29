@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node_app_config.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/custom/cloudnet_node_app_config.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';

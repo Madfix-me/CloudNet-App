@@ -1,5 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';

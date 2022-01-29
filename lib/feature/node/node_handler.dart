@@ -1,4 +1,4 @@
-                import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+                import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/state/app_state.dart';
 
 import 'package:flutter/material.dart';

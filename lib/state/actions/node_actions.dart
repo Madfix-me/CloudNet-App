@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/api_service.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/app_state.dart';

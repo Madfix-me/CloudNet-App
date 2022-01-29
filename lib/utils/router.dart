@@ -1,5 +1,5 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
-import 'package:cloudnet/apis/cloudnetv3spec/model/service_task.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/home/home_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';

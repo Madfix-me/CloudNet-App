@@ -1,4 +1,4 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'node_state.freezed.dart';

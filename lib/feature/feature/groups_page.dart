@@ -1,4 +1,4 @@
-import 'package:cloudnet/apis/cloudnetv3spec/model/group_configuration.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:async_redux/async_redux.dart';
