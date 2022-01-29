@@ -9,7 +9,7 @@ class Permission with _$Permission {
   const factory Permission({
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'potency') int? potency,
-    @JsonKey(name: 'timeOutMillis') int? timeOutInMillis
+    @JsonKey(name: 'timeOutMillis') BigInt? timeOutInMillis
 }) = _Permission;
 
 
