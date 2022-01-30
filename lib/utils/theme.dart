@@ -36,9 +36,8 @@ ThemeData cloudnetTheme = ThemeData(
     ),
   ),
   colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: color.lightPrimary,
-    accentColor: color.lightSecondary.shade700
-  ),
+      primarySwatch: color.lightPrimary,
+      accentColor: color.lightSecondary.shade700),
   scaffoldBackgroundColor: color.lightGray,
   backgroundColor: color.lightGray,
   iconTheme: const IconThemeData(
@@ -68,7 +67,8 @@ ThemeData cloudnetTheme = ThemeData(
       ),
     ),
   ),
-  toggleButtonsTheme: const ToggleButtonsThemeData(selectedColor: color.lightPrimary),
+  toggleButtonsTheme:
+      const ToggleButtonsThemeData(selectedColor: color.lightPrimary),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       elevation: 0.0,
@@ -252,12 +252,23 @@ ThemeData cloudnetDarkTheme = ThemeData(
   ),
   switchTheme: SwitchThemeData(
     trackColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) {
-        return color.darkPrimary;
+      if (states.contains(MaterialState.selected) ||
+          states.contains(MaterialState.pressed)) {
+        return color.darkPrimary.shade400;
       }
-    })
+      return null;
+    }),
+    thumbColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.selected) ||
+          states.contains(MaterialState.pressed)) {
+        return color.darkPrimary.shade800;
+      }
+      return null;
+    }),
   ),
   textTheme: cloudnetDarkText,
+  checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.all(color.darkSecondary.shade800)),
 );
 
 const fontFamily = 'Inter';

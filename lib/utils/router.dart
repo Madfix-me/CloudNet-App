@@ -120,7 +120,7 @@ final router = GoRouter(
   redirect: (GoRouterState state) {
     final bool loggedIn =
         !loginHandler.isExpired() && loginHandler.accessToken() != null;
-    print(loginHandler.isExpired());
+
     final bool goingToLogin = state.location == LoginPage.route ||
         state.location == MenuNodePage.route;
 

@@ -1,3 +1,5 @@
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
+import 'package:cloudnet/state/node_state.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
@@ -65,4 +67,27 @@ AlertDialog deleteDialog(BuildContext context,
       )
     ],
   );
+}
+
+AlertDialog selectGroups(
+    BuildContext context, NodeState state, ServiceTask task) {
+  return AlertDialog(
+    title: Text('Select groups for this task'),
+    content: SingleChildScrollView(
+      child: Column(
+        children: _buildGroups(state, task),
+      ),
+    ),
+  );
+}
+
+List<Widget> _buildGroups(NodeState state, ServiceTask task) {
+  return List.generate(state.node?.groups.length ?? 0, (index) {
+    final group = state.node?.groups[index];
+    return CheckboxListTile(
+      value: task.groups?.contains(group?.name ?? ''),
+      onChanged: (bool? value) {},
+      title: Text(group?.name ?? ''),
+    );
+  });
 }
