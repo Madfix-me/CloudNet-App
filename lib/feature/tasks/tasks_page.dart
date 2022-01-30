@@ -355,7 +355,7 @@ class _TasksPageState extends State<TasksPage> {
               : Positioned(
                   child: FloatingActionButton(
                     onPressed: () {
-                      context.push(TaskSetupPage.route);
+                      context.goNamed(TaskSetupPage.name);
                     },
                     child: const Icon(Icons.add),
                   ),

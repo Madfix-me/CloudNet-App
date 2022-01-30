@@ -192,15 +192,15 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                     child: ListTile(
                                       title: Text(format),
                                       subtitle: deployment
-                                                  .excludes?.isNotEmpty ==
+                                                  .excludes.isNotEmpty ==
                                               true
                                           ? ListView(
                                               shrinkWrap: true,
                                               children: List<Widget>.generate(
-                                                  deployment.excludes?.length ??
+                                                  deployment.excludes.length ??
                                                       0, (index) {
                                                 return Text(
-                                                    '- ${deployment.excludes?[index]}');
+                                                    '- ${deployment.excludes[index]}');
                                               }),
                                             )
                                           : null,

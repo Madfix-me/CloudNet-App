@@ -14,7 +14,7 @@ class VersionsApi {
         path: baseUri.path + '/api/v2/serviceversion');
     final val = await apiClient.dio.getUri(uri).then((response) {
       return ServiceVersionTypeResponse.fromJson(response.data!)
-          .versions!
+          .versions
           .values
           .toList();
     });

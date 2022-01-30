@@ -86,7 +86,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                   serviceVersionType.environmentType &&
                               element.name == env)
                           .versions
-                          ?.firstWhere((element) => element.name == version);
+                          .firstWhere((element) => element.name == version);
                     });
                   },
                 ),
@@ -599,7 +599,7 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
     for (var type in versions.where((element) =>
         (element.environmentType ?? '') ==
         (versionType.environmentType ?? ''))) {
-      for (var element in type.versions!) {
+      for (var element in type.versions) {
         vers.add('${type.name}-${element.name}');
       }
     }

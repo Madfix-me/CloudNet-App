@@ -12,7 +12,7 @@ class GroupsApi {
     final uri = baseUri.replace(
         queryParameters: queryParams, path: baseUri.path + '/api/v2/group');
     final val = await apiClient.dio.getUri(uri).then((response) {
-      return GroupResponse.fromJson(response.data!).groups!;
+      return GroupResponse.fromJson(response.data!).groups;
     });
 
     return val;

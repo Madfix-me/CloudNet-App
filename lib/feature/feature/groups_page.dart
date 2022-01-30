@@ -60,7 +60,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(group.targetEnvironments!.length
+                                    Text(group.targetEnvironments.length
                                         .toString())
                                   ],
                                 )
@@ -82,7 +82,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(group.deployments!.length.toString())
+                                    Text(group.deployments.length.toString())
                                   ],
                                 )
                               ],
@@ -103,7 +103,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(group.jvmOptions!.length.toString())
+                                    Text(group.jvmOptions.length.toString())
                                   ],
                                 )
                               ],
@@ -124,7 +124,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(group.templates!.length.toString())
+                                    Text(group.templates.length.toString())
                                   ],
                                 )
                               ],
@@ -145,7 +145,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(group.includes!.length.toString())
+                                    Text(group.includes.length.toString())
                                   ],
                                 )
                               ],
