@@ -1,5 +1,9 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/smart_config.dart';
+import 'package:cloudnet/state/app_state.dart';
+import 'package:cloudnet/state/node_state.dart';
+import 'package:cloudnet/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 
 class EditTaskPage extends StatefulWidget {
@@ -15,6 +19,9 @@ class EditTaskPage extends StatefulWidget {
 
 class _EditTaskPageState extends State<EditTaskPage> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _javaCommandController = TextEditingController();
+  final TextEditingController _environmentCommandController =
+      TextEditingController();
   final TextEditingController _portController = TextEditingController();
   final TextEditingController _minServiceController = TextEditingController();
   final TextEditingController _maxHeapController = TextEditingController();
@@ -35,6 +42,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
     final ServiceTask task = widget.task;
     _nameController.text = task.name ?? '';
     _portController.text = task.startPort?.toString() ?? '';
+    _environmentCommandController.text =
+        task.processConfiguration?.environment?.toString() ?? '';
+    _javaCommandController.text = task.javaCommand.toString() ?? '';
     _minServiceController.text = task.minServiceCount?.toString() ?? '';
     _maxHeapController.text =
         task.processConfiguration?.maxHeapMemorySize?.toString() ?? '';
@@ -48,65 +58,77 @@ class _EditTaskPageState extends State<EditTaskPage> {
       _smartConfigPreparedServices = TextEditingController.fromValue(
           TextEditingValue(text: _config?.preparedServices.toString() ?? ''));
       _smartConfigSmartMinServiceCount = TextEditingController.fromValue(
-          TextEditingValue(text: _config?.smartMinServiceCount.toString() ?? ''));
+          TextEditingValue(
+              text: _config?.smartMinServiceCount.toString() ?? ''));
       _smartConfigAutoStopTimeByUnusedServiceInSeconds =
           TextEditingController.fromValue(TextEditingValue(
-              text: _config?.autoStopTimeByUnusedServiceInSeconds.toString() ?? ''));
+              text: _config?.autoStopTimeByUnusedServiceInSeconds.toString() ??
+                  ''));
       _smartConfigPercentOfPlayersToCheckShouldStopTheService =
           TextEditingController.fromValue(TextEditingValue(
               text: _config?.percentOfPlayersToCheckShouldStopTheService
-                  .toString() ?? ''));
+                      .toString() ??
+                  ''));
       _smartConfigForAnewInstanceDelayTimeInSeconds =
           TextEditingController.fromValue(TextEditingValue(
-              text: _config?.forAnewInstanceDelayTimeInSeconds.toString() ?? ''));
+              text:
+                  _config?.forAnewInstanceDelayTimeInSeconds.toString() ?? ''));
       _smartConfigPercentOfPlayersForANewServiceByInstance =
           TextEditingController.fromValue(TextEditingValue(
-              text:
-              _config?.percentOfPlayersForANewServiceByInstance.toString() ?? ''));
+              text: _config?.percentOfPlayersForANewServiceByInstance
+                      .toString() ??
+                  ''));
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ExpansionTile(
-            title: Text('Basic Configuration',
-                style: Theme.of(context).textTheme.headline5),
-            childrenPadding: EdgeInsets.only(left: 8.0, right: 8.0),
+    return StoreConnector<AppState, NodeState>(
+      converter: (store) => store.state.nodeState,
+      builder: (context, vm) {
+        return SingleChildScrollView(
+          child: Column(
             children: [
-              _buildName(),
-              _buildPort(),
-              _buildMinServiceCount(),
-              _buildMaxHeap(),
-              _buildMaintenance(),
-              _buildStatic(),
-              _buildGroups(),
-              _buildDeployments(),
-              _buildIncludes(),
+              ExpansionTile(
+                title: Text('Basic Configuration',
+                    style: Theme.of(context).textTheme.headline5),
+                childrenPadding: EdgeInsets.only(left: 16.0, right: 16.0),
+                children: [
+                  _buildName(),
+                  _buildJavaCommand(),
+                  _buildEnvironment(),
+                  _buildPort(),
+                  _buildMinServiceCount(),
+                  _buildMaxHeap(),
+                  _buildMaintenance(),
+                  _buildStatic(),
+                  _buildGroups(vm),
+                  _buildDeployments(),
+                  _buildIncludes(),
+                ],
+              ),
+              _config != null
+                  ? ExpansionTile(
+                      title: Text('Smart Config',
+                          style: Theme.of(context).textTheme.headline5),
+                      childrenPadding:
+                          const EdgeInsets.only(left: 16.0, right: 16.0),
+                      children: [
+                        _buildSmartEnabled(),
+                        _buildSmartSplitLogicOverNodes(),
+                        _buildSmartDirectTemplateInclusions(),
+                        _buildSmartPriority(),
+                        _buildSmartMaxServices(),
+                        _buildSmartPreparedMaxServices(),
+                        _buildSmartSmartMinServiceCount(),
+                        _buildSmartAutoStopOfUnusedService(),
+                        _buildSmartAutoStopViaPercentage(),
+                        _buildSmartTimeDelayForNewService(),
+                        _buildSmartPercentageForNewService()
+                      ],
+                    )
+                  : Flex(direction: Axis.horizontal),
             ],
           ),
-          _config != null
-              ? ExpansionTile(
-                  title: Text('Smart Config',
-                      style: Theme.of(context).textTheme.headline5),
-                  childrenPadding:
-                      const EdgeInsets.only(left: 16.0, right: 16.0),
-                  children: [
-                    _buildSmartEnabled(),
-                    _buildSmartSplitLogicOverNodes(),
-                    _buildSmartDirectTemplateInclusions(),
-                    _buildSmartPriority(),
-                    _buildSmartMaxServices(),
-                    _buildSmartPreparedMaxServices(),
-                    _buildSmartSmartMinServiceCount(),
-                    _buildSmartAutoStopOfUnusedService(),
-                    _buildSmartAutoStopViaPercentage(),
-                    _buildSmartTimeDelayForNewService(),
-                    _buildSmartPercentageForNewService()
-                  ],
-                )
-              : Flex(direction: Axis.horizontal),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -135,8 +157,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _portController,
-            decoration:
-            const InputDecoration(labelText: 'Start Port'),
+            decoration: const InputDecoration(labelText: 'Start Port'),
           ),
         ),
       ],
@@ -150,8 +171,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _minServiceController,
-            decoration:
-            const InputDecoration(labelText: 'Min Service Count'),
+            decoration: const InputDecoration(labelText: 'Min Service Count'),
           ),
         ),
       ],
@@ -218,11 +238,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   }
 
-  Widget _buildGroups() {
-    return GestureDetector(
+  Widget _buildGroups(NodeState state) {
+    //TODO: Input Dialog
+    return InkWell(
       onLongPress: () {
-        SnackBar bar = SnackBar(content: Text(' Just a test'));
-        ScaffoldMessenger.of(context).showSnackBar(bar);
+        showDialog<AlertDialog>(
+          context: context,
+          builder: (context) {
+            return selectGroups(context, state, widget.task);
+          },
+        );
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,10 +255,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
           Text('Groups'),
           Wrap(
             spacing: 8,
-            children: List<Widget>.generate(widget.task.groups?.length ?? 0,
-                    (index) {
-                  return Chip(label: Text(widget.task.groups?[index] ?? ''));
-                }),
+            children:
+                List<Widget>.generate(widget.task.groups?.length ?? 0, (index) {
+              return Chip(label: Text(widget.task.groups?[index] ?? ''));
+            }),
           )
         ],
       ),
@@ -252,41 +277,39 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 children: widget.task.deployments.isNotEmpty
                     ? List<Widget>.generate(widget.task.deployments.length,
                         (index) {
-                      final deployment = widget.task.deployments[index];
-                      final format =
-                          '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
-                      return Card(
-                        child: ListTile(
-                          title: Text(format),
-                          subtitle: deployment
-                              .excludes.isNotEmpty ==
-                              true
-                              ? ListView(
-                            shrinkWrap: true,
-                            children: List<Widget>.generate(
-                                deployment.excludes.length , (index) {
-                              return Text(
-                                  '- ${deployment.excludes[index]}');
-                            }),
-                          )
-                              : null,
-                        ),
-                      );
-                    })
+                        final deployment = widget.task.deployments[index];
+                        final format =
+                            '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
+                        return Card(
+                          child: ListTile(
+                            title: Text(format),
+                            subtitle: deployment.excludes.isNotEmpty == true
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: List<Widget>.generate(
+                                        deployment.excludes.length, (index) {
+                                      return Text(
+                                          '- ${deployment.excludes[index]}');
+                                    }),
+                                  )
+                                : null,
+                          ),
+                        );
+                      })
                     : [
-                  const Card(
-                    child: ListTile(
-                      title: Text('No deployments'),
-                    ),
-                  ),
-                ],
+                        const Card(
+                          child: ListTile(
+                            title: Text('No deployments'),
+                          ),
+                        ),
+                      ],
               )
             ],
           ),
         )
       ],
     );
-  }
+  } //TODO: Input Dialog
 
   Widget _buildIncludes() {
     return Row(
@@ -300,29 +323,60 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 children: widget.task.includes.isNotEmpty
                     ? List<Widget>.generate(widget.task.includes.length,
                         (index) {
-                      final include = widget.task.includes[index];
-                      return Card(
-                        child: ListTile(
-                          title: Text(include.url ?? ''),
-                          subtitle:
-                          Text('-> ${include.destination}'),
-                        ),
-                      );
-                    })
+                        final include = widget.task.includes[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(include.url ?? ''),
+                            subtitle: Text('-> ${include.destination}'),
+                          ),
+                        );
+                      })
                     : [
-                  const Card(
-                    child: ListTile(
-                      title: Text('No inclusions'),
-                    ),
-                  ),
-                ],
+                        const Card(
+                          child: ListTile(
+                            title: Text('No inclusions'),
+                          ),
+                        ),
+                      ],
               )
             ],
           ),
         )
       ],
     );
+  } //TODO: Input Dialog
+
+  Widget _buildJavaCommand() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            keyboardType: TextInputType.name,
+            controller: _javaCommandController,
+            enabled: false,
+            decoration: const InputDecoration(labelText: 'Java Command'),
+          ),
+        )
+      ],
+    );
   }
+
+  Widget _buildEnvironment() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            keyboardType: TextInputType.name,
+            controller: _environmentCommandController,
+            enabled: false,
+            decoration: const InputDecoration(labelText: 'Environment'),
+          ),
+        )
+      ],
+    );
+  } //TODO: Drop Down
 
   // Smart Config
 
@@ -397,14 +451,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPriority,
-            decoration:
-            const InputDecoration(labelText: 'Priority'),
+            decoration: const InputDecoration(labelText: 'Priority'),
           ),
         ),
-        Tooltip(
-          message: 'Allow the priority of task starting',
-          child: Icon(Icons.info),
-        )
       ],
     );
   }
@@ -417,13 +466,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigMaxServices,
-            decoration: const InputDecoration(
-                labelText: 'Max Services'),
+            decoration: const InputDecoration(labelText: 'Max Services'),
           ),
-        ),
-        Tooltip(
-          message: 'Max amount of services',
-          child: Icon(Icons.info),
         )
       ],
     );
@@ -437,35 +481,24 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPreparedServices,
-            decoration: const InputDecoration(
-                labelText: 'Prepared Services'),
+            decoration: const InputDecoration(labelText: 'Prepared Services'),
           ),
-        ),
-        Tooltip(
-          message:
-          'Services they a running but not visible for SignSystem or other systems',
-          child: Icon(Icons.info),
         )
       ],
     );
   }
 
   Widget _buildSmartSmartMinServiceCount() {
-    return  Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigSmartMinServiceCount,
-            decoration: const InputDecoration(
-                labelText: 'Smart Min Service Count'),
+            decoration:
+                const InputDecoration(labelText: 'Smart Min Service Count'),
           ),
-        ),
-        Tooltip(
-          message:
-          'Same like normal min count but only for smart config',
-          child: Icon(Icons.info),
         )
       ],
     );
@@ -478,39 +511,27 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller:
-            _smartConfigAutoStopTimeByUnusedServiceInSeconds,
+            controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds,
             decoration: const InputDecoration(
-                labelText:
-                'Auto stop time by unused services in seconds'),
+                labelText: 'Auto stop time by unused services in seconds'),
           ),
-        ),
-        Tooltip(
-          message:
-          'In seconds how long services are empty before get stoppend',
-          child: Icon(Icons.info),
         )
       ],
     );
   }
 
   Widget _buildSmartAutoStopViaPercentage() {
-    return  Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller:
-            _smartConfigPercentOfPlayersToCheckShouldStopTheService,
+            controller: _smartConfigPercentOfPlayersToCheckShouldStopTheService,
             decoration: const InputDecoration(
                 labelText:
-                'Percent of player to check should stop the service'),
+                    'Percent of player to check should stop the service'),
           ),
-        ),
-        Tooltip(
-          message: 'Soon',
-          child: Icon(Icons.info),
         )
       ],
     );
@@ -523,16 +544,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller:
-            _smartConfigForAnewInstanceDelayTimeInSeconds,
+            controller: _smartConfigForAnewInstanceDelayTimeInSeconds,
             decoration: const InputDecoration(
-                labelText:
-                'For a new instance delay time in seconds'),
+                labelText: 'For a new instance delay time in seconds'),
           ),
-        ),
-        Tooltip(
-          message: 'Soon',
-          child: Icon(Icons.info),
         )
       ],
     );
@@ -545,16 +560,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller:
-            _smartConfigPercentOfPlayersForANewServiceByInstance,
+            controller: _smartConfigPercentOfPlayersForANewServiceByInstance,
             decoration: const InputDecoration(
-                labelText:
-                'Percent of players for a new service'),
+                labelText: 'Percent of players for a new service'),
           ),
-        ),
-        Tooltip(
-          message: 'Soon',
-          child: Icon(Icons.info),
         )
       ],
     );
