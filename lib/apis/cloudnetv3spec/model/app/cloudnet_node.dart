@@ -1,6 +1,7 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/node_info.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_version_type.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/templatestorage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -20,6 +21,7 @@ class CloudNetNode with _$CloudNetNode {
     @JsonKey(name: 'token') String? token,
     @JsonKey(name: 'node_info') NodeInfo? nodeInfo,
     @JsonKey(name: 'tasks') @Default(<ServiceTask>[]) List<ServiceTask> tasks,
+    @JsonKey(name: 'templates') @Default(<ServiceTemplate>[]) List<ServiceTemplate> templates,
     @JsonKey(name: 'groups')
     @Default(<GroupConfiguration>[])
         List<GroupConfiguration> groups,

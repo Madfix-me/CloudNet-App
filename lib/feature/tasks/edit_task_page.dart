@@ -100,7 +100,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   _buildMaintenance(),
                   _buildStatic(),
                   _buildGroups(vm),
-                  _buildDeployments(),
+                  _buildDeployments(vm),
                   _buildIncludes(),
                 ],
               ),
@@ -265,7 +265,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   }
 
-  Widget _buildDeployments() {
+  Widget _buildDeployments(NodeState state) {
     return Row(
       children: [
         Expanded(
@@ -275,24 +275,72 @@ class _EditTaskPageState extends State<EditTaskPage> {
               ListView(
                 shrinkWrap: true,
                 children: widget.task.deployments.isNotEmpty
-                    ? List<Widget>.generate(widget.task.deployments.length,
+                    ? List<Widget>.generate(widget.task.deployments.length + 1,
                         (index) {
+                        if (index == widget.task.deployments.length) {
+                          return Card(
+                            child: ListTile(
+                              title: Text('Add Deployment'),
+                              leading: Icon(Icons.add),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditDeployment(
+                                        context,
+                                        false,
+                                        null,
+                                        state
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        }
                         final deployment = widget.task.deployments[index];
                         final format =
                             '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
                         return Card(
                           child: ListTile(
                             title: Text(format),
-                            subtitle: deployment.excludes.isNotEmpty == true
-                                ? ListView(
-                                    shrinkWrap: true,
-                                    children: List<Widget>.generate(
-                                        deployment.excludes.length, (index) {
-                                      return Text(
-                                          '- ${deployment.excludes[index]}');
-                                    }),
-                                  )
-                                : null,
+                            leading: Icon(Icons.storage),
+                            trailing: IconButton(
+                              color: Theme.of(context).errorColor,
+                              icon: Icon(
+                                Icons.delete_forever,
+                              ),
+                              onPressed: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return deleteDialog(
+                                      context,
+                                      onCancel: () {
+                                        Navigator.pop(context);
+                                      },
+                                      onDelete: () {
+                                        Navigator.pop(context);
+                                      },
+                                      item: format,
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditDeployment(
+                                    context,
+                                    true,
+                                    deployment,
+                                      state
+                                  );
+                                },
+                              );
+                            },
                           ),
                         );
                       })
@@ -300,6 +348,25 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         const Card(
                           child: ListTile(
                             title: Text('No deployments'),
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            title: Text('Add Deployment'),
+                            leading: Icon(Icons.add),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditDeployment(
+                                    context,
+                                    false,
+                                    null,
+                                      state
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ),
                       ],

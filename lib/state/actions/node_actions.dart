@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/api_service.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/app_state.dart';
@@ -27,6 +28,9 @@ class InitMetaInformation extends ReduxAction<AppState> {
     final groups = await ApiService().groupsApi.getGroups();
     final versions = await ApiService().versionsApi.getVersions();
     final templateStorage = await ApiService().templateStorageApi.getStorage();
+
+    final rawTemplates = await Future.wait(templateStorage.storages.map((e) async => (await ApiService().templateStorageApi.getTemplates(e))));
+    final templates = rawTemplates.fold(<ServiceTemplate>[], (List<ServiceTemplate> previousValue, List<ServiceTemplate> element) => [...previousValue,...element]);
     return state.copyWith(
         nodeState: state.nodeState.copyWith(
       node: state.nodeState.node?.copyWith(
@@ -34,7 +38,9 @@ class InitMetaInformation extends ReduxAction<AppState> {
           tasks: nodeTasks,
           groups: groups,
           versions: versions,
-          templateStorage: templateStorage),
+          templateStorage: templateStorage,
+        templates: templates
+      ),
     ));
   }
 
