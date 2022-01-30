@@ -4,7 +4,7 @@ import '/apis/api_client.dart';
 
 import 'model/cloudnet/node_info.dart';
 import 'model/cloudnet/service_task.dart';
-import 'model/cloudnet/task_response.dart';
+import 'model/app/response/task_response.dart';
 import 'model/app/response/group_response.dart';
 import 'model/cloudnet/group_configuration.dart';
 import 'model/cloudnet/service_version_type.dart';
