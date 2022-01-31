@@ -1,7 +1,7 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
-import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 
 class GroupsPage extends StatefulWidget {
@@ -15,15 +15,9 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  void _onError(dynamic error) {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: Text("Error Occurred")));
-  }
+  void _onError(dynamic error) {}
 
-  void _onCompleted() {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
-  }
+  void _onCompleted() {}
 
   @override
   Widget build(BuildContext context) {

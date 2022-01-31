@@ -1,3 +1,4 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/api_service.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/process_configuration.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
@@ -5,14 +6,14 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dar
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_version.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_version_type.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/template_install.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
-import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
+
 import '/utils/color.dart' as color;
-import 'package:cloudnet/i18n/strings.g.dart';
 
 class TaskSetupPage extends StatefulWidget {
   const TaskSetupPage({Key? key}) : super(key: key);
@@ -99,15 +100,9 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
     );
   }
 
-  void _onError(dynamic error) {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: Text("Error Occurred")));
-  }
+  void _onError(dynamic error) {}
 
-  void _onCompleted() {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
-  }
+  void _onCompleted() {}
 
   @override
   Widget build(BuildContext context) {

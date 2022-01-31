@@ -7,10 +7,9 @@ import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dar
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/app_state.dart';
-import 'package:cloudnet/state/node_state.dart';
 
-typedef void VoidCallback();
-typedef void ErrorCallback(dynamic error);
+typedef VoidCallback = void Function();
+typedef ErrorCallback = void Function(dynamic error);
 
 class InitMetaInformation extends ReduxAction<AppState> {
   VoidCallback onCompeleted;

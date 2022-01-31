@@ -5,7 +5,6 @@ import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/node_state.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '/state/app_state.dart';
 
@@ -77,12 +76,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _onError(dynamic error) {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: Text("Error Occurred")));
   }
 
   void _onCompleted() {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
   }
 }

@@ -1,12 +1,12 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
-import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:search_choices/search_choices.dart';
 
 class TasksPage extends StatefulWidget {
@@ -60,10 +60,7 @@ class _TasksPageState extends State<TasksPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void _onCompleted() {
-    Scaffold.of(context)
-        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
-  }
+  void _onCompleted() {}
 
   @override
   Widget build(BuildContext context) {
