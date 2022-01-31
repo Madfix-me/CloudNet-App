@@ -326,7 +326,7 @@ class _TasksPageState extends State<TasksPage> {
                                         return deleteDialog(
                                           context,
                                           onCancel: () {
-                                            context.pop();
+                                            Navigator.pop(context);
                                           },
                                           onDelete: () {},
                                           item: task.name ?? '',

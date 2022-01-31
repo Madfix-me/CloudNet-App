@@ -44,7 +44,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     _portController.text = task.startPort?.toString() ?? '';
     _environmentCommandController.text =
         task.processConfiguration?.environment?.toString() ?? '';
-    _javaCommandController.text = task.javaCommand.toString() ?? '';
+    _javaCommandController.text = task.javaCommand.toString();
     _minServiceController.text = task.minServiceCount?.toString() ?? '';
     _maxHeapController.text =
         task.processConfiguration?.maxHeapMemorySize?.toString() ?? '';
