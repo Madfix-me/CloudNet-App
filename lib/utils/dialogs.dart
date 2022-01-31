@@ -96,17 +96,18 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
         child: Column(
           children: [
             DropdownButton<String>(
-              items: state.node?.templates.isNotEmpty == true ? List<DropdownMenuItem<String>>.generate(
-                  state.node?.templates.length ?? 0,
-                  (index) {
-                    final template = state.node?.templates[index];
-                    final format =
-                        '${template?.storage}:${template?.prefix}/${template?.name}';
-                    return DropdownMenuItem(
-                      child: Text(format),
-                      value: format,
-                    );
-                  }) : [],
+              items: state.node?.templates.isNotEmpty == true
+                  ? List<DropdownMenuItem<String>>.generate(
+                      state.node?.templates.length ?? 0, (index) {
+                      final template = state.node?.templates[index];
+                      final format =
+                          '${template?.storage}:${template?.prefix}/${template?.name}';
+                      return DropdownMenuItem(
+                        child: Text(format),
+                        value: format,
+                      );
+                    })
+                  : [],
               onChanged: (value) {},
               value: deployment != null ? format : null,
             ),

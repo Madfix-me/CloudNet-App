@@ -10,11 +10,10 @@ part 'service_configuration.g.dart';
 
 @freezed
 class ServiceConfiguration with _$ServiceConfiguration {
-
   const factory ServiceConfiguration({
     @JsonKey(name: 'properties')
     @Default(<String, dynamic>{})
-    Map<String, dynamic> properties,
+        Map<String, dynamic> properties,
     @JsonKey(name: 'serviceId') ServiceId? serviceId,
     @JsonKey(name: 'runtime') String? runtime,
     @JsonKey(name: 'javaCommand') String? javaCommand,
@@ -23,12 +22,19 @@ class ServiceConfiguration with _$ServiceConfiguration {
     @JsonKey(name: 'staticService') @Default(false) bool staticService,
     @JsonKey(name: 'groups') @Default(<String>[]) List<String> groups,
     @JsonKey(name: 'processConfig') ProcessConfiguration? processConfig,
-    @JsonKey(name: 'deletedFilesAfterStop') @Default(<String>[]) List<String> deletedFilesAfterStop,
-    @JsonKey(name: 'templates') @Default(<ServiceTemplate>[]) List<ServiceTemplate> templates,
-    @JsonKey(name: 'deployments') @Default(<ServiceDeployment>[]) List<ServiceDeployment> deployments,
-    @JsonKey(name: 'includes') @Default(<ServiceRemoteInclusion>[]) List<ServiceRemoteInclusion> includes,
-}) = _ServiceConfiguration;
-
+    @JsonKey(name: 'deletedFilesAfterStop')
+    @Default(<String>[])
+        List<String> deletedFilesAfterStop,
+    @JsonKey(name: 'templates')
+    @Default(<ServiceTemplate>[])
+        List<ServiceTemplate> templates,
+    @JsonKey(name: 'deployments')
+    @Default(<ServiceDeployment>[])
+        List<ServiceDeployment> deployments,
+    @JsonKey(name: 'includes')
+    @Default(<ServiceRemoteInclusion>[])
+        List<ServiceRemoteInclusion> includes,
+  }) = _ServiceConfiguration;
 
   factory ServiceConfiguration.fromJson(Map<String, dynamic> json) =>
       _$ServiceConfigurationFromJson(json);

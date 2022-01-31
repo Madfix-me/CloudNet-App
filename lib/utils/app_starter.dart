@@ -11,7 +11,6 @@ Future<void> startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
 
-
   final persistor = AppPersistor();
   final initialState = await persistor.readState();
   final store = Store<AppState>(

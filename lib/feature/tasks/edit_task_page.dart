@@ -287,11 +287,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   context: context,
                                   builder: (context) {
                                     return addEditDeployment(
-                                        context,
-                                        false,
-                                        null,
-                                        state
-                                    );
+                                        context, false, null, state);
                                   },
                                 );
                               },
@@ -333,11 +329,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 context: context,
                                 builder: (context) {
                                   return addEditDeployment(
-                                    context,
-                                    true,
-                                    deployment,
-                                      state
-                                  );
+                                      context, true, deployment, state);
                                 },
                               );
                             },
@@ -359,11 +351,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 context: context,
                                 builder: (context) {
                                   return addEditDeployment(
-                                    context,
-                                    false,
-                                    null,
-                                      state
-                                  );
+                                      context, false, null, state);
                                 },
                               );
                             },

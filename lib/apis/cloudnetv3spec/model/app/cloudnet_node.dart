@@ -21,7 +21,9 @@ class CloudNetNode with _$CloudNetNode {
     @JsonKey(name: 'token') String? token,
     @JsonKey(name: 'node_info') NodeInfo? nodeInfo,
     @JsonKey(name: 'tasks') @Default(<ServiceTask>[]) List<ServiceTask> tasks,
-    @JsonKey(name: 'templates') @Default(<ServiceTemplate>[]) List<ServiceTemplate> templates,
+    @JsonKey(name: 'templates')
+    @Default(<ServiceTemplate>[])
+        List<ServiceTemplate> templates,
     @JsonKey(name: 'groups')
     @Default(<GroupConfiguration>[])
         List<GroupConfiguration> groups,

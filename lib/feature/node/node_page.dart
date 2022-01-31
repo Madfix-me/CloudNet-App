@@ -48,7 +48,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+                margin: const EdgeInsets.only(
+                    left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
                 child: TextFormField(
                   controller: _nameController,
                   keyboardType: TextInputType.name,
@@ -63,7 +64,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+                margin: const EdgeInsets.only(
+                    left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
                 child: TextFormField(
                   controller: _addressController,
                   keyboardType: TextInputType.name,
@@ -78,7 +80,8 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+                margin: const EdgeInsets.only(
+                    left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
                 child: TextFormField(
                   controller: _portController,
                   keyboardType: TextInputType.number,
@@ -123,32 +126,32 @@ class _MenuNodePageState extends State<MenuNodePage> {
                           GoRouter.of(context).pop();
                         },
                         icon: const Icon(Icons.close),
-                          iconSize: Theme.of(context).iconTheme.size! * 2,
+                        iconSize: Theme.of(context).iconTheme.size! * 2,
                       ),
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 32),
                       child: IconButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              newNode = newNode.copyWith(
-                                  name: _nameController.text,
-                                  host: _addressController.text,
-                                  port: int.tryParse(_portController.text),
-                                  ssl: ssl);
-                              if (oldNode != null) {
-                                StoreProvider.dispatch(context,
-                                    UpdateCloudNetNode(oldNode!, newNode));
-                                Navigator.pop(context);
-                              } else {
-                                StoreProvider.dispatch(
-                                    context, AddCloudNetNode(newNode));
-                                context.go(DashboardPage.route);
-                              }
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            newNode = newNode.copyWith(
+                                name: _nameController.text,
+                                host: _addressController.text,
+                                port: int.tryParse(_portController.text),
+                                ssl: ssl);
+                            if (oldNode != null) {
+                              StoreProvider.dispatch(context,
+                                  UpdateCloudNetNode(oldNode!, newNode));
+                              Navigator.pop(context);
+                            } else {
+                              StoreProvider.dispatch(
+                                  context, AddCloudNetNode(newNode));
+                              context.go(DashboardPage.route);
                             }
-                          },
-                          icon: Icon(Icons.done,
-                              color: Theme.of(context).colorScheme.secondary),
+                          }
+                        },
+                        icon: Icon(Icons.done,
+                            color: Theme.of(context).colorScheme.secondary),
                         iconSize: Theme.of(context).iconTheme.size! * 2,
                       ),
                     )

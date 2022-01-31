@@ -61,9 +61,8 @@ class _TasksPageState extends State<TasksPage> {
   }
 
   void _onCompleted() {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: new Text("Item Completed")));
-
+    Scaffold.of(context)
+        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
   }
 
   @override
@@ -372,7 +371,6 @@ class _TasksPageState extends State<TasksPage> {
   }
 
   bool filter(ServiceTask element) {
-
     if (staticFilter == false && maintenanceFilter == false) {
       return true;
     }

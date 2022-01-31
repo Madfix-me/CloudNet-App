@@ -22,7 +22,7 @@ class NetworkClusterNodeInfoSnapshot with _$NetworkClusterNodeInfoSnapshot {
     @JsonKey(name: 'node') NetworkClusterNode? node,
     @JsonKey(name: 'version') Version? version,
     @JsonKey(name: 'processSnapshot') ProcessSnapshot? processSnapshot,
-    @JsonKey(name: 'module') @Default(<Module>[])List<Module>? modules,
+    @JsonKey(name: 'module') @Default(<Module>[]) List<Module>? modules,
     @JsonKey(name: 'maxCPUUsageToStartServices')
         double? maxCPUUsageToStartServices,
   }) = _NetworkClusterNodeInfoSnapshot;

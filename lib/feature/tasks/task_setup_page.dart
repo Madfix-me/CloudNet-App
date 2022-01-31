@@ -100,14 +100,13 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
   }
 
   void _onError(dynamic error) {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: Text("Error Occurred")));
+    Scaffold.of(context)
+        .showSnackBar(new SnackBar(content: Text("Error Occurred")));
   }
 
   void _onCompleted() {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: new Text("Item Completed")));
-
+    Scaffold.of(context)
+        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
   }
 
   @override
@@ -116,7 +115,8 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
       onInit: (store) {
         store.dispatch(InitMetaInformation(_onCompleted, _onError));
       },
-      converter: (store) => store.state.nodeState.node?.versions ?? List.empty(),
+      converter: (store) =>
+          store.state.nodeState.node?.versions ?? List.empty(),
       builder: (context, versions) {
         final steps = <Step>[
           buildTaskNameStep(),

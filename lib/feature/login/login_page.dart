@@ -104,25 +104,27 @@ class _LoginPageState extends State<LoginPage> {
                 context.go(DashboardPage.route)
               })
           .onError((error, stackTrace) {
-            if (error is DioError) {
-              final DioError dioError = error;
-              final Response? response = dioError.response;
-              switch(response?.statusCode) {
-                case 404: {
-                  SnackBar snackBar = SnackBar(
-                    content: Text(t.page.login.no_rest_api_installed),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-                break;
-                case 403: {
-                  SnackBar snackBar = SnackBar(
-                    content: Text(t.page.login.username_password_wrong),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
+        if (error is DioError) {
+          final DioError dioError = error;
+          final Response? response = dioError.response;
+          switch (response?.statusCode) {
+            case 404:
+              {
+                SnackBar snackBar = SnackBar(
+                  content: Text(t.page.login.no_rest_api_installed),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
-            }
+              break;
+            case 403:
+              {
+                SnackBar snackBar = SnackBar(
+                  content: Text(t.page.login.username_password_wrong),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+          }
+        }
 
         return Future.error(error!, stackTrace);
       });

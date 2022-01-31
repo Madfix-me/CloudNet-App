@@ -8,7 +8,9 @@ part 'service_deployment.g.dart';
 @freezed
 class ServiceDeployment with _$ServiceDeployment {
   const factory ServiceDeployment({
-    @JsonKey(name: 'properties') @Default(<String, dynamic>{}) Map<String, dynamic> properties,
+    @JsonKey(name: 'properties')
+    @Default(<String, dynamic>{})
+        Map<String, dynamic> properties,
     @JsonKey(name: 'template') ServiceTemplate? template,
     @JsonKey(name: 'excludes') @Default(<String>[]) List<String> excludes,
   }) = _ServiceDeployment;

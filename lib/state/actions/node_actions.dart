@@ -9,15 +9,12 @@ import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 
-
 typedef void VoidCallback();
 typedef void ErrorCallback(dynamic error);
 
 class InitMetaInformation extends ReduxAction<AppState> {
-
   VoidCallback onCompeleted;
   ErrorCallback onError;
-
 
   InitMetaInformation(this.onCompeleted, this.onError);
 
@@ -29,8 +26,12 @@ class InitMetaInformation extends ReduxAction<AppState> {
     final versions = await ApiService().versionsApi.getVersions();
     final templateStorage = await ApiService().templateStorageApi.getStorage();
 
-    final rawTemplates = await Future.wait(templateStorage.storages.map((e) async => (await ApiService().templateStorageApi.getTemplates(e))));
-    final templates = rawTemplates.fold(<ServiceTemplate>[], (List<ServiceTemplate> previousValue, List<ServiceTemplate> element) => [...previousValue,...element]);
+    final rawTemplates = await Future.wait(templateStorage.storages.map(
+        (e) async => (await ApiService().templateStorageApi.getTemplates(e))));
+    final templates = rawTemplates.fold(
+        <ServiceTemplate>[],
+        (List<ServiceTemplate> previousValue, List<ServiceTemplate> element) =>
+            [...previousValue, ...element]);
     return state.copyWith(
         nodeState: state.nodeState.copyWith(
       node: state.nodeState.node?.copyWith(
@@ -39,12 +40,9 @@ class InitMetaInformation extends ReduxAction<AppState> {
           groups: groups,
           versions: versions,
           templateStorage: templateStorage,
-        templates: templates
-      ),
+          templates: templates),
     ));
   }
-
-
 }
 
 class UpdateToken extends ReduxAction<AppState> {

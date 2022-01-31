@@ -36,9 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, NodeState>(
       onInit: (store) {
-        store.dispatch(InitMetaInformation(
-            _onCompleted, _onError
-        ));
+        store.dispatch(InitMetaInformation(_onCompleted, _onError));
       },
       converter: (store) => store.state.nodeState,
       builder: (context, state) {
@@ -79,13 +77,12 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _onError(dynamic error) {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: Text("Error Occurred")));
+    Scaffold.of(context)
+        .showSnackBar(new SnackBar(content: Text("Error Occurred")));
   }
 
   void _onCompleted() {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: new Text("Item Completed")));
-
+    Scaffold.of(context)
+        .showSnackBar(new SnackBar(content: new Text("Item Completed")));
   }
 }

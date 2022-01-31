@@ -12,9 +12,7 @@ const black = Color(0xFF616161);
 const blackBlack = Color(0xFF000000);
 const trans = Color(0x00000000);
 
-
-
-const lightPrimary =  Colors.blue;
-const lightSecondary =  Colors.blue;
+const lightPrimary = Colors.blue;
+const lightSecondary = Colors.blue;
 const darkPrimary = Colors.blue;
 const darkSecondary = Colors.cyan;

@@ -34,11 +34,14 @@ class ApiClient {
             }
             if (err.response?.statusCode != null &&
                 err.response!.statusCode == 403) {
-              router.routerDelegate.navigatorKey.currentContext?.go(LoginPage.route);
+              router.routerDelegate.navigatorKey.currentContext
+                  ?.go(LoginPage.route);
               SnackBar snackBar = SnackBar(
                 content: Text('An error was conrrurent. Login out'),
               );
-              ScaffoldMessenger.of(router.routerDelegate.navigatorKey.currentContext!).showSnackBar(snackBar);
+              ScaffoldMessenger.of(
+                      router.routerDelegate.navigatorKey.currentContext!)
+                  .showSnackBar(snackBar);
             }
           },
         ),

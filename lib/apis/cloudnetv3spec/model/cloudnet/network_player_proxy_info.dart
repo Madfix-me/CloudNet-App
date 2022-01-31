@@ -8,7 +8,6 @@ part 'network_player_proxy_info.g.dart';
 
 @freezed
 class NetworkPlayerProxyInfo with _$NetworkPlayerProxyInfo {
-
   const factory NetworkPlayerProxyInfo({
     @JsonKey(name: 'uniqueId') String? uniqueId,
     @JsonKey(name: 'name') String? name,

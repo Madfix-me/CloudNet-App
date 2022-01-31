@@ -8,13 +8,15 @@ part 'cloud_player.g.dart';
 @freezed
 class CloudPlayer with _$CloudPlayer {
   const factory CloudPlayer({
-    @JsonKey(name: 'properties') @Default(<String, dynamic>{}) Map<String, dynamic> properties,
+    @JsonKey(name: 'properties')
+    @Default(<String, dynamic>{})
+        Map<String, dynamic> properties,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'firstLoginTimeMillis') BigInt? firstLoginTimeMillis,
     @JsonKey(name: 'lastLoginTimeMillis') BigInt? lastLoginTimeMillis,
-    @JsonKey(name: 'lastNetworkPlayerProxyInfo') NetworkPlayerProxyInfo? lastNetworkPlayerProxyInfo,
-
-}) = _CloudPlayer;
+    @JsonKey(name: 'lastNetworkPlayerProxyInfo')
+        NetworkPlayerProxyInfo? lastNetworkPlayerProxyInfo,
+  }) = _CloudPlayer;
 
   factory CloudPlayer.fromJson(Map<String, dynamic> json) =>
       _$CloudPlayerFromJson(json);

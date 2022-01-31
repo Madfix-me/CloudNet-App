@@ -46,43 +46,45 @@ final router = GoRouter(
       ),
     ),
     GoRoute(
-      path: TasksPage.route,
-      name: TasksPage.name,
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
-        key: state.pageKey,
-        child: const HomePage(
-          child: TasksPage(),
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(opacity: animation, child: child),
-      ),
-      routes: [
-        GoRoute(
-          path: TaskSetupPage.route,
-          name: TaskSetupPage.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: const HomePage(
-              child: TaskSetupPage(),
+        path: TasksPage.route,
+        name: TasksPage.name,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: const HomePage(
+                child: TasksPage(),
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child),
             ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                FadeTransition(opacity: animation, child: child),
-          ),
-        ),
-        GoRoute(
-          path: EditTaskPage.route,
-          name: EditTaskPage.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            child: HomePage(
-              child: EditTaskPage(task: (state.extra as ServiceTask)),
+        routes: [
+          GoRoute(
+            path: TaskSetupPage.route,
+            name: TaskSetupPage.name,
+            pageBuilder: (context, state) => CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: const HomePage(
+                child: TaskSetupPage(),
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child),
             ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                FadeTransition(opacity: animation, child: child),
           ),
-        )
-      ]
-    ),
+          GoRoute(
+            path: EditTaskPage.route,
+            name: EditTaskPage.name,
+            pageBuilder: (context, state) => CustomTransitionPage<void>(
+              key: state.pageKey,
+              child: HomePage(
+                child: EditTaskPage(task: (state.extra as ServiceTask)),
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child),
+            ),
+          )
+        ]),
     GoRoute(
       path: LoginPage.route,
       name: LoginPage.name,
