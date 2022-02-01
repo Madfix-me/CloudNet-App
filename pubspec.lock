@@ -245,7 +245,7 @@ packages:
       name: easy_rich_text
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   fast_i18n:
     dependency: "direct dev"
     description:
@@ -589,7 +589,7 @@ packages:
       name: search_choices
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.16"
+    version: "2.0.17"
   shelf:
     dependency: transitive
     description:

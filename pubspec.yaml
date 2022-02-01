@@ -29,10 +29,10 @@ dependencies:
   form_validator: ^1.0.1
   jwt_decoder: ^2.0.1
   fluttericon: ^2.0.0
-  easy_rich_text: ^1.0.2
+  easy_rich_text: ^1.0.3
   web_socket_channel: ^2.1.0
   connectivity_plus: ^2.2.0
-  search_choices: ^2.0.16
+  search_choices: ^2.0.17
 
 
 dev_dependencies:
@@ -40,7 +40,7 @@ dev_dependencies:
   freezed: ^1.1.1
   json_serializable: ^6.1.4
   flutter_lints: 1.0.4
-  fast_i18n: ^5.8.0
+  fast_i18n: ^5.9.0
   lints: ^1.0.1
 
 flutter:
