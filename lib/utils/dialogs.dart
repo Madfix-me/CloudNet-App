@@ -1,9 +1,10 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_deployment.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_remote_inclusion.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:cloudnet/i18n/strings.g.dart';
 
 AlertDialog deleteDialog(BuildContext context,
     {VoidCallback? onDelete, VoidCallback? onCancel, required String item}) {
@@ -79,6 +80,44 @@ AlertDialog selectGroups(
         children: _buildGroups(state, task),
       ),
     ),
+  );
+}
+
+SimpleDialog addEditInclusion(BuildContext context, bool edit,
+    ServiceRemoteInclusion? inclusion, NodeState state) {
+  return SimpleDialog(
+    title: edit
+        ? Text('Edit Inclusion', style: Theme.of(context).textTheme.headline3)
+        : Text('Add Inclusion', style: Theme.of(context).textTheme.headline3),
+    children: [
+      Container(
+        margin: EdgeInsets.only(left: 16.0, right: 16.0),
+        child: Column(
+          children: [
+            Text('Http URL'),
+            TextField(
+              keyboardType: TextInputType.url,
+              controller: null,
+              enabled: true,
+              decoration: InputDecoration(
+                labelText: 'URL',
+              ),
+            ),
+            Divider(),
+            Text('Save path'),
+            Divider(),
+            TextField(
+              keyboardType: TextInputType.name,
+              controller: null,
+              enabled: true,
+              decoration: InputDecoration(
+                labelText: 'File/Folder',
+              ),
+            )
+          ],
+        ),
+      )
+    ],
   );
 }
 

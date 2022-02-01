@@ -101,7 +101,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   _buildStatic(),
                   _buildGroups(vm),
                   _buildDeployments(vm),
-                  _buildIncludes(),
+                  _buildIncludes(vm),
                 ],
               ),
               _config != null
@@ -366,7 +366,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   } //TODO: Input Dialog
 
-  Widget _buildIncludes() {
+  Widget _buildIncludes(NodeState state) {
     return Row(
       children: [
         Expanded(
@@ -376,13 +376,55 @@ class _EditTaskPageState extends State<EditTaskPage> {
               ListView(
                 shrinkWrap: true,
                 children: widget.task.includes.isNotEmpty
-                    ? List<Widget>.generate(widget.task.includes.length,
+                    ? List<Widget>.generate(widget.task.includes.length + 1,
                         (index) {
+                        if (index == widget.task.includes.length) {
+                          return Card(
+                            child: ListTile(
+                              title: Text('Add inclusion'),
+                              leading: Icon(Icons.add),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditInclusion(
+                                        context, false, null, state);
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        }
                         final include = widget.task.includes[index];
+                        final format = "${include.url}";
                         return Card(
                           child: ListTile(
-                            title: Text(include.url ?? ''),
-                            subtitle: Text('-> ${include.destination}'),
+                            title: Text(format),
+                            leading: Icon(Icons.download_sharp),
+                            trailing: IconButton(
+                              color: Theme.of(context).errorColor,
+                              icon: Icon(
+                                Icons.delete_forever,
+                              ),
+                              onPressed: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return deleteDialog(
+                                      context,
+                                      onCancel: () {
+                                        Navigator.pop(context);
+                                      },
+                                      onDelete: () {
+                                        Navigator.pop(context);
+                                      },
+                                      item: format,
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            onTap: () {},
                           ),
                         );
                       })
