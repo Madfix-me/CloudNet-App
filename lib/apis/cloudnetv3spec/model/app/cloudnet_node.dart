@@ -1,3 +1,4 @@
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/cluster_node.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/group_configuration.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/node_info.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
@@ -21,6 +22,7 @@ class CloudNetNode with _$CloudNetNode {
     @JsonKey(name: 'token') String? token,
     @JsonKey(name: 'node_info') NodeInfo? nodeInfo,
     @JsonKey(name: 'tasks') @Default(<ServiceTask>[]) List<ServiceTask> tasks,
+    @JsonKey(name: 'nodes') @Default(<ClusterNode>[]) List<ClusterNode> nodes,
     @JsonKey(name: 'templates')
     @Default(<ServiceTemplate>[])
         List<ServiceTemplate> templates,

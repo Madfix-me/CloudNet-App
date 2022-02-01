@@ -23,6 +23,7 @@ class InitMetaInformation extends ReduxAction<AppState> {
     final nodeInfo = await ApiService().nodeApi.getNode();
     final nodeTasks = await ApiService().tasksApi.getTasks();
     final groups = await ApiService().groupsApi.getGroups();
+    final nodes = await ApiService().clusterApi.getNodes();
     final versions = await ApiService().versionsApi.getVersions();
     final templateStorage = await ApiService().templateStorageApi.getStorage();
 
@@ -38,6 +39,7 @@ class InitMetaInformation extends ReduxAction<AppState> {
           nodeInfo: nodeInfo,
           tasks: nodeTasks,
           groups: groups,
+          nodes: nodes.nodes,
           versions: versions,
           templateStorage: templateStorage,
           templates: templates),

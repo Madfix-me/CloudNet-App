@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/custom/cloudnet_node_app_config.dart';
+import 'package:cloudnet/feature/cluster/cluster_page.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
@@ -17,8 +19,10 @@ import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/app_config.dart';
 import 'package:cloudnet/utils/dialogs.dart';
 import 'package:cloudnet/utils/router.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -35,15 +39,33 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool showNodeDetails = false;
 
+  late StreamSubscription<ConnectivityResult> subscription;
+
   @override
   void initState() {
     router.addListener(updateAppBar);
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile) {
+        SnackBar bar = SnackBar(content: Text(' You are now online!'));
+        ScaffoldMessenger.of(context).showSnackBar(bar);
+      } else if (result == ConnectivityResult.wifi) {
+        SnackBar bar = SnackBar(content: Text(' You are now online!'));
+        ScaffoldMessenger.of(context).showSnackBar(bar);
+      } else {
+        SnackBar bar = SnackBar(content: Text(' You are currently offline!'));
+        ScaffoldMessenger.of(context).showSnackBar(bar);
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
     router.removeListener(updateAppBar);
+    subscription.cancel();
+
     super.dispose();
   }
 
@@ -161,13 +183,14 @@ class _HomePageState extends State<HomePage> {
           },
           enabled: enabled,
         ),
-        const ListTile(
+        ListTile(
           title: Text('Cluster'),
-          enabled: false,
-        ),
-        const ListTile(
-          title: Text('Database'),
-          enabled: false,
+          selected: router.location == ClusterPage.route,
+          onTap: () => {
+            context.go(ClusterPage.route),
+            Navigator.pop(context),
+          },
+          enabled: enabled,
         ),
         ListTile(
           title: const Text('Groups'),
@@ -193,15 +216,7 @@ class _HomePageState extends State<HomePage> {
           onTap: null,
         ),
         const ListTile(
-          title: Text('Template Storage'),
-          enabled: false,
-        ),
-        const ListTile(
           title: Text('Templates'),
-          enabled: false,
-        ),
-        const ListTile(
-          title: Text('Service Versions'),
           enabled: false,
         ),
         const ListTile(
@@ -233,7 +248,27 @@ class _HomePageState extends State<HomePage> {
           Expanded(
               child: showNodeDetails
                   ? _buildDetailsList(state)
-                  : _buildDrawerList())
+                  : _buildDrawerList()),
+          Container(
+            child: FutureBuilder<PackageInfo>(
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  PackageInfo? info = snapshot.data;
+                  return Row(
+                    children: [
+                      Text(info?.version ?? ''),
+                      Text(info?.appName ?? ''),
+                      Text(info?.buildNumber ?? ''),
+                    ],
+                  );
+                } else {
+                  return Text('No version');
+                }
+              },
+              future: PackageInfo.fromPlatform(),
+            ),
+            margin: EdgeInsets.only(bottom: 8.0),
+          )
         ],
       ),
     );

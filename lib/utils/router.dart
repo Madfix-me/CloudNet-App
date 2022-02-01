@@ -1,5 +1,6 @@
 import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
+import 'package:cloudnet/feature/cluster/cluster_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/home/home_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
@@ -7,11 +8,11 @@ import 'package:cloudnet/feature/node/node_page.dart';
 import 'package:cloudnet/feature/tasks/edit_task_page.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/feature/dashboard/dashboard_page.dart';
 import '../feature/login/login_page.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
   initialLocation: DashboardPage.route,
@@ -28,6 +29,18 @@ final router = GoRouter(
         key: state.pageKey,
         child: const HomePage(
           child: DashboardPage(),
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
+    ),
+    GoRoute(
+      path: ClusterPage.route,
+      name: ClusterPage.name,
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
+        key: state.pageKey,
+        child: const HomePage(
+          child: ClusterPage(),
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
