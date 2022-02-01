@@ -6,6 +6,7 @@ import 'package:cloudnet/feature/node/node_handler.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:flutter/material.dart';
+
 import '/state/app_state.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -44,11 +45,8 @@ class _DashboardPageState extends State<DashboardPage> {
           child: FutureBuilder<WebSocket>(
             future: openConsole(state),
             builder: (context, snapshot) {
-              print(snapshot.hasData);
-
               return StreamBuilder<dynamic>(
                 builder: (context, snapshot) {
-                  print(snapshot.hasData);
                   return Text(snapshot.hasData ? '${snapshot.data}' : '');
                 },
                 stream: snapshot.data,
@@ -75,9 +73,7 @@ class _DashboardPageState extends State<DashboardPage> {
     StoreProvider.dispatch(context, UpdateNodeInfo());
   }
 
-  void _onError(dynamic error) {
-  }
+  void _onError(dynamic error) {}
 
-  void _onCompleted() {
-  }
+  void _onCompleted() {}
 }
