@@ -1,13 +1,14 @@
 import 'dart:convert';
 
+import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/custom/cloudnet_node_app_config.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
 import 'package:cloudnet/feature/feature/groups_page.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/login/login_page.dart';
-import 'package:cloudnet/feature/node/node_page.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
+import 'package:cloudnet/feature/node/node_page.dart';
 import 'package:cloudnet/feature/tasks/task_setup_page.dart';
 import 'package:cloudnet/feature/tasks/tasks_page.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
@@ -16,7 +17,6 @@ import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/app_config.dart';
 import 'package:cloudnet/utils/dialogs.dart';
 import 'package:cloudnet/utils/router.dart';
-import 'package:async_redux/async_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) => Scaffold(
         body: widget.child,
         appBar: _appBar(),
-        drawer: buildDrawer(state),
+        drawer: _buildDrawer(state),
       ),
     );
   }
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Drawer buildDrawer(NodeState state) {
+  Drawer _buildDrawer(NodeState state) {
     return Drawer(
       child: Column(
         children: [
