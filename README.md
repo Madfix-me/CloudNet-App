@@ -32,3 +32,20 @@ Unzip the zip file into a folder and run the launcher.jar.
 After the stop with CTRL + C edit the `launcher.cnl` and change the line
 `var cloudnet.updateBranch release` into `var cloudnet.updateBranch unstable/rewrite`.
 Start again the cloud and install the rest module over `module install CloudNet-Rest` 
+
+
+## Start to develop
+### Prerequisites
+- Git
+- Flutter
+- Android Studio
+- CloudNet v4 Node
+### How to use
+Clone the repo into you android studio.
+Run at every change at [freezed](https://pub.dev/packages/freezed) model this command:
+```shell
+flutter pub run build_runner build
+```
+Then to the top bar beside the debugging button and press `Edit configuration`.
+Add new flutter configuration and use as dart main following file: `main_alpha.dart`. 
+And add also at `Build Flavor` `alpha` as value. 
