@@ -23,3 +23,12 @@
 - Integrated Text Editor*
 
 \* coming soon; not implemented yet
+
+
+## Setup
+Go to [CloudNet-v3](https://github.com/CloudNetService/CloudNet-v3) repo.
+Go to actions tab and select the latest actions with the branch `unstable/rewrite` and download the zip file.
+Unzip the zip file into a folder and run the launcher.jar.
+After the stop with CTRL + C edit the `launcher.cnl` and change the line
+`var cloudnet.updateBranch release` into `var cloudnet.updateBranch unstable/rewrite`.
+Start again the cloud and install the rest module over `module install CloudNet-Rest` 
