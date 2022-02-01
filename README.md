@@ -13,7 +13,7 @@
 - Accessibility UI Design for easy handling of your cloud*
 - Manipulation of module configs*
 - Update of node configs*
-- **Direct communicated with CloudNet Developers** (Special Thanks to [derklaro](https://github.com/derklaro/) and [0utplay](https://github.com/0utplay/))
+- **Direct communicated with CloudNet Developers** (Special Thanks to [derklaro](https://github.com/derklaro) and [0utplay](https://github.com/0utplay))
 - Active cluster management*
 - Player management*
 - Manipulation of database entries*
@@ -41,7 +41,7 @@ Start again the cloud and install the rest module over `module install CloudNet-
 - Android Studio
 - CloudNet v4 Node
 ### How to use
-Clone the repo into you android studio.
+Clone the repo into your [Android Studio](https://developer.android.com/studio).
 Run at every change at [freezed](https://pub.dev/packages/freezed) model this command:
 ```shell
 flutter pub run build_runner build
