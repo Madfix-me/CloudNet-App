@@ -83,51 +83,68 @@ class _EditTaskPageState extends State<EditTaskPage> {
     return StoreConnector<AppState, NodeState>(
       converter: (store) => store.state.nodeState,
       builder: (context, vm) {
-        return SingleChildScrollView(
-          child: Column(
+        return Stack(children: [
+          Column(
             children: [
-              ExpansionTile(
-                title: Text('Basic Configuration',
-                    style: Theme.of(context).textTheme.headline5),
-                childrenPadding: EdgeInsets.only(left: 16.0, right: 16.0),
-                children: [
-                  _buildName(),
-                  _buildJavaCommand(),
-                  _buildEnvironment(),
-                  _buildPort(),
-                  _buildMinServiceCount(),
-                  _buildMaxHeap(),
-                  _buildMaintenance(),
-                  _buildStatic(),
-                  _buildGroups(vm),
-                  _buildDeployments(vm),
-                  _buildIncludes(vm),
-                ],
-              ),
-              _config != null
-                  ? ExpansionTile(
-                      title: Text('Smart Config',
-                          style: Theme.of(context).textTheme.headline5),
-                      childrenPadding:
-                          const EdgeInsets.only(left: 16.0, right: 16.0),
-                      children: [
-                        _buildSmartEnabled(),
-                        _buildSmartSplitLogicOverNodes(),
-                        _buildSmartDirectTemplateInclusions(),
-                        _buildSmartPriority(),
-                        _buildSmartMaxServices(),
-                        _buildSmartPreparedMaxServices(),
-                        _buildSmartSmartMinServiceCount(),
-                        _buildSmartAutoStopOfUnusedService(),
-                        _buildSmartAutoStopViaPercentage(),
-                        _buildSmartTimeDelayForNewService(),
-                        _buildSmartPercentageForNewService()
-                      ],
-                    )
-                  : Flex(direction: Axis.horizontal),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ExpansionTile(
+                        title: Text('Basic Configuration',
+                            style: Theme.of(context).textTheme.headline5),
+                        childrenPadding:
+                            EdgeInsets.only(left: 16.0, right: 16.0),
+                        children: [
+                          _buildName(),
+                          _buildJavaCommand(),
+                          _buildEnvironment(),
+                          _buildPort(),
+                          _buildMinServiceCount(),
+                          _buildMaxHeap(),
+                          _buildMaintenance(),
+                          _buildStatic(),
+                          _buildGroups(vm),
+                          _buildDeployments(vm),
+                          _buildIncludes(vm),
+                        ],
+                      ),
+                      _config != null
+                          ? ExpansionTile(
+                              title: Text('Smart Config',
+                                  style: Theme.of(context).textTheme.headline5),
+                              childrenPadding: const EdgeInsets.only(
+                                  left: 16.0, right: 16.0),
+                              children: [
+                                _buildSmartEnabled(),
+                                _buildSmartSplitLogicOverNodes(),
+                                _buildSmartDirectTemplateInclusions(),
+                                _buildSmartPriority(),
+                                _buildSmartMaxServices(),
+                                _buildSmartPreparedMaxServices(),
+                                _buildSmartSmartMinServiceCount(),
+                                _buildSmartAutoStopOfUnusedService(),
+                                _buildSmartAutoStopViaPercentage(),
+                                _buildSmartTimeDelayForNewService(),
+                                _buildSmartPercentageForNewService()
+                              ],
+                            )
+                          : Flex(direction: Axis.horizontal),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
-        );
+          Positioned(
+            child: FloatingActionButton(
+              onPressed: () {},
+              child: const Icon(Icons.save_sharp),
+            ),
+            bottom: 16,
+            right: 16,
+          )
+        ]);
       },
     );
   }

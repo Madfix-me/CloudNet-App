@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/api_service.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
+import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_template.dart';
 import 'package:cloudnet/feature/login/login_handler.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
@@ -125,6 +126,24 @@ class UpdateCloudNetNode extends ReduxAction<AppState> {
     } else {
       return state.copyWith(nodeState: state.nodeState.copyWith(nodes: nodes));
     }
+  }
+}
+
+class DeleteTask extends ReduxAction<AppState> {
+  final ServiceTask task;
+
+  DeleteTask(this.task);
+
+  @override
+  Future<AppState> reduce() async {
+    List<ServiceTask> tasks = List.of(
+        (state.nodeState.node?.tasks ?? <ServiceTask>[]),
+        growable: true);
+    tasks.remove(task);
+    await ApiService().tasksApi.deleteTask(task);
+    return state.copyWith(
+        nodeState: state.nodeState
+            .copyWith(node: state.nodeState.node?.copyWith(tasks: tasks)));
   }
 }
 

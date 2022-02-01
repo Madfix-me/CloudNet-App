@@ -324,7 +324,11 @@ class _TasksPageState extends State<TasksPage> {
                                           onCancel: () {
                                             Navigator.pop(context);
                                           },
-                                          onDelete: () {},
+                                          onDelete: () {
+                                            Navigator.pop(context);
+                                            StoreProvider.dispatch(
+                                                context, DeleteTask(task));
+                                          },
                                           item: task.name ?? '',
                                         );
                                       },

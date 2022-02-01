@@ -31,4 +31,19 @@ class TasksApi {
 
     return val;
   }
+
+  Future<Success> deleteTask(ServiceTask task) async {
+    final queryParams = <String, dynamic>{};
+
+    final baseUri = Uri.parse(apiClient.baseUrl);
+    final uri = baseUri.replace(
+        queryParameters: queryParams,
+        path: baseUri.path + '/api/v2/task/${task.name}');
+    final val =
+        await apiClient.dio.deleteUri<Json>(uri, data: task).then((response) {
+      return Success.fromJson(response.data!);
+    });
+
+    return val;
+  }
 }
