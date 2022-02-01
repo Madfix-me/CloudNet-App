@@ -44,6 +44,18 @@ class InitMetaInformation extends ReduxAction<AppState> {
   }
 }
 
+class LogoutNode extends ReduxAction<AppState> {
+  @override
+  Future<AppState?> reduce() async {
+    return state.copyWith(
+      nodeState: state.nodeState.copyWith(
+        node: state.nodeState.node
+            ?.copyWith(token: null, loggedin: false, connected: false),
+      ),
+    );
+  }
+}
+
 class UpdateToken extends ReduxAction<AppState> {
   final String token;
 

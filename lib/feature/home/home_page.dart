@@ -248,7 +248,11 @@ class _HomePageState extends State<HomePage> {
       actions: !loginHandler.isExpired() && loginHandler.accessToken() != null
           ? [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  loginHandler.logout();
+                  StoreProvider.dispatch(context, LogoutNode());
+                  context.goNamed(LoginPage.name);
+                },
                 icon: const Icon(Icons.exit_to_app),
               )
             ]

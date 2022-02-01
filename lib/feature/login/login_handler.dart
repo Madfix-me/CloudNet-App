@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:cloudnet/state/app_state.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '/feature/node/node_handler.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 
 LoginHandler loginHandler = LoginHandler();
 
@@ -25,6 +25,21 @@ class LoginHandler extends ValueNotifier<bool> {
     if (state.nodeState.node != null) {
       _token = state.nodeState.node?.token;
     }
+  }
+
+  Future<String> logout() async {
+    await Dio()
+        .postUri<String>(
+          Uri.parse('${nodeHandler.currentBaseUrl()}/api/v2/session/logout'),
+          data: <String, dynamic>{},
+          options: Options(headers: <String, dynamic>{
+            'Authorization': 'Bearer $_token',
+          }),
+        )
+        .then((response) => response.data!);
+    _token = null;
+    value = true;
+    return _token!;
   }
 
   Future<String> sessionRefresh() async {
