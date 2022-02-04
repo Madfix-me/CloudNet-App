@@ -20,7 +20,7 @@
       "password": "Password",
       "login": "Login",
       "username_password_wrong": "Password or Username is wrong!",
-      "no_rest_api_installed": "You sure. That a rest api installed ? Check your node!"
+      "no_rest_api_installed": "Are you sure that a rest api is installed? Please check your node!"
     },
     "tasks": {
       "overview": {
