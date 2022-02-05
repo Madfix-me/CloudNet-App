@@ -9,10 +9,10 @@
     },
     "menu_node": {
       "node_name": "Node Name",
-      "network_address": "Netzwerk Addresse",
+      "network_address": "Netzwerk Adresse",
       "port": "Port",
       "ssl": "SSL",
-      "address": "Address",
+      "address": "Adresse",
       "name": "Name"
     },
     "login": {
