@@ -5,6 +5,7 @@ import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 
 class EditTaskPage extends StatefulWidget {
   const EditTaskPage({required this.task, Key? key}) : super(key: key);
@@ -18,6 +19,9 @@ class EditTaskPage extends StatefulWidget {
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
+  final _formKey = GlobalKey<FormState>();
+  late ServiceTask task;
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _javaCommandController = TextEditingController();
   final TextEditingController _environmentCommandController =
@@ -25,6 +29,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   final TextEditingController _portController = TextEditingController();
   final TextEditingController _minServiceController = TextEditingController();
   final TextEditingController _maxHeapController = TextEditingController();
+
   late TextEditingController? _smartConfigPriority;
   late TextEditingController? _smartConfigMaxServices;
   late TextEditingController? _smartConfigPreparedServices;
@@ -36,6 +41,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
   late TextEditingController?
       _smartConfigPercentOfPlayersForANewServiceByInstance;
   late SmartConfig? _config;
+
+  @override
+  void initState() {
+    task = widget.task;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,49 +99,53 @@ class _EditTaskPageState extends State<EditTaskPage> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ExpansionTile(
-                        title: Text('Basic Configuration',
-                            style: Theme.of(context).textTheme.headline5),
-                        childrenPadding:
-                            EdgeInsets.only(left: 16.0, right: 16.0),
-                        children: [
-                          _buildName(),
-                          _buildJavaCommand(),
-                          _buildEnvironment(),
-                          _buildPort(),
-                          _buildMinServiceCount(),
-                          _buildMaxHeap(),
-                          _buildMaintenance(),
-                          _buildStatic(),
-                          _buildGroups(vm),
-                          _buildDeployments(vm),
-                          _buildIncludes(vm),
-                        ],
-                      ),
-                      _config != null
-                          ? ExpansionTile(
-                              title: Text('Smart Config',
-                                  style: Theme.of(context).textTheme.headline5),
-                              childrenPadding: const EdgeInsets.only(
-                                  left: 16.0, right: 16.0),
-                              children: [
-                                _buildSmartEnabled(),
-                                _buildSmartSplitLogicOverNodes(),
-                                _buildSmartDirectTemplateInclusions(),
-                                _buildSmartPriority(),
-                                _buildSmartMaxServices(),
-                                _buildSmartPreparedMaxServices(),
-                                _buildSmartSmartMinServiceCount(),
-                                _buildSmartAutoStopOfUnusedService(),
-                                _buildSmartAutoStopViaPercentage(),
-                                _buildSmartTimeDelayForNewService(),
-                                _buildSmartPercentageForNewService()
-                              ],
-                            )
-                          : Flex(direction: Axis.horizontal),
-                    ],
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        ExpansionTile(
+                          title: Text('Basic Configuration',
+                              style: Theme.of(context).textTheme.headline5),
+                          childrenPadding:
+                              EdgeInsets.only(left: 16.0, right: 16.0),
+                          children: [
+                            _buildName(),
+                            _buildJavaCommand(),
+                            _buildEnvironment(vm),
+                            _buildPort(),
+                            _buildMinServiceCount(),
+                            _buildMaxHeap(),
+                            _buildMaintenance(),
+                            _buildStatic(),
+                            _buildGroups(vm),
+                            _buildDeployments(vm),
+                            //_buildIncludes(vm), // Need be fixed
+                          ],
+                        ),
+                        _config != null
+                            ? ExpansionTile(
+                                title: Text('Smart Config',
+                                    style:
+                                        Theme.of(context).textTheme.headline5),
+                                childrenPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                children: [
+                                  _buildSmartEnabled(),
+                                  _buildSmartSplitLogicOverNodes(),
+                                  _buildSmartDirectTemplateInclusions(),
+                                  _buildSmartPriority(),
+                                  _buildSmartMaxServices(),
+                                  _buildSmartPreparedMaxServices(),
+                                  _buildSmartSmartMinServiceCount(),
+                                  _buildSmartAutoStopOfUnusedService(),
+                                  _buildSmartAutoStopViaPercentage(),
+                                  _buildSmartTimeDelayForNewService(),
+                                  _buildSmartPercentageForNewService()
+                                ],
+                              )
+                            : Flex(direction: Axis.horizontal),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -138,7 +153,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
           ),
           Positioned(
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () => _saveTask(),
               child: const Icon(Icons.save_sharp),
             ),
             bottom: 16,
@@ -147,6 +162,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         ]);
       },
     );
+  }
+
+  void _saveTask() {
+    _formKey.currentState!.validate();
   }
 
   // Basic Widgets
@@ -171,24 +190,50 @@ class _EditTaskPageState extends State<EditTaskPage> {
     return Row(
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _portController,
             decoration: const InputDecoration(labelText: 'Start Port'),
+            validator: ValidationBuilder()
+                .required("Port is required")
+                .add((e) => _betweenMinAndMax(e, 1, 65565))
+                .build(),
           ),
         ),
       ],
     );
   }
 
+  String? _betweenMinAndMax(String? value, int min, int max) {
+    if (value != null) {
+      if (int.parse(value) >= min && int.parse(value) <= max) {
+        return null;
+      }
+    }
+    return "Not valid";
+  }
+
+  String? _min(String? value, int min) {
+    if (value != null) {
+      if (int.parse(value) >= min) {
+        return null;
+      }
+    }
+    return "Not valid";
+  }
+
   Widget _buildMinServiceCount() {
     return Row(
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _minServiceController,
             decoration: const InputDecoration(labelText: 'Min Service Count'),
+            validator: ValidationBuilder()
+                .required("Min Service count is required")
+                .add((e) => _min(e, 0))
+                .build(),
           ),
         ),
       ],
@@ -199,15 +244,15 @@ class _EditTaskPageState extends State<EditTaskPage> {
     return Row(
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _maxHeapController,
             decoration: const InputDecoration(labelText: 'Max Heap'),
+            validator: ValidationBuilder()
+                .required("Port is required")
+                .add((e) => _min(e, 0))
+                .build(),
           ),
-        ),
-        Tooltip(
-          message: 'Is set in MB not GB',
-          child: Icon(Icons.info),
         )
       ],
     );
@@ -266,18 +311,21 @@ class _EditTaskPageState extends State<EditTaskPage> {
           },
         );
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Groups'),
-          Wrap(
-            spacing: 8,
-            children:
-                List<Widget>.generate(widget.task.groups?.length ?? 0, (index) {
-              return Chip(label: Text(widget.task.groups?[index] ?? ''));
-            }),
-          )
-        ],
+      child: Container(
+        height: 40,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Groups'),
+            Wrap(
+              spacing: 8,
+              children: List<Widget>.generate(widget.task.groups?.length ?? 0,
+                  (index) {
+                return Chip(label: Text(widget.task.groups?[index] ?? ''));
+              }),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -299,6 +347,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             child: ListTile(
                               title: Text('Add Deployment'),
                               leading: Icon(Icons.add),
+                              enabled: false,
                               onTap: () {
                                 showDialog<AlertDialog>(
                                   context: context,
@@ -357,20 +406,22 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         const Card(
                           child: ListTile(
                             title: Text('No deployments'),
+                            enabled: false,
                           ),
                         ),
                         Card(
                           child: ListTile(
                             title: Text('Add Deployment'),
+                            enabled: false,
                             leading: Icon(Icons.add),
                             onTap: () {
-                              showDialog<AlertDialog>(
+                              /*showDialog<AlertDialog>(
                                 context: context,
                                 builder: (context) {
                                   return addEditDeployment(
                                       context, false, null, state);
                                 },
-                              );
+                              );*/
                             },
                           ),
                         ),
@@ -389,7 +440,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Text('Includes'),
+              Flexible(child: Text('Includes')),
               ListView(
                 shrinkWrap: true,
                 children: widget.task.includes.isNotEmpty
@@ -449,6 +500,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         const Card(
                           child: ListTile(
                             title: Text('No inclusions'),
+                            enabled: false,
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            title: Text('Add Deployment'),
+                            enabled: false,
+                            leading: Icon(Icons.add),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditDeployment(
+                                      context, false, null, state);
+                                },
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -476,16 +544,28 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   }
 
-  Widget _buildEnvironment() {
+  List<DropdownMenuItem<String>> _buildEnvironments(NodeState state) {
+    return state.node?.versions
+            .map((e) => e.environmentType ?? '')
+            .toSet()
+            .toList()
+            .map((e) => DropdownMenuItem<String>(
+                  child: Text(e),
+                  value: e,
+                ))
+            .toList() ??
+        [];
+  }
+
+  Widget _buildEnvironment(NodeState state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
-            keyboardType: TextInputType.name,
-            controller: _environmentCommandController,
-            enabled: false,
-            decoration: const InputDecoration(labelText: 'Environment'),
+          child: DropdownButtonFormField(
+            items: _buildEnvironments(state),
+            value: widget.task.processConfiguration?.environment,
+            onChanged: (value) {},
           ),
         )
       ],
@@ -540,11 +620,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          children: [
-            Text('Direct template and inclusions Setup'),
-          ],
-        ),
+        Flexible(child: Text('Direct template and inclusions Setup')),
         Column(
           children: [
             Switch(
