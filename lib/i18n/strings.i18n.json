@@ -91,7 +91,13 @@
     },
     "inclusions": {
       "title_edit": "Edit inclusion",
-      "title_add": "Add inclusion"
+      "title_add": "Add inclusion",
+      "fields": {
+        "http_url": "HTTP Url",
+        "url": "URL",
+        "save_path": "Save path",
+        "file_folder": "File/Folder"
+      }
     }
   }
 }

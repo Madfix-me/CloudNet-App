@@ -94,24 +94,24 @@ SimpleDialog addEditInclusion(BuildContext context, bool edit,
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
         child: Column(
           children: [
-            Text('Http URL'),
+            Text(t.dialogs.inclusions.fields.http_url),
             TextField(
               keyboardType: TextInputType.url,
               controller: null,
               enabled: true,
               decoration: InputDecoration(
-                labelText: 'URL',
+                labelText: t.dialogs.inclusions.fields.url,
               ),
             ),
             Divider(),
-            Text('Save path'),
+            Text(t.dialogs.inclusions.fields.save_path),
             Divider(),
             TextField(
               keyboardType: TextInputType.name,
               controller: null,
               enabled: true,
               decoration: InputDecoration(
-                labelText: 'File/Folder',
+                labelText: t.dialogs.inclusions.fields.file_folder,
               ),
             )
           ],
