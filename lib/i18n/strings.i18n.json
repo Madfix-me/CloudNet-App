@@ -84,5 +84,14 @@
         "content": "You are sure to delete *${item}* ?"
       }
     }
+  },
+  "dialogs": {
+    "select_groups": {
+      "title": "Select groups for this task"
+    },
+    "inclusions": {
+      "title_edit": "Edit inclusion",
+      "title_add": "Add inclusion"
+    }
   }
 }

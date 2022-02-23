@@ -74,7 +74,7 @@ AlertDialog deleteDialog(BuildContext context,
 AlertDialog selectGroups(
     BuildContext context, NodeState state, ServiceTask task) {
   return AlertDialog(
-    title: Text('Select groups for this task'),
+    title: Text(t.dialogs.select_groups.title),
     content: SingleChildScrollView(
       child: Column(
         children: _buildGroups(state, task),
@@ -87,8 +87,8 @@ SimpleDialog addEditInclusion(BuildContext context, bool edit,
     ServiceRemoteInclusion? inclusion, NodeState state) {
   return SimpleDialog(
     title: edit
-        ? Text('Edit Inclusion', style: Theme.of(context).textTheme.headline3)
-        : Text('Add Inclusion', style: Theme.of(context).textTheme.headline3),
+        ? Text(t.dialogs.inclusions.title_edit, style: Theme.of(context).textTheme.headline3)
+        : Text(t.dialogs.inclusions.title_add, style: Theme.of(context).textTheme.headline3),
     children: [
       Container(
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
