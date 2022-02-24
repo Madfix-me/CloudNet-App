@@ -60,6 +60,22 @@
           "service_version": "Which ServiceVersion should be ran on services of this task?",
           "splitter": "What should the splitter of the new task be?"
         }
+      },
+      "edit": {
+        "basic_configuration": "Basic configuration",
+        "smart_config": "Smart Config",
+        "max_heap": "Max heap",
+        "maintenance": "Maintenance",
+        "static": "Static",
+        "groups": "Groups",
+        "deployments": "Deployments",
+        "add_deployment": "Add deployment",
+        "no_deployments": "No deployments",
+        "required": {
+          "min_service": "Min Service count is required",
+          "port": "Port is required",
+          "heap": "Heap is required"
+        }
       }
     }
   },
@@ -83,7 +99,10 @@
         "title": "Delete *${item}*",
         "content": "You are sure to delete *${item}* ?"
       }
-    }
+    },
+    "name": "Name",
+    "min_service_count": "Min Service Count",
+    "not_valid": "Not valid"
   },
   "dialogs": {
     "select_groups": {
