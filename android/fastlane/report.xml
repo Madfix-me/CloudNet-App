@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.00018">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: grep &apos;version:&apos; ../../pubspec.yaml | awk &apos;{ print $2 }&apos; | tr -d &apos;
+&apos;" time="0.010347">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: git rev-list HEAD --first-parent --count" time="0.016795">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: Switch to android build lane" time="0.000158">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: cd ../.. &amp;&amp; flutter build apk --release --flavor alpha -t lib/main_alpha.dart --build-number=292" time="4.718106">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: debug" time="0.00035">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: debug" time="0.000113">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: appcenter_upload" time="66.226639">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

@@ -98,6 +98,12 @@
         "save_path": "Save path",
         "file_folder": "File/Folder"
       }
+    },
+    "deployment": {
+      "title_edit": "Edit deployment",
+      "title_add": "Add deployment",
+      "file_folder": "File/Folder",
+      "excludes": "Excludes"
     }
   }
 }

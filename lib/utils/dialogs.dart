@@ -87,8 +87,10 @@ SimpleDialog addEditInclusion(BuildContext context, bool edit,
     ServiceRemoteInclusion? inclusion, NodeState state) {
   return SimpleDialog(
     title: edit
-        ? Text(t.dialogs.inclusions.title_edit, style: Theme.of(context).textTheme.headline3)
-        : Text(t.dialogs.inclusions.title_add, style: Theme.of(context).textTheme.headline3),
+        ? Text(t.dialogs.inclusions.title_edit,
+            style: Theme.of(context).textTheme.headline3)
+        : Text(t.dialogs.inclusions.title_add,
+            style: Theme.of(context).textTheme.headline3),
     children: [
       Container(
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -127,8 +129,10 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
       '${deployment?.template?.storage}:${deployment?.template?.prefix}/${deployment?.template?.name}';
   return SimpleDialog(
     title: edit
-        ? Text('Edit deployment', style: Theme.of(context).textTheme.headline3)
-        : Text('Add deployment', style: Theme.of(context).textTheme.headline3),
+        ? Text(t.dialogs.deployment.title_edit,
+            style: Theme.of(context).textTheme.headline3)
+        : Text(t.dialogs.deployment.title_add,
+            style: Theme.of(context).textTheme.headline3),
     children: [
       Container(
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -150,7 +154,7 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
               onChanged: (value) {},
               value: deployment != null ? format : null,
             ),
-            Text('Excludes'),
+            Text(t.dialogs.deployment.excludes),
             Divider(),
             Row(
               children: [
@@ -176,7 +180,7 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
               controller: null,
               enabled: true,
               decoration: InputDecoration(
-                labelText: 'File/Folder',
+                labelText: t.dialogs.deployment.file_folder,
                 suffixIcon: Icon(Icons.add),
               ),
             )
