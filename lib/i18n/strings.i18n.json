@@ -71,6 +71,10 @@
         "deployments": "Deployments",
         "add_deployment": "Add deployment",
         "no_deployments": "No deployments",
+        "includes": "Includes",
+        "add_inclusion": "Add inclusion",
+        "no_inclusions": "No inclusions",
+        "java_command": "Java command",
         "required": {
           "min_service": "Min Service count is required",
           "port": "Port is required",
@@ -102,7 +106,8 @@
     },
     "name": "Name",
     "min_service_count": "Min Service Count",
-    "not_valid": "Not valid"
+    "not_valid": "Not valid",
+    "enabled": "Enabled"
   },
   "dialogs": {
     "select_groups": {

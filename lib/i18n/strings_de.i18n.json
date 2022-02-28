@@ -60,6 +60,26 @@
           "service_version": "Welche Service Version sollte auf den Services dieser Task ausgeführt werden?",
           "splitter": "Wie soll der Splitter der neuen Task aussehen?"
         }
+      },
+      "edit": {
+        "basic_configuration": "Basic configuration",
+        "smart_config": "Smart Config",
+        "max_heap": "Max heap",
+        "maintenance": "Maintenance",
+        "static": "Static",
+        "groups": "Groups",
+        "deployments": "Deployments",
+        "add_deployment": "Add deployment",
+        "no_deployments": "No deployments",
+        "includes": "Includes",
+        "add_inclusion": "Add inclusion",
+        "no_inclusions": "No inclusions",
+        "java_command": "Java command",
+        "required": {
+          "min_service": "Min Service count is required",
+          "port": "Port is required",
+          "heap": "Heap is required"
+        }
       }
     }
   },
@@ -83,6 +103,31 @@
         "title": "\"${item}\" Löschen?",
         "content": "Bist du sicher, dass du \"${item}\" löschen willst?"
       }
+    },
+    "name": "Name",
+    "min_service_count": "Min Service Count",
+    "not_valid": "Not valid",
+    "enabled": "Enabled"
+  },
+  "dialogs": {
+    "select_groups": {
+      "title": "Select groups for this task"
+    },
+    "inclusions": {
+      "title_edit": "Edit inclusion",
+      "title_add": "Add inclusion",
+      "fields": {
+        "http_url": "HTTP Url",
+        "url": "URL",
+        "save_path": "Save path",
+        "file_folder": "File/Folder"
+      }
+    },
+    "deployment": {
+      "title_edit": "Edit deployment",
+      "title_add": "Add deployment",
+      "file_folder": "File/Folder",
+      "excludes": "Excludes"
     }
   }
 }
