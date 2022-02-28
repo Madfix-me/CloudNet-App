@@ -71,15 +71,58 @@ AlertDialog deleteDialog(BuildContext context,
   );
 }
 
-AlertDialog selectGroups(
-    BuildContext context, NodeState state, ServiceTask task) {
-  return AlertDialog(
-    title: Text(t.dialogs.select_groups.title),
-    content: SingleChildScrollView(
-      child: Column(
-        children: _buildGroups(state, task),
+StatefulBuilder selectGroups(
+    BuildContext context, NodeState state, ServiceTask task, void save(ServiceTask task)) {
+  return StatefulBuilder(
+    builder: (context, setState) => AlertDialog(
+      title: Text(t.dialogs.select_groups.title),
+      content: Container(
+        height: 300,
+        width: 300,
+        child: ListView.builder(
+          itemBuilder: (context, index) =>
+              _buildGroupTile(setState ,context, index, state, task),
+          shrinkWrap: true,
+          itemCount: state.node?.groups.length,
+        ),
       ),
+      actions: [
+        Row(
+          children: [
+            Container(
+              child: TextButton(
+                onPressed: () => save(task),
+                child: Text(
+                  t.general.button.save,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              margin: const EdgeInsets.all(8.0),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.end,
+        )
+      ],
     ),
+  );
+}
+
+CheckboxListTile _buildGroupTile(StateSetter setState,
+    BuildContext context, int index, NodeState state, ServiceTask task) {
+  final group = state.node?.groups[index];
+  return CheckboxListTile(
+    value: task.groups?.contains(group?.name ?? ''),
+    onChanged: (bool? value) {
+      setState(() {
+        if (value == true) {
+          task.groups?.add(group?.name ?? '');
+        } else {
+          task.groups?.remove(group?.name ?? '');
+        }
+
+      });
+    },
+    title: Text(group?.name ?? ''),
   );
 }
 

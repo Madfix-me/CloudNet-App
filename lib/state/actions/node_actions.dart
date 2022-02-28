@@ -149,6 +149,26 @@ class DeleteTask extends ReduxAction<AppState> {
   }
 }
 
+class UpdateTask extends ReduxAction<AppState> {
+  final ServiceTask task;
+
+  UpdateTask(this.task);
+
+  @override
+  Future<AppState> reduce() async {
+    List<ServiceTask> tasks = List.of(
+        (state.nodeState.node?.tasks ?? <ServiceTask>[]),
+        growable: true);
+    final index = tasks.indexWhere((element) => element.name == task.name);
+    tasks.removeAt(index);
+    tasks.add(task);
+    await ApiService().tasksApi.createTask(task);
+    return state.copyWith(
+        nodeState: state.nodeState
+            .copyWith(node: state.nodeState.node?.copyWith(tasks: tasks)));
+  }
+}
+
 class RemoveCloudNetNode extends ReduxAction<AppState> {
   final CloudNetNode node;
 

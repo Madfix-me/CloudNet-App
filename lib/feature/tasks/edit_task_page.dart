@@ -2,6 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/smart_config.dart';
 import 'package:cloudnet/i18n/strings.g.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
@@ -22,6 +23,7 @@ class EditTaskPage extends StatefulWidget {
 class _EditTaskPageState extends State<EditTaskPage> {
   final _formKey = GlobalKey<FormState>();
   late ServiceTask task;
+  late ServiceTask editTask;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _javaCommandController = TextEditingController();
@@ -46,6 +48,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   void initState() {
     task = widget.task;
+    editTask = widget.task;
     super.initState();
   }
 
@@ -166,7 +169,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   void _saveTask() {
-    _formKey.currentState!.validate();
+    if (_formKey.currentState!.validate()) {
+      editTask = editTask.copyWith(startPort: int.tryParse(_portController.value.text));
+      editTask = editTask.copyWith(processConfiguration: editTask.processConfiguration?.copyWith(maxHeapMemorySize: int.tryParse(_maxHeapController.value.text)));
+
+      StoreProvider.dispatch(context, UpdateTask(editTask));
+
+    }
   }
 
   // Basic Widgets
@@ -272,8 +281,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Column(
           children: [
             Switch(
-              value: widget.task.maintenance,
-              onChanged: (value) {},
+              value: editTask.maintenance,
+              onChanged: (value) {
+                setState(() {
+                  editTask = editTask.copyWith(maintenance: !editTask.maintenance);
+                });
+              },
             )
           ],
         )
@@ -293,8 +306,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Column(
           children: [
             Switch(
-              value: widget.task.staticServices,
-              onChanged: (value) {},
+              value: editTask.staticServices,
+              onChanged: (value) {
+                setState(() {
+                  editTask = editTask.copyWith(staticServices: !editTask.staticServices);
+                });
+
+              },
             )
           ],
         )
@@ -305,29 +323,38 @@ class _EditTaskPageState extends State<EditTaskPage> {
   Widget _buildGroups(NodeState state) {
     //TODO: Input Dialog
     return InkWell(
-      onLongPress: () {
+      onTap: () {
         showDialog<AlertDialog>(
           context: context,
           builder: (context) {
-            return selectGroups(context, state, widget.task);
+            return selectGroups(context, state, editTask, (task) {
+              setState(() {
+                editTask = editTask.copyWith(groups: task.groups);
+                Navigator.pop(context);
+              });
+            });
           },
         );
       },
       child: Container(
-        height: 40,
+        constraints: BoxConstraints(
+          minHeight: 40
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(t.page.tasks.edit.groups),
-            Wrap(
-              spacing: 8,
-              children: List<Widget>.generate(
-                widget.task.groups?.length ?? 0,
-                (index) {
-                  return Chip(
-                    label: Text(widget.task.groups?[index] ?? ''),
-                  );
-                },
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                children: List<Widget>.generate(
+                  editTask.groups?.length ?? 0,
+                      (index) {
+                    return Chip(
+                      label: Text(widget.task.groups?[index] ?? ''),
+                    );
+                  },
+                ),
               ),
             )
           ],
@@ -448,7 +475,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Flexible(child: Text('Includes')),
+              Flexible(child: Text(t.page.tasks.edit.includes),),
               ListView(
                 shrinkWrap: true,
                 children: widget.task.includes.isNotEmpty
@@ -457,7 +484,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         if (index == widget.task.includes.length) {
                           return Card(
                             child: ListTile(
-                              title: Text('Add inclusion'),
+                              title: Text(t.page.tasks.edit.add_inclusion),
                               leading: Icon(Icons.add),
                               onTap: () {
                                 showDialog<AlertDialog>(
@@ -505,15 +532,15 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         );
                       })
                     : [
-                        const Card(
+                      Card(
                           child: ListTile(
-                            title: Text('No inclusions'),
+                            title: Text(t.page.tasks.edit.no_inclusions),
                             enabled: false,
                           ),
                         ),
                         Card(
                           child: ListTile(
-                            title: Text('Add Deployment'),
+                            title: Text(t.page.tasks.edit.add_inclusion),
                             enabled: false,
                             leading: Icon(Icons.add),
                             onTap: () {
@@ -545,7 +572,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
             keyboardType: TextInputType.name,
             controller: _javaCommandController,
             enabled: false,
-            decoration: const InputDecoration(labelText: 'Java Command'),
+            decoration: InputDecoration(labelText: t.page.tasks.edit.java_command),
           ),
         )
       ],
@@ -588,7 +615,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Column(
           children: [
-            Text('Enabled'),
+            Text(t.general.enabled),
           ],
         ),
         Column(
