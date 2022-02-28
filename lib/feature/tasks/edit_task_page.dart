@@ -1,6 +1,8 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/service_task.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/cloudnet/smart_config.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
+import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
@@ -21,6 +23,7 @@ class EditTaskPage extends StatefulWidget {
 class _EditTaskPageState extends State<EditTaskPage> {
   final _formKey = GlobalKey<FormState>();
   late ServiceTask task;
+  late ServiceTask editTask;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _javaCommandController = TextEditingController();
@@ -45,6 +48,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   void initState() {
     task = widget.task;
+    editTask = widget.task;
     super.initState();
   }
 
@@ -104,7 +108,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     child: Column(
                       children: [
                         ExpansionTile(
-                          title: Text('Basic Configuration',
+                          title: Text(t.page.tasks.edit.basic_configuration,
                               style: Theme.of(context).textTheme.headline5),
                           childrenPadding:
                               EdgeInsets.only(left: 16.0, right: 16.0),
@@ -124,7 +128,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         ),
                         _config != null
                             ? ExpansionTile(
-                                title: Text('Smart Config',
+                                title: Text(t.page.tasks.edit.smart_config,
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 childrenPadding: const EdgeInsets.only(
@@ -165,7 +169,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   void _saveTask() {
-    _formKey.currentState!.validate();
+    if (_formKey.currentState!.validate()) {
+      editTask = editTask.copyWith(startPort: int.tryParse(_portController.value.text));
+      editTask = editTask.copyWith(processConfiguration: editTask.processConfiguration?.copyWith(maxHeapMemorySize: int.tryParse(_maxHeapController.value.text)));
+
+      StoreProvider.dispatch(context, UpdateTask(editTask));
+
+    }
   }
 
   // Basic Widgets
@@ -179,7 +189,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
             keyboardType: TextInputType.name,
             controller: _nameController,
             enabled: false,
-            decoration: const InputDecoration(labelText: 'Name'),
+            decoration: InputDecoration(labelText: t.general.name),
           ),
         ),
       ],
@@ -193,9 +203,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _portController,
-            decoration: const InputDecoration(labelText: 'Start Port'),
+            decoration:
+                InputDecoration(labelText: t.page.tasks.setup.start_port),
             validator: ValidationBuilder()
-                .required("Port is required")
+                .required(t.page.tasks.edit.required.port)
                 .add((e) => _betweenMinAndMax(e, 1, 65565))
                 .build(),
           ),
@@ -210,7 +221,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         return null;
       }
     }
-    return "Not valid";
+    return t.general.not_valid;
   }
 
   String? _min(String? value, int min) {
@@ -219,7 +230,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         return null;
       }
     }
-    return "Not valid";
+    return t.general.not_valid;
   }
 
   Widget _buildMinServiceCount() {
@@ -229,9 +240,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _minServiceController,
-            decoration: const InputDecoration(labelText: 'Min Service Count'),
+            decoration: InputDecoration(labelText: t.general.min_service_count),
             validator: ValidationBuilder()
-                .required("Min Service count is required")
+                .required(t.page.tasks.edit.required.min_service)
                 .add((e) => _min(e, 0))
                 .build(),
           ),
@@ -247,9 +258,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _maxHeapController,
-            decoration: const InputDecoration(labelText: 'Max Heap'),
+            decoration: InputDecoration(labelText: t.page.tasks.edit.max_heap),
             validator: ValidationBuilder()
-                .required("Port is required")
+                .required(t.page.tasks.edit.required.heap)
                 .add((e) => _min(e, 0))
                 .build(),
           ),
@@ -264,14 +275,18 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Column(
           children: [
-            Text('Maintenance'),
+            Text(t.page.tasks.edit.maintenance),
           ],
         ),
         Column(
           children: [
             Switch(
-              value: widget.task.maintenance,
-              onChanged: (value) {},
+              value: editTask.maintenance,
+              onChanged: (value) {
+                setState(() {
+                  editTask = editTask.copyWith(maintenance: !editTask.maintenance);
+                });
+              },
             )
           ],
         )
@@ -285,14 +300,19 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Column(
           children: [
-            Text('Static'),
+            Text(t.page.tasks.edit.static),
           ],
         ),
         Column(
           children: [
             Switch(
-              value: widget.task.staticServices,
-              onChanged: (value) {},
+              value: editTask.staticServices,
+              onChanged: (value) {
+                setState(() {
+                  editTask = editTask.copyWith(staticServices: !editTask.staticServices);
+                });
+
+              },
             )
           ],
         )
@@ -303,26 +323,39 @@ class _EditTaskPageState extends State<EditTaskPage> {
   Widget _buildGroups(NodeState state) {
     //TODO: Input Dialog
     return InkWell(
-      onLongPress: () {
+      onTap: () {
         showDialog<AlertDialog>(
           context: context,
           builder: (context) {
-            return selectGroups(context, state, widget.task);
+            return selectGroups(context, state, editTask, (task) {
+              setState(() {
+                editTask = editTask.copyWith(groups: task.groups);
+                Navigator.pop(context);
+              });
+            });
           },
         );
       },
       child: Container(
-        height: 40,
+        constraints: BoxConstraints(
+          minHeight: 40
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Groups'),
-            Wrap(
-              spacing: 8,
-              children: List<Widget>.generate(widget.task.groups?.length ?? 0,
-                  (index) {
-                return Chip(label: Text(widget.task.groups?[index] ?? ''));
-              }),
+            Text(t.page.tasks.edit.groups),
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                children: List<Widget>.generate(
+                  editTask.groups?.length ?? 0,
+                      (index) {
+                    return Chip(
+                      label: Text(widget.task.groups?[index] ?? ''),
+                    );
+                  },
+                ),
+              ),
             )
           ],
         ),
@@ -336,82 +369,84 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Text('Deployments'),
+              Text(t.page.tasks.edit.deployments),
               ListView(
                 shrinkWrap: true,
                 children: widget.task.deployments.isNotEmpty
-                    ? List<Widget>.generate(widget.task.deployments.length + 1,
+                    ? List<Widget>.generate(
+                        widget.task.deployments.length + 1,
                         (index) {
-                        if (index == widget.task.deployments.length) {
+                          if (index == widget.task.deployments.length) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(t.page.tasks.edit.add_deployment),
+                                leading: Icon(Icons.add),
+                                enabled: false,
+                                onTap: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return addEditDeployment(
+                                          context, false, null, state);
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          final deployment = widget.task.deployments[index];
+                          final format =
+                              '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
                           return Card(
                             child: ListTile(
-                              title: Text('Add Deployment'),
-                              leading: Icon(Icons.add),
-                              enabled: false,
+                              title: Text(format),
+                              leading: Icon(Icons.storage),
+                              trailing: IconButton(
+                                color: Theme.of(context).errorColor,
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                onPressed: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return deleteDialog(
+                                        context,
+                                        onCancel: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDelete: () {
+                                          Navigator.pop(context);
+                                        },
+                                        item: format,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                               onTap: () {
                                 showDialog<AlertDialog>(
                                   context: context,
                                   builder: (context) {
                                     return addEditDeployment(
-                                        context, false, null, state);
+                                        context, true, deployment, state);
                                   },
                                 );
                               },
                             ),
                           );
-                        }
-                        final deployment = widget.task.deployments[index];
-                        final format =
-                            '${deployment.template?.storage}:${deployment.template?.prefix}/${deployment.template?.name}';
-                        return Card(
-                          child: ListTile(
-                            title: Text(format),
-                            leading: Icon(Icons.storage),
-                            trailing: IconButton(
-                              color: Theme.of(context).errorColor,
-                              icon: Icon(
-                                Icons.delete_forever,
-                              ),
-                              onPressed: () {
-                                showDialog<AlertDialog>(
-                                  context: context,
-                                  builder: (context) {
-                                    return deleteDialog(
-                                      context,
-                                      onCancel: () {
-                                        Navigator.pop(context);
-                                      },
-                                      onDelete: () {
-                                        Navigator.pop(context);
-                                      },
-                                      item: format,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            onTap: () {
-                              showDialog<AlertDialog>(
-                                context: context,
-                                builder: (context) {
-                                  return addEditDeployment(
-                                      context, true, deployment, state);
-                                },
-                              );
-                            },
-                          ),
-                        );
-                      })
+                        },
+                      )
                     : [
-                        const Card(
+                        Card(
                           child: ListTile(
-                            title: Text('No deployments'),
+                            title: Text(t.page.tasks.edit.no_deployments),
                             enabled: false,
                           ),
                         ),
                         Card(
                           child: ListTile(
-                            title: Text('Add Deployment'),
+                            title: Text(t.page.tasks.edit.add_deployment),
                             enabled: false,
                             leading: Icon(Icons.add),
                             onTap: () {
@@ -440,7 +475,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Flexible(child: Text('Includes')),
+              Flexible(child: Text(t.page.tasks.edit.includes),),
               ListView(
                 shrinkWrap: true,
                 children: widget.task.includes.isNotEmpty
@@ -449,7 +484,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         if (index == widget.task.includes.length) {
                           return Card(
                             child: ListTile(
-                              title: Text('Add inclusion'),
+                              title: Text(t.page.tasks.edit.add_inclusion),
                               leading: Icon(Icons.add),
                               onTap: () {
                                 showDialog<AlertDialog>(
@@ -497,15 +532,15 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         );
                       })
                     : [
-                        const Card(
+                      Card(
                           child: ListTile(
-                            title: Text('No inclusions'),
+                            title: Text(t.page.tasks.edit.no_inclusions),
                             enabled: false,
                           ),
                         ),
                         Card(
                           child: ListTile(
-                            title: Text('Add Deployment'),
+                            title: Text(t.page.tasks.edit.add_inclusion),
                             enabled: false,
                             leading: Icon(Icons.add),
                             onTap: () {
@@ -537,7 +572,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
             keyboardType: TextInputType.name,
             controller: _javaCommandController,
             enabled: false,
-            decoration: const InputDecoration(labelText: 'Java Command'),
+            decoration: InputDecoration(labelText: t.page.tasks.edit.java_command),
           ),
         )
       ],
@@ -580,7 +615,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Column(
           children: [
-            Text('Enabled'),
+            Text(t.general.enabled),
           ],
         ),
         Column(

@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      fast_i18n:
+        options:
+          base_locale: en
+          fallback_strategy: base_locale

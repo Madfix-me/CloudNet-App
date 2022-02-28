@@ -71,15 +71,58 @@ AlertDialog deleteDialog(BuildContext context,
   );
 }
 
-AlertDialog selectGroups(
-    BuildContext context, NodeState state, ServiceTask task) {
-  return AlertDialog(
-    title: Text('Select groups for this task'),
-    content: SingleChildScrollView(
-      child: Column(
-        children: _buildGroups(state, task),
+StatefulBuilder selectGroups(
+    BuildContext context, NodeState state, ServiceTask task, void save(ServiceTask task)) {
+  return StatefulBuilder(
+    builder: (context, setState) => AlertDialog(
+      title: Text(t.dialogs.select_groups.title),
+      content: Container(
+        height: 300,
+        width: 300,
+        child: ListView.builder(
+          itemBuilder: (context, index) =>
+              _buildGroupTile(setState ,context, index, state, task),
+          shrinkWrap: true,
+          itemCount: state.node?.groups.length,
+        ),
       ),
+      actions: [
+        Row(
+          children: [
+            Container(
+              child: TextButton(
+                onPressed: () => save(task),
+                child: Text(
+                  t.general.button.save,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              margin: const EdgeInsets.all(8.0),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.end,
+        )
+      ],
     ),
+  );
+}
+
+CheckboxListTile _buildGroupTile(StateSetter setState,
+    BuildContext context, int index, NodeState state, ServiceTask task) {
+  final group = state.node?.groups[index];
+  return CheckboxListTile(
+    value: task.groups?.contains(group?.name ?? ''),
+    onChanged: (bool? value) {
+      setState(() {
+        if (value == true) {
+          task.groups?.add(group?.name ?? '');
+        } else {
+          task.groups?.remove(group?.name ?? '');
+        }
+
+      });
+    },
+    title: Text(group?.name ?? ''),
   );
 }
 
@@ -87,31 +130,33 @@ SimpleDialog addEditInclusion(BuildContext context, bool edit,
     ServiceRemoteInclusion? inclusion, NodeState state) {
   return SimpleDialog(
     title: edit
-        ? Text('Edit Inclusion', style: Theme.of(context).textTheme.headline3)
-        : Text('Add Inclusion', style: Theme.of(context).textTheme.headline3),
+        ? Text(t.dialogs.inclusions.title_edit,
+            style: Theme.of(context).textTheme.headline3)
+        : Text(t.dialogs.inclusions.title_add,
+            style: Theme.of(context).textTheme.headline3),
     children: [
       Container(
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
         child: Column(
           children: [
-            Text('Http URL'),
+            Text(t.dialogs.inclusions.fields.http_url),
             TextField(
               keyboardType: TextInputType.url,
               controller: null,
               enabled: true,
               decoration: InputDecoration(
-                labelText: 'URL',
+                labelText: t.dialogs.inclusions.fields.url,
               ),
             ),
             Divider(),
-            Text('Save path'),
+            Text(t.dialogs.inclusions.fields.save_path),
             Divider(),
             TextField(
               keyboardType: TextInputType.name,
               controller: null,
               enabled: true,
               decoration: InputDecoration(
-                labelText: 'File/Folder',
+                labelText: t.dialogs.inclusions.fields.file_folder,
               ),
             )
           ],
@@ -127,8 +172,10 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
       '${deployment?.template?.storage}:${deployment?.template?.prefix}/${deployment?.template?.name}';
   return SimpleDialog(
     title: edit
-        ? Text('Edit deployment', style: Theme.of(context).textTheme.headline3)
-        : Text('Add deployment', style: Theme.of(context).textTheme.headline3),
+        ? Text(t.dialogs.deployment.title_edit,
+            style: Theme.of(context).textTheme.headline3)
+        : Text(t.dialogs.deployment.title_add,
+            style: Theme.of(context).textTheme.headline3),
     children: [
       Container(
         margin: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -150,7 +197,7 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
               onChanged: (value) {},
               value: deployment != null ? format : null,
             ),
-            Text('Excludes'),
+            Text(t.dialogs.deployment.excludes),
             Divider(),
             Row(
               children: [
@@ -176,7 +223,7 @@ SimpleDialog addEditDeployment(BuildContext context, bool edit,
               controller: null,
               enabled: true,
               decoration: InputDecoration(
-                labelText: 'File/Folder',
+                labelText: t.dialogs.deployment.file_folder,
                 suffixIcon: Icon(Icons.add),
               ),
             )
