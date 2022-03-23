@@ -71,6 +71,60 @@ AlertDialog deleteDialog(BuildContext context,
   );
 }
 
+CheckboxListTile _buildNodeTile(StateSetter setState, BuildContext context,
+    int index, NodeState state, ServiceTask task) {
+  final node = state.node?.nodes[index];
+  return CheckboxListTile(
+    value: task.associatedNodes.contains(node?.node?.uniqueId ?? ''),
+    onChanged: (bool? value) {
+      setState(() {
+        if (value == true) {
+          task.associatedNodes.add(node?.node?.uniqueId ?? '');
+        } else {
+          task.associatedNodes.remove(node?.node?.uniqueId ?? '');
+        }
+      });
+    },
+    title: Text(node?.node?.uniqueId ?? ''),
+  );
+}
+
+StatefulBuilder selectNodes(BuildContext context, NodeState state,
+    ServiceTask task, void Function(ServiceTask task) save) {
+  return StatefulBuilder(
+    builder: (context, setState) => AlertDialog(
+      title: Text("Select Nodes"),
+      content: Container(
+        height: 300,
+        width: 300,
+        child: ListView.builder(
+          itemBuilder: (context, index) =>
+              _buildNodeTile(setState, context, index, state, task),
+          shrinkWrap: true,
+          itemCount: state.node?.nodes.length,
+        ),
+      ),
+      actions: [
+        Row(
+          children: [
+            Container(
+              child: TextButton(
+                onPressed: () => save(task),
+                child: Text(
+                  t.general.button.save,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              margin: const EdgeInsets.all(8.0),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.end,
+        )
+      ],
+    ),
+  );
+}
+
 StatefulBuilder selectGroups(BuildContext context, NodeState state,
     ServiceTask task, void Function(ServiceTask task) save) {
   return StatefulBuilder(
@@ -125,7 +179,6 @@ CheckboxListTile _buildGroupTile(StateSetter setState, BuildContext context,
   );
 }
 
-// https://raw.githubusercontent.com/CloudNetService/launchermeta/unstable/rewrite/modules.json
 StatefulBuilder addEditInclusion(
     BuildContext context,
     bool edit,

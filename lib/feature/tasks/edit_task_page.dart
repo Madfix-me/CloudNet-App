@@ -126,9 +126,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             _buildMaxHeap(), // X
                             _buildMaintenance(), // X
                             _buildStatic(), // X
+                            Divider(),
                             _buildGroups(vm), // X
-                            _buildDeployments(vm),
-                            _buildIncludes(vm), // Need be fixed
+                            Divider(),
+                            _buildNodes(vm), //
+                            Divider(),
+                            _buildDeployments(vm), // X
+                            _buildIncludes(vm), // X
                           ],
                         ),
                         _config != null
@@ -353,6 +357,54 @@ class _EditTaskPageState extends State<EditTaskPage> {
           ],
         )
       ],
+    );
+  }
+
+  Widget _buildNodes(NodeState state) {
+    return InkWell(
+      onTap: () {
+        showDialog<AlertDialog>(
+          context: context,
+          builder: (context) {
+            return selectNodes(context, state, editTask, (task) {
+              setState(() {
+                editTask =
+                    editTask.copyWith(associatedNodes: task.associatedNodes);
+                Navigator.pop(context);
+              });
+            });
+          },
+        );
+      },
+      child: Container(
+        constraints: BoxConstraints(minHeight: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Nodes"),
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                children: editTask.associatedNodes.isNotEmpty
+                    ? List<Widget>.generate(
+                        editTask.associatedNodes.length,
+                        (index) {
+                          return Chip(
+                            label:
+                                Text(widget.task.associatedNodes[index] ?? ''),
+                          );
+                        },
+                      )
+                    : [
+                        Chip(
+                          label: Text("All"),
+                        )
+                      ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
