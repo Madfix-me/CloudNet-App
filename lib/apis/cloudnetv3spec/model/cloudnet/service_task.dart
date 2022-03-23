@@ -25,6 +25,7 @@ class ServiceTask with _$ServiceTask {
     @JsonKey(name: 'processConfiguration')
         ProcessConfiguration? processConfiguration,
     @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'nameSplitter') String? nameSplitter,
     @JsonKey(name: 'minServiceCount') int? minServiceCount,
     @JsonKey(name: 'startPort') int? startPort,
     @JsonKey(name: 'runtime') @Default('jvm') String runtime,
