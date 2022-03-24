@@ -379,3 +379,51 @@ StatefulBuilder addEditDeployment(
     },
   );
 }
+
+StatefulBuilder addEditString(BuildContext context, NodeState state, bool edit,
+    String? c, void Function(String option) save) {
+  var option = TextEditingController(text: edit ? c : null);
+  return StatefulBuilder(
+    builder: (context, setState) {
+      return SimpleDialog(
+        title: edit
+            ? Text("Edit", style: Theme.of(context).textTheme.headline3)
+            : Text("Add", style: Theme.of(context).textTheme.headline3),
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Column(
+              children: [
+                TextField(
+                  keyboardType: TextInputType.name,
+                  controller: option,
+                  enabled: true,
+                  decoration: InputDecoration(
+                    labelText: "Option",
+                  ),
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.clear,
+                          color: Theme.of(context).colorScheme.error),
+                    ),
+                    IconButton(
+                      onPressed: () => save(option.text),
+                      icon: Icon(Icons.save),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      );
+    },
+  );
+}

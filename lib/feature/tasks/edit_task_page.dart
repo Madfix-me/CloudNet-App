@@ -127,9 +127,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             _buildMaintenance(), // X
                             _buildStatic(), // X
                             Divider(),
+                            _buildJvmOptions(vm), // X
+                            Divider(),
                             _buildGroups(vm), // X
                             Divider(),
-                            _buildNodes(vm), //
+                            _buildProcessParameter(vm), // X
+                            Divider(),
+                            _buildNodes(vm), // X
                             Divider(),
                             _buildDeployments(vm), // X
                             _buildIncludes(vm), // X
@@ -228,7 +232,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.name,
             controller: _splitterController,
-            decoration: InputDecoration(labelText: t.general.name),
+            decoration: InputDecoration(labelText: "Name Splitter"),
           ),
         ),
       ],
@@ -390,8 +394,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         editTask.associatedNodes.length,
                         (index) {
                           return Chip(
-                            label:
-                                Text(widget.task.associatedNodes[index] ?? ''),
+                            label: Text(widget.task.associatedNodes[index]),
                           );
                         },
                       )
@@ -445,6 +448,298 @@ class _EditTaskPageState extends State<EditTaskPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildJvmOptions(NodeState state) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              Text("Jvm options"),
+              ListView(
+                shrinkWrap: true,
+                children: editTask.processConfiguration!.jvmOptions.isNotEmpty
+                    ? List<Widget>.generate(
+                        editTask.processConfiguration!.jvmOptions.length + 1,
+                        (index) {
+                          if (index ==
+                              editTask
+                                  .processConfiguration!.jvmOptions.length) {
+                            return Card(
+                              child: ListTile(
+                                title: Text("Add jvm option"),
+                                leading: Icon(Icons.add),
+                                enabled: false,
+                                onTap: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return addEditString(
+                                        context,
+                                        state,
+                                        false,
+                                        null,
+                                        (option) {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .jvmOptions
+                                                .add(option);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          final jvmOption =
+                              editTask.processConfiguration!.jvmOptions[index];
+                          return Card(
+                            child: ListTile(
+                              enabled: false,
+                              title: Text(jvmOption),
+                              leading: Icon(Icons.storage),
+                              trailing: IconButton(
+                                color: Theme.of(context).errorColor,
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                onPressed:
+                                    null /*() {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return deleteDialog(
+                                        context,
+                                        onCancel: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDelete: () {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .jvmOptions
+                                                .removeAt(index);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        item: jvmOption,
+                                      );
+                                    },
+                                  );
+                                }*/
+                                ,
+                              ),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditString(
+                                        context, state, true, jvmOption,
+                                        (option) {
+                                      setState(() {
+                                        editTask
+                                            .processConfiguration!.jvmOptions
+                                            .removeAt(index);
+                                        editTask
+                                            .processConfiguration!.jvmOptions
+                                            .add(option);
+                                        Navigator.pop(context);
+                                      });
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    : [
+                        Card(
+                          child: ListTile(
+                            title: Text("No jvm options"),
+                            enabled: false,
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            title: Text("Add jvm option"),
+                            enabled: false,
+                            leading: Icon(Icons.add),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditString(
+                                      context, state, false, null, (option) {
+                                    setState(() {
+                                      editTask.processConfiguration!.jvmOptions
+                                          .add(option);
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildProcessParameter(NodeState state) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              Text("Process Parameters"),
+              ListView(
+                shrinkWrap: true,
+                children: editTask
+                        .processConfiguration!.processParameters.isNotEmpty
+                    ? List<Widget>.generate(
+                        editTask.processConfiguration!.processParameters
+                                .length +
+                            1,
+                        (index) {
+                          if (index ==
+                              editTask.processConfiguration!.processParameters
+                                  .length) {
+                            return Card(
+                              child: ListTile(
+                                title: Text("Add process parameter"),
+                                leading: Icon(Icons.add),
+                                enabled: false,
+                                onTap: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return addEditString(
+                                        context,
+                                        state,
+                                        false,
+                                        null,
+                                        (option) {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .processParameters
+                                                .add(option);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          final jvmOption = editTask
+                              .processConfiguration!.processParameters[index];
+                          return Card(
+                            child: ListTile(
+                              enabled: false,
+                              title: Text(jvmOption),
+                              leading: Icon(Icons.storage),
+                              trailing: IconButton(
+                                color: Theme.of(context).errorColor,
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                onPressed:
+                                    null /*() {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return deleteDialog(
+                                        context,
+                                        onCancel: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDelete: () {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .processParameters
+                                                .removeAt(index);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        item: jvmOption,
+                                      );
+                                    },
+                                  );
+                                }*/
+                                ,
+                              ),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditString(
+                                        context, state, true, jvmOption,
+                                        (option) {
+                                      setState(() {
+                                        editTask.processConfiguration!
+                                            .processParameters
+                                            .removeAt(index);
+                                        editTask.processConfiguration!
+                                            .processParameters
+                                            .add(option);
+                                        Navigator.pop(context);
+                                      });
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    : [
+                        Card(
+                          child: ListTile(
+                            title: Text("No process parameter"),
+                            enabled: false,
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            enabled: false,
+                            title: Text("Add process parameter"),
+                            leading: Icon(Icons.add),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditString(
+                                      context, state, false, null, (option) {
+                                    setState(() {
+                                      editTask.processConfiguration!
+                                          .processParameters
+                                          .add(option);
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -718,7 +1013,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         )
       ],
     );
-  } //TODO: Input Dialog
+  }
 
   Widget _buildJavaCommand() {
     return Row(
@@ -755,15 +1050,20 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: DropdownButtonFormField(
+          child: DropdownButtonFormField<String>(
             items: _buildEnvironments(state),
             value: widget.task.processConfiguration?.environment,
-            onChanged: (value) {},
+            onChanged: (value) {
+              editTask = editTask.copyWith(
+                  processConfiguration: editTask.processConfiguration?.copyWith(
+                environment: value,
+              ));
+            },
           ),
         )
       ],
     );
-  } //TODO: Drop Down
+  }
 
   // Smart Config
 
@@ -780,7 +1080,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
           children: [
             Switch(
               value: _config?.enabled ?? false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  print(value);
+                  print(_config?.enabled);
+                  _config = _config?.copyWith(enabled: value);
+                });
+              },
             )
           ],
         )
