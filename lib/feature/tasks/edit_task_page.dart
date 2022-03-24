@@ -48,6 +48,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
   TextEditingController? _smartConfigPercentOfPlayersForANewServiceByInstance;
   SmartConfig? _config;
 
+  String? requiredPermission;
+  TextEditingController? _requiredPermissionPermission;
+
   @override
   void initState() {
     task = widget.task;
@@ -98,6 +101,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
                       .toString() ??
                   ''));
     }
+    if (task.properties.containsKey('requiredPermission')) {
+      requiredPermission = task.properties['requiredPermission'] as String?;
+      print(requiredPermission);
+      _requiredPermissionPermission = TextEditingController.fromValue(
+          TextEditingValue(text: requiredPermission ?? ''));
+    }
 
     return StoreConnector<AppState, NodeState>(
       converter: (store) => store.state.nodeState,
@@ -126,6 +135,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             _buildMaxHeap(), // X
                             _buildMaintenance(), // X
                             _buildStatic(), // X
+                            /*Divider(),
+                            _buildTemplates(vm),*/
                             Divider(),
                             _buildJvmOptions(vm), // X
                             Divider(),
@@ -158,6 +169,18 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   _buildSmartAutoStopViaPercentage(),
                                   _buildSmartTimeDelayForNewService(),
                                   _buildSmartPercentageForNewService()
+                                ],
+                              )
+                            : Flex(direction: Axis.horizontal),
+                        task.properties.containsKey('requiredPermission')
+                            ? ExpansionTile(
+                                title: Text("Required permission",
+                                    style:
+                                        Theme.of(context).textTheme.headline5),
+                                childrenPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                children: [
+                                  _buildRequiredPermission(),
                                 ],
                               )
                             : Flex(direction: Axis.horizontal),
@@ -201,6 +224,30 @@ class _EditTaskPageState extends State<EditTaskPage> {
       editTask = editTask.copyWith(
         nameSplitter: _splitterController.text,
       );
+      if (_config != null) {
+        var config = _config!.copyWith(
+            maxServices: int.tryParse(_smartConfigMaxServices!.text)!,
+            priority: int.tryParse(_smartConfigPriority!.text)!,
+            preparedServices: int.tryParse(_smartConfigPreparedServices!.text)!,
+            smartMinServiceCount:
+                int.tryParse(_smartConfigSmartMinServiceCount!.text)!,
+            autoStopTimeByUnusedServiceInSeconds: int.tryParse(
+                _smartConfigAutoStopTimeByUnusedServiceInSeconds!.text)!,
+            percentOfPlayersToCheckShouldStopTheService: int.tryParse(
+                _smartConfigPercentOfPlayersToCheckShouldStopTheService!.text)!,
+            forAnewInstanceDelayTimeInSeconds: int.tryParse(
+                _smartConfigForAnewInstanceDelayTimeInSeconds!.text)!,
+            percentOfPlayersForANewServiceByInstance: int.tryParse(
+                _smartConfigPercentOfPlayersForANewServiceByInstance!.text)!);
+        editTask.properties
+            .update("smartConfig", (dynamic value) => config.toJson());
+      }
+
+      if (_requiredPermissionPermission != null) {
+        requiredPermission = _requiredPermissionPermission!.text;
+        editTask.properties.update(
+            "requiredPermission", (dynamic value) => '$requiredPermission');
+      }
 
       StoreProvider.dispatch(context, UpdateTask(editTask));
     }
@@ -412,6 +459,46 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   Widget _buildGroups(NodeState state) {
+    return InkWell(
+      onTap: () {
+        showDialog<AlertDialog>(
+          context: context,
+          builder: (context) {
+            return selectGroups(context, state, editTask, (task) {
+              setState(() {
+                editTask = editTask.copyWith(groups: task.groups);
+                Navigator.pop(context);
+              });
+            });
+          },
+        );
+      },
+      child: Container(
+        constraints: BoxConstraints(minHeight: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(t.page.tasks.edit.groups),
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                children: List<Widget>.generate(
+                  editTask.groups?.length ?? 0,
+                  (index) {
+                    return Chip(
+                      label: Text(widget.task.groups?[index] ?? ''),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTemplates(NodeState state) {
     return InkWell(
       onTap: () {
         showDialog<AlertDialog>(
@@ -1082,9 +1169,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
               value: _config?.enabled ?? false,
               onChanged: (value) {
                 setState(() {
-                  print(value);
-                  print(_config?.enabled);
-                  _config = _config?.copyWith(enabled: value);
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) => _config?.copyWith(enabled: value).toJson(),
+                  );
                 });
               },
             )
@@ -1107,7 +1195,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
           children: [
             Switch(
               value: _config?.splitLogicallyOverNodes ?? false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) => _config
+                        ?.copyWith(splitLogicallyOverNodes: value)
+                        .toJson(),
+                  );
+                });
+              },
             )
           ],
         )
@@ -1124,7 +1221,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
           children: [
             Switch(
               value: _config?.directTemplatesAndInclusionsSetup ?? false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) => _config
+                        ?.copyWith(directTemplatesAndInclusionsSetup: value)
+                        .toJson(),
+                  );
+                });
+              },
             )
           ],
         )
@@ -1139,7 +1245,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPriority,
+            controller: _smartConfigPriority!,
             decoration: const InputDecoration(labelText: 'Priority'),
           ),
         ),
@@ -1154,7 +1260,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigMaxServices,
+            controller: _smartConfigMaxServices!,
             decoration: const InputDecoration(labelText: 'Max Services'),
           ),
         )
@@ -1169,7 +1275,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPreparedServices,
+            controller: _smartConfigPreparedServices!,
             decoration: const InputDecoration(labelText: 'Prepared Services'),
           ),
         )
@@ -1184,7 +1290,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigSmartMinServiceCount,
+            controller: _smartConfigSmartMinServiceCount!,
             decoration:
                 const InputDecoration(labelText: 'Smart Min Service Count'),
           ),
@@ -1200,7 +1306,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds,
+            controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds!,
             decoration: const InputDecoration(
                 labelText: 'Auto stop time by unused services in seconds'),
           ),
@@ -1216,7 +1322,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPercentOfPlayersToCheckShouldStopTheService,
+            controller:
+                _smartConfigPercentOfPlayersToCheckShouldStopTheService!,
             decoration: const InputDecoration(
                 labelText:
                     'Percent of player to check should stop the service'),
@@ -1233,7 +1340,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigForAnewInstanceDelayTimeInSeconds,
+            controller: _smartConfigForAnewInstanceDelayTimeInSeconds!,
             decoration: const InputDecoration(
                 labelText: 'For a new instance delay time in seconds'),
           ),
@@ -1249,11 +1356,28 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPercentOfPlayersForANewServiceByInstance,
+            controller: _smartConfigPercentOfPlayersForANewServiceByInstance!,
             decoration: const InputDecoration(
                 labelText: 'Percent of players for a new service'),
           ),
         )
+      ],
+    );
+  }
+
+  // Required Permission
+
+  Widget _buildRequiredPermission() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            keyboardType: TextInputType.name,
+            controller: _requiredPermissionPermission,
+            decoration: InputDecoration(labelText: "Permission"),
+          ),
+        ),
       ],
     );
   }
