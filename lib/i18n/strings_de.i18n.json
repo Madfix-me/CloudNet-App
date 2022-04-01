@@ -113,6 +113,9 @@
     "select_groups": {
       "title": "Select groups for this task"
     },
+    "select_nodes": {
+      "title": "Select nodes"
+    },
     "inclusions": {
       "title_edit": "Edit inclusion",
       "title_add": "Add inclusion",
