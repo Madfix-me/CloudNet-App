@@ -224,7 +224,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.6"
   dio_cache_interceptor:
     dependency: "direct main"
     description:
@@ -245,7 +245,7 @@ packages:
       name: fast_i18n
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.11.0"
+    version: "5.12.0"
   fast_immutable_collections:
     dependency: transitive
     description:
@@ -344,7 +344,7 @@ packages:
       name: go_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "3.0.6"
   graphs:
     dependency: transitive
     description:
@@ -407,7 +407,7 @@ packages:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.4"
+    version: "6.1.5"
   jwt_decoder:
     dependency: "direct main"
     description:
