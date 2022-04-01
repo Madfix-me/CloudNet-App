@@ -6,6 +6,7 @@ on:
       - main
       - test
       - development
+      - develop
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,7 +36,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set env to Alpha
-        if: endsWith(github.ref, '/development')
+        if: endsWith(github.ref, '/develop')
         run: |
           echo "ENV_FLAVOR=alpha" >> $GITHUB_ENV
       - name: Set env to Beta
