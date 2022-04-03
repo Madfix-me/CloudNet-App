@@ -93,7 +93,7 @@ StatefulBuilder selectNodes(BuildContext context, NodeState state,
     ServiceTask task, void Function(ServiceTask task) save) {
   return StatefulBuilder(
     builder: (context, setState) => AlertDialog(
-      title: Text("Select Nodes"),
+      title: Text(t.dialogs.select_nodes.title),
       content: Container(
         height: 300,
         width: 300,
