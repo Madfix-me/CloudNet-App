@@ -152,7 +152,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         ),
                         _config != null
                             ? ExpansionTile(
-                                title: Text(t.page.tasks.edit.smart_config,
+                                title: Text(
+                                    t.page.tasks.edit.smart_config_title,
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 childrenPadding: const EdgeInsets.only(
@@ -1188,7 +1189,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Column(
           children: [
-            Text('Split Logically over nodes'),
+            Text(t.page.tasks.edit.smart_config.split_logic_over_nodes),
           ],
         ),
         Column(
@@ -1216,7 +1217,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text('Direct template and inclusions Setup')),
+        Flexible(
+            child: Text(
+                t.page.tasks.edit.smart_config.direct_template_inclusions)),
         Column(
           children: [
             Switch(
@@ -1246,7 +1249,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPriority!,
-            decoration: const InputDecoration(labelText: 'Priority'),
+            decoration: InputDecoration(
+                labelText: t.page.tasks.edit.smart_config.priority),
           ),
         ),
       ],
@@ -1261,7 +1265,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigMaxServices!,
-            decoration: const InputDecoration(labelText: 'Max Services'),
+            decoration: InputDecoration(
+                labelText: t.page.tasks.edit.smart_config.max_services),
           ),
         )
       ],
@@ -1276,7 +1281,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPreparedServices!,
-            decoration: const InputDecoration(labelText: 'Prepared Services'),
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.prepared_max_services),
           ),
         )
       ],
@@ -1291,8 +1298,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigSmartMinServiceCount!,
-            decoration:
-                const InputDecoration(labelText: 'Smart Min Service Count'),
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.smart_min_service_count),
           ),
         )
       ],
@@ -1307,8 +1315,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds!,
-            decoration: const InputDecoration(
-                labelText: 'Auto stop time by unused services in seconds'),
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.auto_stop_of_unused_service),
           ),
         )
       ],
@@ -1324,9 +1333,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
             keyboardType: TextInputType.number,
             controller:
                 _smartConfigPercentOfPlayersToCheckShouldStopTheService!,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
                 labelText:
-                    'Percent of player to check should stop the service'),
+                    t.page.tasks.edit.smart_config.auto_stop_via_percentage),
           ),
         )
       ],
@@ -1341,8 +1350,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigForAnewInstanceDelayTimeInSeconds!,
-            decoration: const InputDecoration(
-                labelText: 'For a new instance delay time in seconds'),
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.time_delay_for_new_service),
           ),
         )
       ],
@@ -1357,8 +1367,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPercentOfPlayersForANewServiceByInstance!,
-            decoration: const InputDecoration(
-                labelText: 'Percent of players for a new service'),
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.percentage_for_new_service),
           ),
         )
       ],
@@ -1375,7 +1386,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.name,
             controller: _requiredPermissionPermission,
-            decoration: InputDecoration(labelText: "Permission"),
+            decoration: InputDecoration(
+                labelText: t.page.tasks.edit.required_permission),
           ),
         ),
       ],
