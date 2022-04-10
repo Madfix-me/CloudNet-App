@@ -280,7 +280,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
           child: TextField(
             keyboardType: TextInputType.name,
             controller: _splitterController,
-            decoration: InputDecoration(labelText: "Name Splitter"),
+            decoration:
+                InputDecoration(labelText: t.page.tasks.edit.name_splitter),
           ),
         ),
       ],
@@ -433,7 +434,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Nodes"),
+            Text(t.page.tasks.edit.nodes),
             Flexible(
               child: Wrap(
                 spacing: 8,
@@ -448,7 +449,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                       )
                     : [
                         Chip(
-                          label: Text("All"),
+                          label: Text(t.page.tasks.edit.all),
                         )
                       ],
               ),
@@ -545,7 +546,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Text("Jvm options"),
+              Text(t.page.tasks.edit.jvm_options),
               ListView(
                 shrinkWrap: true,
                 children: editTask.processConfiguration!.jvmOptions.isNotEmpty
@@ -557,7 +558,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   .processConfiguration!.jvmOptions.length) {
                             return Card(
                               child: ListTile(
-                                title: Text("Add jvm option"),
+                                title: Text(t.page.tasks.edit.add_jvm_option),
                                 leading: Icon(Icons.add),
                                 enabled: false,
                                 onTap: () {
@@ -648,13 +649,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     : [
                         Card(
                           child: ListTile(
-                            title: Text("No jvm options"),
+                            title: Text(t.page.tasks.edit.no_jvm_options),
                             enabled: false,
                           ),
                         ),
                         Card(
                           child: ListTile(
-                            title: Text("Add jvm option"),
+                            title: Text(t.page.tasks.edit.add_jvm_option),
                             enabled: false,
                             leading: Icon(Icons.add),
                             onTap: () {
@@ -689,7 +690,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Text("Process Parameters"),
+              Text(t.page.tasks.edit.process_parameters),
               ListView(
                 shrinkWrap: true,
                 children: editTask
@@ -704,7 +705,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   .length) {
                             return Card(
                               child: ListTile(
-                                title: Text("Add process parameter"),
+                                title: Text(
+                                    t.page.tasks.edit.add_process_parameter),
                                 leading: Icon(Icons.add),
                                 enabled: false,
                                 onTap: () {
@@ -795,14 +797,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     : [
                         Card(
                           child: ListTile(
-                            title: Text("No process parameter"),
+                            title:
+                                Text(t.page.tasks.edit.no_process_parameters),
                             enabled: false,
                           ),
                         ),
                         Card(
                           child: ListTile(
                             enabled: false,
-                            title: Text("Add process parameter"),
+                            title:
+                                Text(t.page.tasks.edit.add_process_parameter),
                             leading: Icon(Icons.add),
                             onTap: () {
                               showDialog<AlertDialog>(
