@@ -387,8 +387,8 @@ StatefulBuilder addEditString(BuildContext context, NodeState state, bool edit,
     builder: (context, setState) {
       return SimpleDialog(
         title: edit
-            ? Text("Edit", style: Theme.of(context).textTheme.headline3)
-            : Text("Add", style: Theme.of(context).textTheme.headline3),
+            ? Text(t.general.edit, style: Theme.of(context).textTheme.headline3)
+            : Text(t.general.add, style: Theme.of(context).textTheme.headline3),
         children: [
           Container(
             margin: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -399,7 +399,7 @@ StatefulBuilder addEditString(BuildContext context, NodeState state, bool edit,
                   controller: option,
                   enabled: true,
                   decoration: InputDecoration(
-                    labelText: "Option",
+                    labelText: t.general.option,
                   ),
                 ),
                 Divider(),
