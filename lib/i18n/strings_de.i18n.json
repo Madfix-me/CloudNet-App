@@ -87,7 +87,8 @@
         "required": {
           "min_service": "Min Service count is required",
           "port": "Port is required",
-          "heap": "Heap is required"
+          "heap": "Heap is required",
+          "value":"This field needs a value"
         },
         "smart_config": {
           "percentage_for_new_service": "Percent of players for a new service",
