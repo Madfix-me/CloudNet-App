@@ -86,6 +86,9 @@
   "general": {
     "yes": "Yes",
     "no": "No",
+    "edit": "Edit",
+    "add": "Add",
+    "option": "Option",
     "button": {
       "finish": "Finish",
       "bcontinue": "Continue",
@@ -97,12 +100,6 @@
     "formats": {
       "mb": "${value}MB",
       "percentage": "${value}%"
-    },
-    "dialogs": {
-      "delete": {
-        "title": "Delete *${item}*",
-        "content": "You are sure to delete *${item}* ?"
-      }
     },
     "name": "Name",
     "min_service_count": "Min Service Count",
@@ -131,6 +128,10 @@
       "title_add": "Add deployment",
       "file_folder": "File/Folder",
       "excludes": "Excludes"
+    },
+    "delete": {
+      "title": "Delete *${item}*",
+      "content": "You are sure to delete *${item}* ?"
     }
   }
 }

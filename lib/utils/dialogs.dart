@@ -10,7 +10,7 @@ AlertDialog deleteDialog(BuildContext context,
     {VoidCallback? onDelete, VoidCallback? onCancel, required String item}) {
   return AlertDialog(
     title: EasyRichText(
-      t.general.dialogs.delete.title(item: item),
+      t.dialogs.delete.title(item: item),
       textAlign: TextAlign.center,
       patternList: [
         EasyRichTextPattern(
@@ -25,7 +25,7 @@ AlertDialog deleteDialog(BuildContext context,
       ],
     ),
     content: EasyRichText(
-      t.general.dialogs.delete.content(item: item),
+      t.dialogs.delete.content(item: item),
       textAlign: TextAlign.center,
       patternList: [
         EasyRichTextPattern(
@@ -387,8 +387,8 @@ StatefulBuilder addEditString(BuildContext context, NodeState state, bool edit,
     builder: (context, setState) {
       return SimpleDialog(
         title: edit
-            ? Text("Edit", style: Theme.of(context).textTheme.headline3)
-            : Text("Add", style: Theme.of(context).textTheme.headline3),
+            ? Text(t.general.edit, style: Theme.of(context).textTheme.headline3)
+            : Text(t.general.add, style: Theme.of(context).textTheme.headline3),
         children: [
           Container(
             margin: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -399,7 +399,7 @@ StatefulBuilder addEditString(BuildContext context, NodeState state, bool edit,
                   controller: option,
                   enabled: true,
                   decoration: InputDecoration(
-                    labelText: "Option",
+                    labelText: t.general.option,
                   ),
                 ),
                 Divider(),
