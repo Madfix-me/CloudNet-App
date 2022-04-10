@@ -175,7 +175,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             : Flex(direction: Axis.horizontal),
                         task.properties.containsKey('requiredPermission')
                             ? ExpansionTile(
-                                title: Text("Required permission",
+                                title: Text(
+                                    t.page.tasks.edit.required_permission_title,
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 childrenPadding: const EdgeInsets.only(

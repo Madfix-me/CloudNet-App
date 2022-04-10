@@ -101,7 +101,8 @@
           "direct_template_inclusions": "Direct template and inclusions Setup",
           "split_logic_over_nodes": "Split Logically over nodes"
         },
-        "required_permission": "Permission"
+        "required_permission": "Permission",
+        "required_permission_title": "Required permission"
       }
     }
   },
