@@ -10,7 +10,7 @@ AlertDialog deleteDialog(BuildContext context,
     {VoidCallback? onDelete, VoidCallback? onCancel, required String item}) {
   return AlertDialog(
     title: EasyRichText(
-      t.general.dialogs.delete.title(item: item),
+      t.dialogs.delete.title(item: item),
       textAlign: TextAlign.center,
       patternList: [
         EasyRichTextPattern(
@@ -25,7 +25,7 @@ AlertDialog deleteDialog(BuildContext context,
       ],
     ),
     content: EasyRichText(
-      t.general.dialogs.delete.content(item: item),
+      t.dialogs.delete.content(item: item),
       textAlign: TextAlign.center,
       patternList: [
         EasyRichTextPattern(
