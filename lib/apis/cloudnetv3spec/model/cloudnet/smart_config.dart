@@ -29,6 +29,9 @@ class SmartConfig with _$SmartConfig {
     @JsonKey(name: 'percentOfPlayersForANewServiceByInstance')
     @Default(100)
         int percentOfPlayersForANewServiceByInstance,
+    @JsonKey(name: 'templateInstaller')
+    @Default('INSTALL_ALL')
+        String templateInstaller,
   }) = _SmartConfig;
 
   factory SmartConfig.fromJson(Map<String, dynamic> json) =>

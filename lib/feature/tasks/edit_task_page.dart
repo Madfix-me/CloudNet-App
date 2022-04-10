@@ -6,6 +6,7 @@ import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
+import 'package:cloudnet/utils/enum/template_installer.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
@@ -160,6 +161,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                     left: 16.0, right: 16.0),
                                 children: [
                                   _buildSmartEnabled(),
+                                  _buildSmartTemplateInstaller(),
                                   _buildSmartSplitLogicOverNodes(),
                                   _buildSmartDirectTemplateInclusions(),
                                   _buildSmartPriority(),
@@ -169,7 +171,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   _buildSmartAutoStopOfUnusedService(),
                                   _buildSmartAutoStopViaPercentage(),
                                   _buildSmartTimeDelayForNewService(),
-                                  _buildSmartPercentageForNewService()
+                                  _buildSmartPercentageForNewService(),
                                 ],
                               )
                             : Flex(direction: Axis.horizontal),
@@ -1125,6 +1127,18 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   }
 
+  List<DropdownMenuItem<String>> _buildTemplateInstaller() {
+    return TemplateInstaller.values
+        .map((e) => e.name)
+        .toSet()
+        .toList()
+        .map((e) => DropdownMenuItem<String>(
+              child: Text(e),
+              value: e,
+            ))
+        .toList();
+  }
+
   List<DropdownMenuItem<String>> _buildEnvironments(NodeState state) {
     return state.node?.versions
             .map((e) => e.environmentType ?? '')
@@ -1341,6 +1355,31 @@ class _EditTaskPageState extends State<EditTaskPage> {
             decoration: InputDecoration(
                 labelText:
                     t.page.tasks.edit.smart_config.auto_stop_via_percentage),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildSmartTemplateInstaller() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: DropdownButtonFormField<String>(
+            items: _buildTemplateInstaller(),
+            value: _config?.templateInstaller,
+            onChanged: (value) {
+              if (value != null) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) =>
+                        _config?.copyWith(templateInstaller: value).toJson(),
+                  );
+                });
+              }
+            },
           ),
         )
       ],
