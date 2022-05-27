@@ -255,9 +255,11 @@ class _HomePageState extends State<HomePage> {
                 if (snapshot.hasData) {
                   PackageInfo? info = snapshot.data;
                   return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(info?.version ?? ''),
-                      Text(info?.appName ?? ''),
+                      Text('+'),
                       Text(info?.buildNumber ?? ''),
                     ],
                   );
