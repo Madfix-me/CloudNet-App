@@ -6,8 +6,12 @@ import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
 import 'package:cloudnet/utils/dialogs.dart';
+import 'package:cloudnet/utils/enum/template_installer.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+
+import '../../apis/cloudnetv3spec/model/cloudnet/service_deployment.dart';
+import '../../apis/cloudnetv3spec/model/cloudnet/service_remote_inclusion.dart';
 
 class EditTaskPage extends StatefulWidget {
   const EditTaskPage({required this.task, Key? key}) : super(key: key);
@@ -26,6 +30,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   late ServiceTask editTask;
 
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _splitterController = TextEditingController();
   final TextEditingController _javaCommandController = TextEditingController();
   final TextEditingController _environmentCommandController =
       TextEditingController();
@@ -33,17 +38,19 @@ class _EditTaskPageState extends State<EditTaskPage> {
   final TextEditingController _minServiceController = TextEditingController();
   final TextEditingController _maxHeapController = TextEditingController();
 
-  late TextEditingController? _smartConfigPriority;
-  late TextEditingController? _smartConfigMaxServices;
-  late TextEditingController? _smartConfigPreparedServices;
-  late TextEditingController? _smartConfigSmartMinServiceCount;
-  late TextEditingController? _smartConfigAutoStopTimeByUnusedServiceInSeconds;
-  late TextEditingController?
+  TextEditingController? _smartConfigPriority;
+  TextEditingController? _smartConfigMaxServices;
+  TextEditingController? _smartConfigPreparedServices;
+  TextEditingController? _smartConfigSmartMinServiceCount;
+  TextEditingController? _smartConfigAutoStopTimeByUnusedServiceInSeconds;
+  TextEditingController?
       _smartConfigPercentOfPlayersToCheckShouldStopTheService;
-  late TextEditingController? _smartConfigForAnewInstanceDelayTimeInSeconds;
-  late TextEditingController?
-      _smartConfigPercentOfPlayersForANewServiceByInstance;
-  late SmartConfig? _config;
+  TextEditingController? _smartConfigForAnewInstanceDelayTimeInSeconds;
+  TextEditingController? _smartConfigPercentOfPlayersForANewServiceByInstance;
+  SmartConfig? _config;
+
+  String? requiredPermission;
+  TextEditingController? _requiredPermissionPermission;
 
   @override
   void initState() {
@@ -56,6 +63,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   Widget build(BuildContext context) {
     final ServiceTask task = widget.task;
     _nameController.text = task.name ?? '';
+    _splitterController.text = task.nameSplitter ?? '';
     _portController.text = task.startPort?.toString() ?? '';
     _environmentCommandController.text =
         task.processConfiguration?.environment?.toString() ?? '';
@@ -94,6 +102,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
                       .toString() ??
                   ''));
     }
+    if (task.properties.containsKey('requiredPermission')) {
+      requiredPermission = task.properties['requiredPermission'] as String?;
+      print(requiredPermission);
+      _requiredPermissionPermission = TextEditingController.fromValue(
+          TextEditingValue(text: requiredPermission ?? ''));
+    }
 
     return StoreConnector<AppState, NodeState>(
       converter: (store) => store.state.nodeState,
@@ -113,28 +127,41 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           childrenPadding:
                               EdgeInsets.only(left: 16.0, right: 16.0),
                           children: [
-                            _buildName(),
-                            _buildJavaCommand(),
-                            _buildEnvironment(vm),
-                            _buildPort(),
-                            _buildMinServiceCount(),
-                            _buildMaxHeap(),
-                            _buildMaintenance(),
-                            _buildStatic(),
-                            _buildGroups(vm),
-                            _buildDeployments(vm),
-                            //_buildIncludes(vm), // Need be fixed
+                            _buildName(), // X
+                            _buildSplitter(), // X
+                            _buildJavaCommand(), // -
+                            _buildEnvironment(vm), // WIP
+                            _buildPort(), // X
+                            _buildMinServiceCount(), // X
+                            _buildMaxHeap(), // X
+                            _buildMaintenance(), // X
+                            _buildStatic(), // X
+                            /*Divider(),
+                            _buildTemplates(vm),*/
+                            Divider(),
+                            _buildJvmOptions(vm), // X
+                            Divider(),
+                            _buildGroups(vm), // X
+                            Divider(),
+                            _buildProcessParameter(vm), // X
+                            Divider(),
+                            _buildNodes(vm), // X
+                            Divider(),
+                            _buildDeployments(vm), // X
+                            _buildIncludes(vm), // X
                           ],
                         ),
                         _config != null
                             ? ExpansionTile(
-                                title: Text(t.page.tasks.edit.smart_config,
+                                title: Text(
+                                    t.page.tasks.edit.smart_config_title,
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 childrenPadding: const EdgeInsets.only(
                                     left: 16.0, right: 16.0),
                                 children: [
                                   _buildSmartEnabled(),
+                                  _buildSmartTemplateInstaller(),
                                   _buildSmartSplitLogicOverNodes(),
                                   _buildSmartDirectTemplateInclusions(),
                                   _buildSmartPriority(),
@@ -144,7 +171,20 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   _buildSmartAutoStopOfUnusedService(),
                                   _buildSmartAutoStopViaPercentage(),
                                   _buildSmartTimeDelayForNewService(),
-                                  _buildSmartPercentageForNewService()
+                                  _buildSmartPercentageForNewService(),
+                                ],
+                              )
+                            : Flex(direction: Axis.horizontal),
+                        task.properties.containsKey('requiredPermission')
+                            ? ExpansionTile(
+                                title: Text(
+                                    t.page.tasks.edit.required_permission_title,
+                                    style:
+                                        Theme.of(context).textTheme.headline5),
+                                childrenPadding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                children: [
+                                  _buildRequiredPermission(),
                                 ],
                               )
                             : Flex(direction: Axis.horizontal),
@@ -170,11 +210,50 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   void _saveTask() {
     if (_formKey.currentState!.validate()) {
-      editTask = editTask.copyWith(startPort: int.tryParse(_portController.value.text));
-      editTask = editTask.copyWith(processConfiguration: editTask.processConfiguration?.copyWith(maxHeapMemorySize: int.tryParse(_maxHeapController.value.text)));
+      editTask = editTask.copyWith(
+        startPort: int.tryParse(_portController.value.text),
+      );
+      editTask = editTask.copyWith(
+        processConfiguration: editTask.processConfiguration?.copyWith(
+          maxHeapMemorySize: int.tryParse(_maxHeapController.value.text),
+        ),
+      );
+
+      editTask = editTask.copyWith(
+        minServiceCount: int.tryParse(
+          _minServiceController.text,
+        ),
+      );
+
+      editTask = editTask.copyWith(
+        nameSplitter: _splitterController.text,
+      );
+      if (_config != null) {
+        var config = _config!.copyWith(
+            maxServices: int.tryParse(_smartConfigMaxServices!.text)!,
+            priority: int.tryParse(_smartConfigPriority!.text)!,
+            preparedServices: int.tryParse(_smartConfigPreparedServices!.text)!,
+            smartMinServiceCount:
+                int.tryParse(_smartConfigSmartMinServiceCount!.text)!,
+            autoStopTimeByUnusedServiceInSeconds: int.tryParse(
+                _smartConfigAutoStopTimeByUnusedServiceInSeconds!.text)!,
+            percentOfPlayersToCheckShouldStopTheService: int.tryParse(
+                _smartConfigPercentOfPlayersToCheckShouldStopTheService!.text)!,
+            forAnewInstanceDelayTimeInSeconds: int.tryParse(
+                _smartConfigForAnewInstanceDelayTimeInSeconds!.text)!,
+            percentOfPlayersForANewServiceByInstance: int.tryParse(
+                _smartConfigPercentOfPlayersForANewServiceByInstance!.text)!);
+        editTask.properties
+            .update("smartConfig", (dynamic value) => config.toJson());
+      }
+
+      if (_requiredPermissionPermission != null) {
+        requiredPermission = _requiredPermissionPermission!.text;
+        editTask.properties.update(
+            "requiredPermission", (dynamic value) => '$requiredPermission');
+      }
 
       StoreProvider.dispatch(context, UpdateTask(editTask));
-
     }
   }
 
@@ -190,6 +269,22 @@ class _EditTaskPageState extends State<EditTaskPage> {
             controller: _nameController,
             enabled: false,
             decoration: InputDecoration(labelText: t.general.name),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSplitter() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            keyboardType: TextInputType.name,
+            controller: _splitterController,
+            decoration:
+                InputDecoration(labelText: t.page.tasks.edit.name_splitter),
           ),
         ),
       ],
@@ -284,7 +379,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
               value: editTask.maintenance,
               onChanged: (value) {
                 setState(() {
-                  editTask = editTask.copyWith(maintenance: !editTask.maintenance);
+                  editTask =
+                      editTask.copyWith(maintenance: !editTask.maintenance);
                 });
               },
             )
@@ -309,9 +405,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
               value: editTask.staticServices,
               onChanged: (value) {
                 setState(() {
-                  editTask = editTask.copyWith(staticServices: !editTask.staticServices);
+                  editTask = editTask.copyWith(
+                      staticServices: !editTask.staticServices);
                 });
-
               },
             )
           ],
@@ -320,8 +416,54 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   }
 
+  Widget _buildNodes(NodeState state) {
+    return InkWell(
+      onTap: () {
+        showDialog<AlertDialog>(
+          context: context,
+          builder: (context) {
+            return selectNodes(context, state, editTask, (task) {
+              setState(() {
+                editTask =
+                    editTask.copyWith(associatedNodes: task.associatedNodes);
+                Navigator.pop(context);
+              });
+            });
+          },
+        );
+      },
+      child: Container(
+        constraints: BoxConstraints(minHeight: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(t.page.tasks.edit.nodes),
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                children: editTask.associatedNodes.isNotEmpty
+                    ? List<Widget>.generate(
+                        editTask.associatedNodes.length,
+                        (index) {
+                          return Chip(
+                            label: Text(widget.task.associatedNodes[index]),
+                          );
+                        },
+                      )
+                    : [
+                        Chip(
+                          label: Text(t.page.tasks.edit.all),
+                        )
+                      ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildGroups(NodeState state) {
-    //TODO: Input Dialog
     return InkWell(
       onTap: () {
         showDialog<AlertDialog>(
@@ -337,9 +479,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         );
       },
       child: Container(
-        constraints: BoxConstraints(
-          minHeight: 40
-        ),
+        constraints: BoxConstraints(minHeight: 40),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -349,7 +489,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 spacing: 8,
                 children: List<Widget>.generate(
                   editTask.groups?.length ?? 0,
-                      (index) {
+                  (index) {
                     return Chip(
                       label: Text(widget.task.groups?[index] ?? ''),
                     );
@@ -360,6 +500,341 @@ class _EditTaskPageState extends State<EditTaskPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTemplates(NodeState state) {
+    return InkWell(
+      onTap: () {
+        showDialog<AlertDialog>(
+          context: context,
+          builder: (context) {
+            return selectGroups(context, state, editTask, (task) {
+              setState(() {
+                editTask = editTask.copyWith(groups: task.groups);
+                Navigator.pop(context);
+              });
+            });
+          },
+        );
+      },
+      child: Container(
+        constraints: BoxConstraints(minHeight: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(t.page.tasks.edit.groups),
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                children: List<Widget>.generate(
+                  editTask.groups?.length ?? 0,
+                  (index) {
+                    return Chip(
+                      label: Text(widget.task.groups?[index] ?? ''),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildJvmOptions(NodeState state) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              Text(t.page.tasks.edit.jvm_options),
+              ListView(
+                shrinkWrap: true,
+                children: editTask.processConfiguration!.jvmOptions.isNotEmpty
+                    ? List<Widget>.generate(
+                        editTask.processConfiguration!.jvmOptions.length + 1,
+                        (index) {
+                          if (index ==
+                              editTask
+                                  .processConfiguration!.jvmOptions.length) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(t.page.tasks.edit.add_jvm_option),
+                                leading: Icon(Icons.add),
+                                enabled: false,
+                                onTap: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return addEditString(
+                                        context,
+                                        state,
+                                        false,
+                                        null,
+                                        (option) {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .jvmOptions
+                                                .add(option);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          final jvmOption =
+                              editTask.processConfiguration!.jvmOptions[index];
+                          return Card(
+                            child: ListTile(
+                              enabled: false,
+                              title: Text(jvmOption),
+                              leading: Icon(Icons.storage),
+                              trailing: IconButton(
+                                color: Theme.of(context).errorColor,
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                onPressed:
+                                    null /*() {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return deleteDialog(
+                                        context,
+                                        onCancel: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDelete: () {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .jvmOptions
+                                                .removeAt(index);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        item: jvmOption,
+                                      );
+                                    },
+                                  );
+                                }*/
+                                ,
+                              ),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditString(
+                                        context, state, true, jvmOption,
+                                        (option) {
+                                      setState(() {
+                                        editTask
+                                            .processConfiguration!.jvmOptions
+                                            .removeAt(index);
+                                        editTask
+                                            .processConfiguration!.jvmOptions
+                                            .add(option);
+                                        Navigator.pop(context);
+                                      });
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    : [
+                        Card(
+                          child: ListTile(
+                            title: Text(t.page.tasks.edit.no_jvm_options),
+                            enabled: false,
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            title: Text(t.page.tasks.edit.add_jvm_option),
+                            enabled: false,
+                            leading: Icon(Icons.add),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditString(
+                                      context, state, false, null, (option) {
+                                    setState(() {
+                                      editTask.processConfiguration!.jvmOptions
+                                          .add(option);
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildProcessParameter(NodeState state) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              Text(t.page.tasks.edit.process_parameters),
+              ListView(
+                shrinkWrap: true,
+                children: editTask
+                        .processConfiguration!.processParameters.isNotEmpty
+                    ? List<Widget>.generate(
+                        editTask.processConfiguration!.processParameters
+                                .length +
+                            1,
+                        (index) {
+                          if (index ==
+                              editTask.processConfiguration!.processParameters
+                                  .length) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(
+                                    t.page.tasks.edit.add_process_parameter),
+                                leading: Icon(Icons.add),
+                                enabled: false,
+                                onTap: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return addEditString(
+                                        context,
+                                        state,
+                                        false,
+                                        null,
+                                        (option) {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .processParameters
+                                                .add(option);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          final jvmOption = editTask
+                              .processConfiguration!.processParameters[index];
+                          return Card(
+                            child: ListTile(
+                              enabled: false,
+                              title: Text(jvmOption),
+                              leading: Icon(Icons.storage),
+                              trailing: IconButton(
+                                color: Theme.of(context).errorColor,
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                onPressed:
+                                    null /*() {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return deleteDialog(
+                                        context,
+                                        onCancel: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDelete: () {
+                                          setState(() {
+                                            editTask.processConfiguration!
+                                                .processParameters
+                                                .removeAt(index);
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        item: jvmOption,
+                                      );
+                                    },
+                                  );
+                                }*/
+                                ,
+                              ),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditString(
+                                        context, state, true, jvmOption,
+                                        (option) {
+                                      setState(() {
+                                        editTask.processConfiguration!
+                                            .processParameters
+                                            .removeAt(index);
+                                        editTask.processConfiguration!
+                                            .processParameters
+                                            .add(option);
+                                        Navigator.pop(context);
+                                      });
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    : [
+                        Card(
+                          child: ListTile(
+                            title:
+                                Text(t.page.tasks.edit.no_process_parameters),
+                            enabled: false,
+                          ),
+                        ),
+                        Card(
+                          child: ListTile(
+                            enabled: false,
+                            title:
+                                Text(t.page.tasks.edit.add_process_parameter),
+                            leading: Icon(Icons.add),
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditString(
+                                      context, state, false, null, (option) {
+                                    setState(() {
+                                      editTask.processConfiguration!
+                                          .processParameters
+                                          .add(option);
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -381,13 +856,24 @@ class _EditTaskPageState extends State<EditTaskPage> {
                               child: ListTile(
                                 title: Text(t.page.tasks.edit.add_deployment),
                                 leading: Icon(Icons.add),
-                                enabled: false,
+                                enabled: true,
                                 onTap: () {
                                   showDialog<AlertDialog>(
                                     context: context,
                                     builder: (context) {
                                       return addEditDeployment(
-                                          context, false, null, state);
+                                        context,
+                                        false,
+                                        ServiceDeployment(excludes: []),
+                                        state,
+                                        (deployment) {
+                                          setState(() {
+                                            editTask.deployments
+                                                .add(deployment);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                      );
                                     },
                                   );
                                 },
@@ -416,6 +902,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                           Navigator.pop(context);
                                         },
                                         onDelete: () {
+                                          setState(() {
+                                            editTask.deployments
+                                                .removeAt(index);
+                                          });
                                           Navigator.pop(context);
                                         },
                                         item: format,
@@ -429,7 +919,14 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   context: context,
                                   builder: (context) {
                                     return addEditDeployment(
-                                        context, true, deployment, state);
+                                        context, true, deployment, state,
+                                        (deployment) {
+                                      setState(() {
+                                        editTask.deployments.removeAt(index);
+                                        editTask.deployments.add(deployment);
+                                        Navigator.pop(context);
+                                      });
+                                    });
                                   },
                                 );
                               },
@@ -447,16 +944,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         Card(
                           child: ListTile(
                             title: Text(t.page.tasks.edit.add_deployment),
-                            enabled: false,
                             leading: Icon(Icons.add),
                             onTap: () {
-                              /*showDialog<AlertDialog>(
+                              showDialog<AlertDialog>(
                                 context: context,
                                 builder: (context) {
                                   return addEditDeployment(
-                                      context, false, null, state);
+                                      context,
+                                      false,
+                                      ServiceDeployment(excludes: []),
+                                      state, (deployment) {
+                                    setState(() {
+                                      editTask.deployments.add(deployment);
+                                      Navigator.pop(context);
+                                    });
+                                  });
                                 },
-                              );*/
+                              );
                             },
                           ),
                         ),
@@ -467,7 +971,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         )
       ],
     );
-  } //TODO: Input Dialog
+  }
 
   Widget _buildIncludes(NodeState state) {
     return Row(
@@ -475,7 +979,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: Column(
             children: [
-              Flexible(child: Text(t.page.tasks.edit.includes),),
+              Text(t.page.tasks.edit.includes),
               ListView(
                 shrinkWrap: true,
                 children: widget.task.includes.isNotEmpty
@@ -491,7 +995,17 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                   context: context,
                                   builder: (context) {
                                     return addEditInclusion(
-                                        context, false, null, state);
+                                      context,
+                                      false,
+                                      ServiceRemoteInclusion(),
+                                      state,
+                                      (inclusion) {
+                                        setState(() {
+                                          editTask.includes.add(inclusion);
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                    );
                                   },
                                 );
                               },
@@ -499,7 +1013,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           );
                         }
                         final include = widget.task.includes[index];
-                        final format = "${include.url}";
+                        final format =
+                            "${include.url} -> ${include.destination}";
                         return Card(
                           child: ListTile(
                             title: Text(format),
@@ -519,7 +1034,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                         Navigator.pop(context);
                                       },
                                       onDelete: () {
-                                        Navigator.pop(context);
+                                        setState(() {
+                                          editTask.includes.removeAt(index);
+                                          Navigator.pop(context);
+                                        });
                                       },
                                       item: format,
                                     );
@@ -527,12 +1045,31 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 );
                               },
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              showDialog<AlertDialog>(
+                                context: context,
+                                builder: (context) {
+                                  return addEditInclusion(
+                                    context,
+                                    true,
+                                    include,
+                                    state,
+                                    (inclusions) {
+                                      setState(() {
+                                        editTask.includes.removeAt(index);
+                                        editTask.includes.add(inclusions);
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
                         );
                       })
                     : [
-                      Card(
+                        Card(
                           child: ListTile(
                             title: Text(t.page.tasks.edit.no_inclusions),
                             enabled: false,
@@ -541,14 +1078,24 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         Card(
                           child: ListTile(
                             title: Text(t.page.tasks.edit.add_inclusion),
-                            enabled: false,
+                            enabled: true,
                             leading: Icon(Icons.add),
                             onTap: () {
                               showDialog<AlertDialog>(
                                 context: context,
                                 builder: (context) {
-                                  return addEditDeployment(
-                                      context, false, null, state);
+                                  return addEditInclusion(
+                                    context,
+                                    false,
+                                    ServiceRemoteInclusion(),
+                                    state,
+                                    (inclusions) {
+                                      setState(() {
+                                        editTask.includes.add(inclusions);
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                  );
                                 },
                               );
                             },
@@ -561,7 +1108,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         )
       ],
     );
-  } //TODO: Input Dialog
+  }
 
   Widget _buildJavaCommand() {
     return Row(
@@ -572,11 +1119,24 @@ class _EditTaskPageState extends State<EditTaskPage> {
             keyboardType: TextInputType.name,
             controller: _javaCommandController,
             enabled: false,
-            decoration: InputDecoration(labelText: t.page.tasks.edit.java_command),
+            decoration:
+                InputDecoration(labelText: t.page.tasks.edit.java_command),
           ),
         )
       ],
     );
+  }
+
+  List<DropdownMenuItem<String>> _buildTemplateInstaller() {
+    return TemplateInstaller.values
+        .map((e) => e.name)
+        .toSet()
+        .toList()
+        .map((e) => DropdownMenuItem<String>(
+              child: Text(e),
+              value: e,
+            ))
+        .toList();
   }
 
   List<DropdownMenuItem<String>> _buildEnvironments(NodeState state) {
@@ -597,15 +1157,20 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: DropdownButtonFormField(
+          child: DropdownButtonFormField<String>(
             items: _buildEnvironments(state),
             value: widget.task.processConfiguration?.environment,
-            onChanged: (value) {},
+            onChanged: (value) {
+              editTask = editTask.copyWith(
+                  processConfiguration: editTask.processConfiguration?.copyWith(
+                environment: value,
+              ));
+            },
           ),
         )
       ],
     );
-  } //TODO: Drop Down
+  }
 
   // Smart Config
 
@@ -622,7 +1187,14 @@ class _EditTaskPageState extends State<EditTaskPage> {
           children: [
             Switch(
               value: _config?.enabled ?? false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) => _config?.copyWith(enabled: value).toJson(),
+                  );
+                });
+              },
             )
           ],
         )
@@ -636,14 +1208,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Column(
           children: [
-            Text('Split Logically over nodes'),
+            Text(t.page.tasks.edit.smart_config.split_logic_over_nodes),
           ],
         ),
         Column(
           children: [
             Switch(
               value: _config?.splitLogicallyOverNodes ?? false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) => _config
+                        ?.copyWith(splitLogicallyOverNodes: value)
+                        .toJson(),
+                  );
+                });
+              },
             )
           ],
         )
@@ -655,12 +1236,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text('Direct template and inclusions Setup')),
+        Flexible(
+            child: Text(
+                t.page.tasks.edit.smart_config.direct_template_inclusions)),
         Column(
           children: [
             Switch(
               value: _config?.directTemplatesAndInclusionsSetup ?? false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) => _config
+                        ?.copyWith(directTemplatesAndInclusionsSetup: value)
+                        .toJson(),
+                  );
+                });
+              },
             )
           ],
         )
@@ -675,8 +1267,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPriority,
-            decoration: const InputDecoration(labelText: 'Priority'),
+            controller: _smartConfigPriority!,
+            decoration: InputDecoration(
+                labelText: t.page.tasks.edit.smart_config.priority),
           ),
         ),
       ],
@@ -690,8 +1283,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigMaxServices,
-            decoration: const InputDecoration(labelText: 'Max Services'),
+            controller: _smartConfigMaxServices!,
+            decoration: InputDecoration(
+                labelText: t.page.tasks.edit.smart_config.max_services),
           ),
         )
       ],
@@ -705,8 +1299,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPreparedServices,
-            decoration: const InputDecoration(labelText: 'Prepared Services'),
+            controller: _smartConfigPreparedServices!,
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.prepared_max_services),
           ),
         )
       ],
@@ -720,9 +1316,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigSmartMinServiceCount,
-            decoration:
-                const InputDecoration(labelText: 'Smart Min Service Count'),
+            controller: _smartConfigSmartMinServiceCount!,
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.smart_min_service_count),
           ),
         )
       ],
@@ -736,9 +1333,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds,
-            decoration: const InputDecoration(
-                labelText: 'Auto stop time by unused services in seconds'),
+            controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds!,
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.auto_stop_of_unused_service),
           ),
         )
       ],
@@ -752,10 +1350,36 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPercentOfPlayersToCheckShouldStopTheService,
-            decoration: const InputDecoration(
+            controller:
+                _smartConfigPercentOfPlayersToCheckShouldStopTheService!,
+            decoration: InputDecoration(
                 labelText:
-                    'Percent of player to check should stop the service'),
+                    t.page.tasks.edit.smart_config.auto_stop_via_percentage),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildSmartTemplateInstaller() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: DropdownButtonFormField<String>(
+            items: _buildTemplateInstaller(),
+            value: _config?.templateInstaller,
+            onChanged: (value) {
+              if (value != null) {
+                setState(() {
+                  editTask.properties.update(
+                    "smartConfig",
+                    (dynamic v) =>
+                        _config?.copyWith(templateInstaller: value).toJson(),
+                  );
+                });
+              }
+            },
           ),
         )
       ],
@@ -769,9 +1393,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigForAnewInstanceDelayTimeInSeconds,
-            decoration: const InputDecoration(
-                labelText: 'For a new instance delay time in seconds'),
+            controller: _smartConfigForAnewInstanceDelayTimeInSeconds!,
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.time_delay_for_new_service),
           ),
         )
       ],
@@ -785,11 +1410,30 @@ class _EditTaskPageState extends State<EditTaskPage> {
         Expanded(
           child: TextField(
             keyboardType: TextInputType.number,
-            controller: _smartConfigPercentOfPlayersForANewServiceByInstance,
-            decoration: const InputDecoration(
-                labelText: 'Percent of players for a new service'),
+            controller: _smartConfigPercentOfPlayersForANewServiceByInstance!,
+            decoration: InputDecoration(
+                labelText:
+                    t.page.tasks.edit.smart_config.percentage_for_new_service),
           ),
         )
+      ],
+    );
+  }
+
+  // Required Permission
+
+  Widget _buildRequiredPermission() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: TextField(
+            keyboardType: TextInputType.name,
+            controller: _requiredPermissionPermission,
+            decoration: InputDecoration(
+                labelText: t.page.tasks.edit.required_permission),
+          ),
+        ),
       ],
     );
   }

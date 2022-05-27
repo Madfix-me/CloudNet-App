@@ -63,10 +63,19 @@
       },
       "edit": {
         "basic_configuration": "Basic configuration",
-        "smart_config": "Smart Config",
+        "smart_config_title": "Smart Config",
         "max_heap": "Max heap",
         "maintenance": "Maintenance",
         "static": "Static",
+        "name_splitter": "Name splitter",
+        "nodes": "Nodes",
+        "all": "all",
+        "jvm_options": "Jvm options",
+        "add_jvm_option": "Add jvm option",
+        "no_jvm_options": "No jvm options",
+        "process_parameters": "Process parameters",
+        "add_process_parameter": "Add process parameter",
+        "no_process_parameters": "No process parameters",
         "groups": "Groups",
         "deployments": "Deployments",
         "add_deployment": "Add deployment",
@@ -79,13 +88,30 @@
           "min_service": "Min Service count is required",
           "port": "Port is required",
           "heap": "Heap is required"
-        }
+        },
+        "smart_config": {
+          "percentage_for_new_service": "Percent of players for a new service",
+          "time_delay_for_new_service": "For a new instance delay time in seconds",
+          "auto_stop_via_percentage": "Percent of player to check should stop the service",
+          "auto_stop_of_unused_service": "Auto stop time by unused services in seconds",
+          "smart_min_service_count": "Smart Min Service Count",
+          "prepared_max_services": "Prepared Services",
+          "max_services": "Max Services",
+          "priority": "Priority",
+          "direct_template_inclusions": "Direct template and inclusions Setup",
+          "split_logic_over_nodes": "Split Logically over nodes"
+        },
+        "required_permission": "Permission",
+        "required_permission_title": "Required permission"
       }
     }
   },
   "general": {
     "yes": "Yes",
     "no": "No",
+    "edit": "Edit",
+    "add": "Add",
+    "option": "Option",
     "button": {
       "finish": "Finish",
       "bcontinue": "Continue",
@@ -98,12 +124,6 @@
       "mb": "${value}MB",
       "percentage": "${value}%"
     },
-    "dialogs": {
-      "delete": {
-        "title": "Delete *${item}*",
-        "content": "You are sure to delete *${item}* ?"
-      }
-    },
     "name": "Name",
     "min_service_count": "Min Service Count",
     "not_valid": "Not valid",
@@ -112,6 +132,9 @@
   "dialogs": {
     "select_groups": {
       "title": "Select groups for this task"
+    },
+    "select_nodes": {
+      "title": "Select nodes"
     },
     "inclusions": {
       "title_edit": "Edit inclusion",
@@ -128,6 +151,10 @@
       "title_add": "Add deployment",
       "file_folder": "File/Folder",
       "excludes": "Excludes"
+    },
+    "delete": {
+      "title": "Delete *${item}*",
+      "content": "You are sure to delete *${item}* ?"
     }
   }
 }
