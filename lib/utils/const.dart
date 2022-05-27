@@ -25,3 +25,5 @@ class LayoutElement<T> {
   final T medium;
   final T small;
 }
+
+var nameSplitterRegex = RegExp("[a-zA-Z0-9._\\-*]+");

@@ -5,8 +5,10 @@ import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:cloudnet/state/node_state.dart';
+import 'package:cloudnet/utils/const.dart';
 import 'package:cloudnet/utils/dialogs.dart';
 import 'package:cloudnet/utils/enum/template_installer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
@@ -280,9 +282,15 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.name,
             controller: _splitterController,
+            validator: (v) {
+              if (v != null && nameSplitterRegex.hasMatch(v)) {
+                return v;
+              }
+              return null;
+            },
             decoration:
                 InputDecoration(labelText: t.page.tasks.edit.name_splitter),
           ),
@@ -563,7 +571,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                               child: ListTile(
                                 title: Text(t.page.tasks.edit.add_jvm_option),
                                 leading: Icon(Icons.add),
-                                enabled: false,
+                                enabled: kIsWeb,
                                 onTap: () {
                                   showDialog<AlertDialog>(
                                     context: context,
@@ -592,7 +600,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                               editTask.processConfiguration!.jvmOptions[index];
                           return Card(
                             child: ListTile(
-                              enabled: false,
+                              enabled: kIsWeb,
                               title: Text(jvmOption),
                               leading: Icon(Icons.storage),
                               trailing: IconButton(
@@ -600,51 +608,53 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 icon: Icon(
                                   Icons.delete_forever,
                                 ),
-                                onPressed:
-                                    null /*() {
-                                  showDialog<AlertDialog>(
-                                    context: context,
-                                    builder: (context) {
-                                      return deleteDialog(
-                                        context,
-                                        onCancel: () {
-                                          Navigator.pop(context);
-                                        },
-                                        onDelete: () {
-                                          setState(() {
-                                            editTask.processConfiguration!
-                                                .jvmOptions
-                                                .removeAt(index);
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        item: jvmOption,
-                                      );
-                                    },
-                                  );
-                                }*/
-                                ,
+                                onPressed: kIsWeb
+                                    ? () {
+                                        showDialog<AlertDialog>(
+                                          context: context,
+                                          builder: (context) {
+                                            return deleteDialog(
+                                              context,
+                                              onCancel: () {
+                                                Navigator.pop(context);
+                                              },
+                                              onDelete: () {
+                                                setState(() {
+                                                  editTask.processConfiguration!
+                                                      .jvmOptions
+                                                      .removeAt(index);
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              item: jvmOption,
+                                            );
+                                          },
+                                        );
+                                      }
+                                    : null,
                               ),
-                              onTap: () {
-                                showDialog<AlertDialog>(
-                                  context: context,
-                                  builder: (context) {
-                                    return addEditString(
-                                        context, state, true, jvmOption,
-                                        (option) {
-                                      setState(() {
-                                        editTask
-                                            .processConfiguration!.jvmOptions
-                                            .removeAt(index);
-                                        editTask
-                                            .processConfiguration!.jvmOptions
-                                            .add(option);
-                                        Navigator.pop(context);
-                                      });
-                                    });
-                                  },
-                                );
-                              },
+                              onTap: kIsWeb
+                                  ? () {
+                                      showDialog<AlertDialog>(
+                                        context: context,
+                                        builder: (context) {
+                                          return addEditString(
+                                              context, state, true, jvmOption,
+                                              (option) {
+                                            setState(() {
+                                              editTask.processConfiguration!
+                                                  .jvmOptions
+                                                  .removeAt(index);
+                                              editTask.processConfiguration!
+                                                  .jvmOptions
+                                                  .add(option);
+                                              Navigator.pop(context);
+                                            });
+                                          });
+                                        },
+                                      );
+                                    }
+                                  : null,
                             ),
                           );
                         },
@@ -653,13 +663,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         Card(
                           child: ListTile(
                             title: Text(t.page.tasks.edit.no_jvm_options),
-                            enabled: false,
+                            enabled: kIsWeb,
                           ),
                         ),
                         Card(
                           child: ListTile(
                             title: Text(t.page.tasks.edit.add_jvm_option),
-                            enabled: false,
+                            enabled: kIsWeb,
                             leading: Icon(Icons.add),
                             onTap: () {
                               showDialog<AlertDialog>(
@@ -748,30 +758,30 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 icon: Icon(
                                   Icons.delete_forever,
                                 ),
-                                onPressed:
-                                    null /*() {
-                                  showDialog<AlertDialog>(
-                                    context: context,
-                                    builder: (context) {
-                                      return deleteDialog(
-                                        context,
-                                        onCancel: () {
-                                          Navigator.pop(context);
-                                        },
-                                        onDelete: () {
-                                          setState(() {
-                                            editTask.processConfiguration!
-                                                .processParameters
-                                                .removeAt(index);
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        item: jvmOption,
-                                      );
-                                    },
-                                  );
-                                }*/
-                                ,
+                                onPressed: kIsWeb
+                                    ? () {
+                                        showDialog<AlertDialog>(
+                                          context: context,
+                                          builder: (context) {
+                                            return deleteDialog(
+                                              context,
+                                              onCancel: () {
+                                                Navigator.pop(context);
+                                              },
+                                              onDelete: () {
+                                                setState(() {
+                                                  editTask.processConfiguration!
+                                                      .processParameters
+                                                      .removeAt(index);
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              item: jvmOption,
+                                            );
+                                          },
+                                        );
+                                      }
+                                    : null,
                               ),
                               onTap: () {
                                 showDialog<AlertDialog>(
@@ -856,27 +866,29 @@ class _EditTaskPageState extends State<EditTaskPage> {
                               child: ListTile(
                                 title: Text(t.page.tasks.edit.add_deployment),
                                 leading: Icon(Icons.add),
-                                enabled: true,
-                                onTap: () {
-                                  showDialog<AlertDialog>(
-                                    context: context,
-                                    builder: (context) {
-                                      return addEditDeployment(
-                                        context,
-                                        false,
-                                        ServiceDeployment(excludes: []),
-                                        state,
-                                        (deployment) {
-                                          setState(() {
-                                            editTask.deployments
-                                                .add(deployment);
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
+                                enabled: kIsWeb,
+                                onTap: kIsWeb
+                                    ? () {
+                                        showDialog<AlertDialog>(
+                                          context: context,
+                                          builder: (context) {
+                                            return addEditDeployment(
+                                              context,
+                                              false,
+                                              ServiceDeployment(excludes: []),
+                                              state,
+                                              (deployment) {
+                                                setState(() {
+                                                  editTask.deployments
+                                                      .add(deployment);
+                                                  Navigator.pop(context);
+                                                });
+                                              },
+                                            );
+                                          },
+                                        );
+                                      }
+                                    : null,
                               ),
                             );
                           }
@@ -887,49 +899,56 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             child: ListTile(
                               title: Text(format),
                               leading: Icon(Icons.storage),
+                              enabled: kIsWeb,
                               trailing: IconButton(
                                 color: Theme.of(context).errorColor,
                                 icon: Icon(
                                   Icons.delete_forever,
                                 ),
-                                onPressed: () {
-                                  showDialog<AlertDialog>(
-                                    context: context,
-                                    builder: (context) {
-                                      return deleteDialog(
-                                        context,
-                                        onCancel: () {
-                                          Navigator.pop(context);
-                                        },
-                                        onDelete: () {
-                                          setState(() {
-                                            editTask.deployments
-                                                .removeAt(index);
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        item: format,
-                                      );
-                                    },
-                                  );
-                                },
+                                onPressed: kIsWeb
+                                    ? () {
+                                        showDialog<AlertDialog>(
+                                          context: context,
+                                          builder: (context) {
+                                            return deleteDialog(
+                                              context,
+                                              onCancel: () {
+                                                Navigator.pop(context);
+                                              },
+                                              onDelete: () {
+                                                setState(() {
+                                                  editTask.deployments
+                                                      .removeAt(index);
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              item: format,
+                                            );
+                                          },
+                                        );
+                                      }
+                                    : null,
                               ),
-                              onTap: () {
-                                showDialog<AlertDialog>(
-                                  context: context,
-                                  builder: (context) {
-                                    return addEditDeployment(
-                                        context, true, deployment, state,
-                                        (deployment) {
-                                      setState(() {
-                                        editTask.deployments.removeAt(index);
-                                        editTask.deployments.add(deployment);
-                                        Navigator.pop(context);
-                                      });
-                                    });
-                                  },
-                                );
-                              },
+                              onTap: kIsWeb
+                                  ? () {
+                                      showDialog<AlertDialog>(
+                                        context: context,
+                                        builder: (context) {
+                                          return addEditDeployment(
+                                              context, true, deployment, state,
+                                              (deployment) {
+                                            setState(() {
+                                              editTask.deployments
+                                                  .removeAt(index);
+                                              editTask.deployments
+                                                  .add(deployment);
+                                              Navigator.pop(context);
+                                            });
+                                          });
+                                        },
+                                      );
+                                    }
+                                  : null,
                             ),
                           );
                         },
@@ -945,23 +964,26 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           child: ListTile(
                             title: Text(t.page.tasks.edit.add_deployment),
                             leading: Icon(Icons.add),
-                            onTap: () {
-                              showDialog<AlertDialog>(
-                                context: context,
-                                builder: (context) {
-                                  return addEditDeployment(
-                                      context,
-                                      false,
-                                      ServiceDeployment(excludes: []),
-                                      state, (deployment) {
-                                    setState(() {
-                                      editTask.deployments.add(deployment);
-                                      Navigator.pop(context);
-                                    });
-                                  });
-                                },
-                              );
-                            },
+                            onTap: kIsWeb
+                                ? () {
+                                    showDialog<AlertDialog>(
+                                      context: context,
+                                      builder: (context) {
+                                        return addEditDeployment(
+                                            context,
+                                            false,
+                                            ServiceDeployment(excludes: []),
+                                            state, (deployment) {
+                                          setState(() {
+                                            editTask.deployments
+                                                .add(deployment);
+                                            Navigator.pop(context);
+                                          });
+                                        });
+                                      },
+                                    );
+                                  }
+                                : null,
                           ),
                         ),
                       ],
@@ -990,25 +1012,29 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             child: ListTile(
                               title: Text(t.page.tasks.edit.add_inclusion),
                               leading: Icon(Icons.add),
-                              onTap: () {
-                                showDialog<AlertDialog>(
-                                  context: context,
-                                  builder: (context) {
-                                    return addEditInclusion(
-                                      context,
-                                      false,
-                                      ServiceRemoteInclusion(),
-                                      state,
-                                      (inclusion) {
-                                        setState(() {
-                                          editTask.includes.add(inclusion);
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                    );
-                                  },
-                                );
-                              },
+                              enabled: kIsWeb,
+                              onTap: kIsWeb
+                                  ? () {
+                                      showDialog<AlertDialog>(
+                                        context: context,
+                                        builder: (context) {
+                                          return addEditInclusion(
+                                            context,
+                                            false,
+                                            ServiceRemoteInclusion(),
+                                            state,
+                                            (inclusion) {
+                                              setState(() {
+                                                editTask.includes
+                                                    .add(inclusion);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                          );
+                                        },
+                                      );
+                                    }
+                                  : null,
                             ),
                           );
                         }
@@ -1024,47 +1050,52 @@ class _EditTaskPageState extends State<EditTaskPage> {
                               icon: Icon(
                                 Icons.delete_forever,
                               ),
-                              onPressed: () {
-                                showDialog<AlertDialog>(
-                                  context: context,
-                                  builder: (context) {
-                                    return deleteDialog(
-                                      context,
-                                      onCancel: () {
-                                        Navigator.pop(context);
-                                      },
-                                      onDelete: () {
-                                        setState(() {
-                                          editTask.includes.removeAt(index);
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                      item: format,
-                                    );
-                                  },
-                                );
-                              },
+                              onPressed: kIsWeb
+                                  ? () {
+                                      showDialog<AlertDialog>(
+                                        context: context,
+                                        builder: (context) {
+                                          return deleteDialog(
+                                            context,
+                                            onCancel: () {
+                                              Navigator.pop(context);
+                                            },
+                                            onDelete: () {
+                                              setState(() {
+                                                editTask.includes
+                                                    .removeAt(index);
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                            item: format,
+                                          );
+                                        },
+                                      );
+                                    }
+                                  : null,
                             ),
-                            onTap: () {
-                              showDialog<AlertDialog>(
-                                context: context,
-                                builder: (context) {
-                                  return addEditInclusion(
-                                    context,
-                                    true,
-                                    include,
-                                    state,
-                                    (inclusions) {
-                                      setState(() {
-                                        editTask.includes.removeAt(index);
-                                        editTask.includes.add(inclusions);
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  );
-                                },
-                              );
-                            },
+                            onTap: kIsWeb
+                                ? () {
+                                    showDialog<AlertDialog>(
+                                      context: context,
+                                      builder: (context) {
+                                        return addEditInclusion(
+                                          context,
+                                          true,
+                                          include,
+                                          state,
+                                          (inclusions) {
+                                            setState(() {
+                                              editTask.includes.removeAt(index);
+                                              editTask.includes.add(inclusions);
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                        );
+                                      },
+                                    );
+                                  }
+                                : null,
                           ),
                         );
                       })
@@ -1078,27 +1109,29 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         Card(
                           child: ListTile(
                             title: Text(t.page.tasks.edit.add_inclusion),
-                            enabled: true,
+                            enabled: kIsWeb,
                             leading: Icon(Icons.add),
-                            onTap: () {
-                              showDialog<AlertDialog>(
-                                context: context,
-                                builder: (context) {
-                                  return addEditInclusion(
-                                    context,
-                                    false,
-                                    ServiceRemoteInclusion(),
-                                    state,
-                                    (inclusions) {
-                                      setState(() {
-                                        editTask.includes.add(inclusions);
-                                        Navigator.pop(context);
-                                      });
-                                    },
-                                  );
-                                },
-                              );
-                            },
+                            onTap: kIsWeb
+                                ? () {
+                                    showDialog<AlertDialog>(
+                                      context: context,
+                                      builder: (context) {
+                                        return addEditInclusion(
+                                          context,
+                                          false,
+                                          ServiceRemoteInclusion(),
+                                          state,
+                                          (inclusions) {
+                                            setState(() {
+                                              editTask.includes.add(inclusions);
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                        );
+                                      },
+                                    );
+                                  }
+                                : null,
                           ),
                         ),
                       ],
@@ -1265,9 +1298,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPriority!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, 0))
+                .build(),
             decoration: InputDecoration(
                 labelText: t.page.tasks.edit.smart_config.priority),
           ),
@@ -1281,9 +1318,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _smartConfigMaxServices!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, -1))
+                .build(),
             decoration: InputDecoration(
                 labelText: t.page.tasks.edit.smart_config.max_services),
           ),
@@ -1297,9 +1338,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPreparedServices!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, -1))
+                .build(),
             decoration: InputDecoration(
                 labelText:
                     t.page.tasks.edit.smart_config.prepared_max_services),
@@ -1314,9 +1359,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _smartConfigSmartMinServiceCount!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, 0))
+                .build(),
             decoration: InputDecoration(
                 labelText:
                     t.page.tasks.edit.smart_config.smart_min_service_count),
@@ -1331,9 +1380,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _smartConfigAutoStopTimeByUnusedServiceInSeconds!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, -1))
+                .build(),
             decoration: InputDecoration(
                 labelText:
                     t.page.tasks.edit.smart_config.auto_stop_of_unused_service),
@@ -1348,10 +1401,14 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller:
                 _smartConfigPercentOfPlayersToCheckShouldStopTheService!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, 0))
+                .build(),
             decoration: InputDecoration(
                 labelText:
                     t.page.tasks.edit.smart_config.auto_stop_via_percentage),
@@ -1408,9 +1465,13 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.number,
             controller: _smartConfigPercentOfPlayersForANewServiceByInstance!,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .add((e) => _min(e, 0))
+                .build(),
             decoration: InputDecoration(
                 labelText:
                     t.page.tasks.edit.smart_config.percentage_for_new_service),
@@ -1427,9 +1488,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.name,
             controller: _requiredPermissionPermission,
+            validator: ValidationBuilder()
+                .required(t.page.tasks.edit.required.value)
+                .build(),
             decoration: InputDecoration(
                 labelText: t.page.tasks.edit.required_permission),
           ),
