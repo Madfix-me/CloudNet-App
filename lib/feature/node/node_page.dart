@@ -109,13 +109,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                           Text(t.page.menu_node.ssl),
                           Switch(
                             value: ssl,
-                            onChanged: (value) => {
-                              setState(
-                                () {
-                                  ssl = value;
-                                },
-                              )
-                            },
+                            onChanged: (value) => setState(() => ssl = value),
                           )
                         ],
                       ),
@@ -150,9 +144,7 @@ class _MenuNodePageState extends State<MenuNodePage> {
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 32),
                       child: IconButton(
-                        onPressed: () {
-                          GoRouter.of(context).pop();
-                        },
+                        onPressed: () => GoRouter.of(context).pop(),
                         icon: const Icon(Icons.close),
                         iconSize: Theme.of(context).iconTheme.size! * 2,
                       ),
