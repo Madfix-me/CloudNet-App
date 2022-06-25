@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/apis/cloudnetv3spec/model/app/cloudnet_node.dart';
 import 'package:cloudnet/feature/dashboard/dashboard_page.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:cloudnet/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloudnet/i18n/strings.g.dart';
 
 class MenuNodePage extends StatefulWidget {
   const MenuNodePage({required this.node, Key? key}) : super(key: key);
@@ -79,38 +79,66 @@ class _MenuNodePageState extends State<MenuNodePage> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(
-                    left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
-                child: TextFormField(
-                  controller: _portController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: t.page.menu_node.port,
-                    labelText: t.page.menu_node.port,
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () => _clearInputField(_portController),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  title: Text("Erweitere Einstellungen"),
                   children: [
-                    Text(t.page.menu_node.ssl),
-                    Switch(
-                      value: ssl,
-                      onChanged: (value) => {
-                        setState(
-                          () {
-                            ssl = value;
-                          },
-                        )
-                      },
-                    )
+                    Container(
+                      margin: const EdgeInsets.only(
+                          left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+                      child: TextFormField(
+                        controller: _portController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: t.page.menu_node.port,
+                          labelText: t.page.menu_node.port,
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () => _clearInputField(_portController),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(t.page.menu_node.ssl),
+                          Switch(
+                            value: ssl,
+                            onChanged: (value) => {
+                              setState(
+                                () {
+                                  ssl = value;
+                                },
+                              )
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    /*Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Reverse Proxy"),
+                            Switch(
+                              value: ssl,
+                              onChanged: (value) => {
+                                setState(
+                                  () {
+                                    ssl = value;
+                                  },
+                                )
+                              },
+                            )
+                          ],
+                        ),
+                      ),*/
                   ],
                 ),
               ),

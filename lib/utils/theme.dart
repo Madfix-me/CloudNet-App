@@ -9,7 +9,7 @@ ThemeData cloudnetTheme = ThemeData(
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(24),
+        bottom: Radius.circular(0),
       ),
     ),
     toolbarHeight: k.navbarHeight,
@@ -129,7 +129,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(24.0),
+        bottom: Radius.circular(0),
       ),
     ),
     toolbarHeight: k.navbarHeight,
