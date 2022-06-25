@@ -80,48 +80,47 @@ class _MenuNodePageState extends State<MenuNodePage> {
                 ),
               ),
               Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    title: Text("Erweitere Einstellungen"),
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
-                        child: TextFormField(
-                          controller: _portController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: t.page.menu_node.port,
-                            labelText: t.page.menu_node.port,
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () =>
-                                  _clearInputField(_portController),
-                            ),
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  title: Text("Erweitere Einstellungen"),
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                          left: 16.0, top: 8.0, right: 16.0, bottom: 8.0),
+                      child: TextFormField(
+                        controller: _portController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: t.page.menu_node.port,
+                          labelText: t.page.menu_node.port,
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () => _clearInputField(_portController),
                           ),
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(16),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(t.page.menu_node.ssl),
-                            Switch(
-                              value: ssl,
-                              onChanged: (value) => {
-                                setState(
-                                  () {
-                                    ssl = value;
-                                  },
-                                )
-                              },
-                            )
-                          ],
-                        ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(t.page.menu_node.ssl),
+                          Switch(
+                            value: ssl,
+                            onChanged: (value) => {
+                              setState(
+                                () {
+                                  ssl = value;
+                                },
+                              )
+                            },
+                          )
+                        ],
                       ),
-                      Container(
+                    ),
+                    /*Container(
                         margin: const EdgeInsets.all(16),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -139,9 +138,10 @@ class _MenuNodePageState extends State<MenuNodePage> {
                             )
                           ],
                         ),
-                      ),
-                    ],
-                  )),
+                      ),*/
+                  ],
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.all(4),
                 child: Row(
