@@ -30,6 +30,12 @@ ThemeData cloudnetTheme = ThemeData(
     ),
     // actionsIconTheme: null,
   ),
+  drawerTheme: const DrawerThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(0),
+        ),
+      )),
   dialogTheme: DialogTheme(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -152,7 +158,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
   drawerTheme: const DrawerThemeData(
       shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(
-      bottom: Radius.circular(24.0),
+      bottom: Radius.circular(0),
     ),
   )),
   colorScheme: ColorScheme.fromSwatch(
