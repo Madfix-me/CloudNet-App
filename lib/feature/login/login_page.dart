@@ -1,13 +1,14 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:cloudnet/i18n/strings.g.dart';
 import 'package:cloudnet/state/actions/node_actions.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:go_router/go_router.dart';
+
 import '/feature/dashboard/dashboard_page.dart';
 import '/feature/login/login_handler.dart';
 import '/state/app_state.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:cloudnet/i18n/strings.g.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -95,10 +96,7 @@ class _LoginPageState extends State<LoginPage> {
   void login() {
     if (_loginFormKey.currentState!.validate()) {
       loginHandler
-          .handleLogin(
-            _usernameController.text,
-            _passwordController.text,
-          )
+          .handleLogin(_usernameController.text, _passwordController.text)
           .then((value) => {
                 StoreProvider.dispatch(context, UpdateToken(value)),
                 context.go(DashboardPage.route)
@@ -110,17 +108,15 @@ class _LoginPageState extends State<LoginPage> {
           switch (response?.statusCode) {
             case 404:
               {
-                SnackBar snackBar = SnackBar(
-                  content: Text(t.page.login.no_rest_api_installed),
-                );
+                SnackBar snackBar =
+                    SnackBar(content: Text(t.page.login.no_rest_api_installed));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
               break;
             case 403:
               {
                 SnackBar snackBar = SnackBar(
-                  content: Text(t.page.login.username_password_wrong),
-                );
+                    content: Text(t.page.login.username_password_wrong));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
           }

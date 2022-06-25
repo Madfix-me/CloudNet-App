@@ -146,26 +146,39 @@ class _TasksPageState extends State<TasksPage> {
                             margin:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(children: [
+                                    Text(t.page.tasks.overview.memory)
+                                  ]),
+                                  Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(t.general.formats.mb(
+                                            value: task.processConfiguration!
+                                                .maxHeapMemorySize!
+                                                .toString()))
+                                      ])
+                                ]),
+                          ),
+                          Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Column(children: [
+                                  Text(t.page.tasks.overview.service_min_count)
+                                ]),
                                 Column(
-                                  children: [
-                                    Text(t.page.tasks.overview.memory),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      t.general.formats.mb(
-                                        value: task.processConfiguration!
-                                            .maxHeapMemorySize!
-                                            .toString(),
-                                      ),
-                                    )
-                                  ],
-                                )
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(task.minServiceCount!.toString())
+                                    ])
                               ],
                             ),
                           ),
@@ -175,135 +188,96 @@ class _TasksPageState extends State<TasksPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Column(children: [
+                                  Text(
+                                      t.page.tasks.overview.auto_delete_on_stop)
+                                ]),
                                 Column(
-                                  children: [
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(task.autoDeleteOnStop
+                                          ? t.general.yes
+                                          : t.general.no)
+                                    ])
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(children: [
+                                  Text(t.page.tasks.overview.static_service,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ]),
+                                Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                          task.staticServices
+                                              ? t.general.yes
+                                              : t.general.no,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ))
+                                    ])
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(children: [
+                                  Text(t.page.tasks.overview.maintenance,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ]),
+                                Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                          task.maintenance
+                                              ? t.general.yes
+                                              : t.general.no,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ))
+                                    ])
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(children: [
                                     Text(t
-                                        .page.tasks.overview.service_min_count),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(task.minServiceCount!.toString())
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(t.page.tasks.overview
-                                        .auto_delete_on_stop),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(task.autoDeleteOnStop
-                                        ? t.general.yes
-                                        : t.general.no)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      t.page.tasks.overview.static_service,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      task.staticServices
-                                          ? t.general.yes
-                                          : t.general.no,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      t.page.tasks.overview.maintenance,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      task.maintenance
-                                          ? t.general.yes
-                                          : t.general.no,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(t.page.tasks.overview
-                                        .disable_ip_rewrite),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(task.disableIpRewrite
-                                        ? t.general.yes
-                                        : t.general.no)
-                                  ],
-                                )
-                              ],
-                            ),
+                                        .page.tasks.overview.disable_ip_rewrite)
+                                  ]),
+                                  Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(task.disableIpRewrite
+                                            ? t.general.yes
+                                            : t.general.no)
+                                      ])
+                                ]),
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -311,10 +285,8 @@ class _TasksPageState extends State<TasksPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                  onPressed: () {
-                                    context.push('/tasks/task-edit',
-                                        extra: task);
-                                  },
+                                  onPressed: () => context
+                                      .push('/tasks/task-edit', extra: task),
                                   icon: const Icon(Icons.edit),
                                 ),
                                 IconButton(
@@ -324,9 +296,8 @@ class _TasksPageState extends State<TasksPage> {
                                       builder: (context) {
                                         return deleteDialog(
                                           context,
-                                          onCancel: () {
-                                            Navigator.pop(context);
-                                          },
+                                          onCancel: () =>
+                                              Navigator.pop(context),
                                           onDelete: () {
                                             Navigator.pop(context);
                                             StoreProvider.dispatch(
