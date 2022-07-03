@@ -1002,14 +1002,104 @@ class _EditTaskPageState extends State<EditTaskPage> {
             children: [
               Text(t.page.tasks.edit.includes),
               ListView(
-                shrinkWrap: true,
-                children: widget.task.includes.isNotEmpty
-                    ? List<Widget>.generate(widget.task.includes.length + 1,
-                        (index) {
-                        if (index == widget.task.includes.length) {
+                  shrinkWrap: true,
+                  children: widget.task.includes.isNotEmpty
+                      ? List<Widget>.generate(widget.task.includes.length + 1,
+                          (index) {
+                          if (index == widget.task.includes.length) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(t.page.tasks.edit.add_inclusion),
+                                leading: Icon(Icons.add),
+                                onTap: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return addEditInclusion(
+                                        context,
+                                        false,
+                                        ServiceRemoteInclusion(),
+                                        state,
+                                        (inclusion) {
+                                          setState(() {
+                                            editTask.includes.add(inclusion);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          final include = widget.task.includes[index];
+                          final format =
+                              "${include.url} -> ${include.destination}";
                           return Card(
                             child: ListTile(
+                              title: Text(format),
+                              leading: Icon(Icons.download_sharp),
+                              trailing: IconButton(
+                                color: Theme.of(context).errorColor,
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                onPressed: () {
+                                  showDialog<AlertDialog>(
+                                    context: context,
+                                    builder: (context) {
+                                      return deleteDialog(
+                                        context,
+                                        onCancel: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDelete: () {
+                                          setState(() {
+                                            editTask.includes.removeAt(index);
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        item: format,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              onTap: () {
+                                showDialog<AlertDialog>(
+                                  context: context,
+                                  builder: (context) {
+                                    return addEditInclusion(
+                                      context,
+                                      true,
+                                      include,
+                                      state,
+                                      (inclusions) {
+                                        setState(() {
+                                          editTask.includes.removeAt(index);
+                                          editTask.includes.add(inclusions);
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        })
+                      : [
+                          Card(
+                            child: ListTile(
+                              title: Text(t.page.tasks.edit.no_inclusions),
+                              enabled: false,
+                            ),
+                          ),
+                          Card(
+                            child: ListTile(
                               title: Text(t.page.tasks.edit.add_inclusion),
+                              enabled: true,
                               leading: Icon(Icons.add),
                               enabled: kIsWeb,
                               onTap: kIsWeb
@@ -1148,12 +1238,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
       children: [
         Expanded(
           child: TextField(
-            keyboardType: TextInputType.name,
-            controller: _javaCommandController,
-            enabled: false,
-            decoration:
-                InputDecoration(labelText: t.page.tasks.edit.java_command),
-          ),
+              keyboardType: TextInputType.name,
+              controller: _javaCommandController,
+              enabled: false,
+              decoration:
+                  InputDecoration(labelText: t.page.tasks.edit.java_command)),
         )
       ],
     );
@@ -1164,10 +1253,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         .map((e) => e.name)
         .toSet()
         .toList()
-        .map((e) => DropdownMenuItem<String>(
-              child: Text(e),
-              value: e,
-            ))
+        .map((e) => DropdownMenuItem<String>(child: Text(e), value: e))
         .toList();
   }
 
@@ -1176,10 +1262,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
             .map((e) => e.environmentType ?? '')
             .toSet()
             .toList()
-            .map((e) => DropdownMenuItem<String>(
-                  child: Text(e),
-                  value: e,
-                ))
+            .map((e) => DropdownMenuItem<String>(child: Text(e), value: e))
             .toList() ??
         [];
   }
@@ -1194,9 +1277,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
             value: widget.task.processConfiguration?.environment,
             onChanged: (value) {
               editTask = editTask.copyWith(
-                  processConfiguration: editTask.processConfiguration?.copyWith(
-                environment: value,
-              ));
+                  processConfiguration: editTask.processConfiguration
+                      ?.copyWith(environment: value));
             },
           ),
         )

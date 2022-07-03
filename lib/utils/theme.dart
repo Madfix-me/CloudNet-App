@@ -9,7 +9,7 @@ ThemeData cloudnetTheme = ThemeData(
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(24),
+        bottom: Radius.circular(0),
       ),
     ),
     toolbarHeight: k.navbarHeight,
@@ -30,6 +30,12 @@ ThemeData cloudnetTheme = ThemeData(
     ),
     // actionsIconTheme: null,
   ),
+  drawerTheme: const DrawerThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(0),
+        ),
+      )),
   dialogTheme: DialogTheme(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
@@ -123,7 +129,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
     elevation: k.elevation,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(24.0),
+        bottom: Radius.circular(0),
       ),
     ),
     toolbarHeight: k.navbarHeight,
@@ -152,7 +158,7 @@ ThemeData cloudnetDarkTheme = ThemeData(
   drawerTheme: const DrawerThemeData(
       shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(
-      bottom: Radius.circular(24.0),
+      bottom: Radius.circular(0),
     ),
   )),
   colorScheme: ColorScheme.fromSwatch(
