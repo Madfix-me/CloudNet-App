@@ -106,7 +106,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
     }
     if (task.properties.containsKey('requiredPermission')) {
       requiredPermission = task.properties['requiredPermission'] as String?;
-      print(requiredPermission);
       _requiredPermissionPermission = TextEditingController.fromValue(
           TextEditingValue(text: requiredPermission ?? ''));
     }

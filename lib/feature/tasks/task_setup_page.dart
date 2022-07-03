@@ -236,8 +236,8 @@ class _TaskSetupPageState extends State<TaskSetupPage> {
                                               SnackBar snackBar = SnackBar(
                                                 content: Text(t
                                                     .page.tasks.setup.snackbar
-                                                    .template(
-                                                        storage: storage,
+                                                      .template(
+                                                          storage: storage,
                                                         name: name)),
                                               );
                                               ScaffoldMessenger.of(context)

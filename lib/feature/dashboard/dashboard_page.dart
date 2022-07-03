@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:async_redux/async_redux.dart';
 import 'package:cloudnet/feature/node/node_handler.dart';
@@ -30,7 +31,9 @@ class _DashboardPageState extends State<DashboardPage> {
     );*/
   }
 
-  final _client = HttpClient();
+  WebSocket? connection;
+  final List<String> _messages = [];
+  final TextEditingController _consoleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,37 +43,198 @@ class _DashboardPageState extends State<DashboardPage> {
       },
       converter: (store) => store.state.nodeState,
       builder: (context, state) {
-        return RefreshIndicator(
-          onRefresh: _pullRefresh,
-          child: FutureBuilder<WebSocket>(
-            future: openConsole(state),
-            builder: (context, snapshot) {
-              return StreamBuilder<dynamic>(
-                builder: (context, snapshot) {
-                  return Text(snapshot.hasData ? '${snapshot.data}' : '');
-                },
-                stream: snapshot.data,
+        return connection != null
+            ? _liveConsole()
+            : RefreshIndicator(
+                onRefresh: _pullRefresh,
+                child: _dashboard(state),
               );
-            },
-          ),
-        );
       },
     );
   }
 
-  Future<WebSocket> openConsole(NodeState state) async {
-    final value = await _client
-        .getUrl(Uri.parse('${state.node?.toUrl()}/api/v2/node/liveconsole'));
-    value.headers.add('Authorization', state.node?.token ?? '');
-    value.headers.add('Connection', 'upgrade');
-    value.headers.add('Upgrade', 'websocket');
-    final resp = await value.close();
-    final socket = await resp.detachSocket();
-    return WebSocket.fromUpgradedSocket(socket, serverSide: false);
+  Widget _liveConsole() {
+    return StreamBuilder<dynamic>(
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          print(snapshot.data! as String);
+          _messages.add(snapshot.data! as String);
+        }
+        return Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                reverse: true,
+                itemBuilder: (context, index) {
+                  return Text(_messages[index].trim());
+                },
+                itemCount: _messages.length,
+              ),
+            ),
+            Form(
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationY(math.pi),
+                        child: Icon(Icons.exit_to_app)),
+                    onPressed: () {
+                      _messages.clear();
+                      connection!.close().then(
+                            (dynamic d) => {
+                              setState(
+                                () {
+                                  connection = null;
+                                },
+                              )
+                            },
+                          );
+                    },
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: _consoleController,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      connection!.add(_consoleController.text);
+                      _consoleController.clear();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+      stream: connection,
+    );
+  }
+
+  Widget _dashboard(NodeState state) {
+    var childs = List.generate(4, (index) {
+      switch (index) {
+        case 0:
+          return widgetVersion(state);
+        case 1:
+          return Center(
+            child: TextButton(
+              onPressed: () {
+                openConsole(state).then(
+                  (value) => {
+                    setState(
+                      () {
+                        connection = value;
+                      },
+                    )
+                  },
+                );
+              },
+              child: Text('Live Console'),
+            ),
+          );
+        case 2:
+          return widgetNodeInfo(state);
+        default:
+          return Container();
+      }
+    });
+    return GridView.count(crossAxisCount: 2, children: childs);
+  }
+
+  Widget widgetNodeInfo(NodeState state) {
+    final style = TextStyle(fontSize: 15);
+    final row = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text('Stack(Memory)', style: style),
+            Text('Heap', style: style),
+            Text('CPU', style: style),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                '${toMb(state.node?.nodeInfo?.lastNodeInfoSnapshot?.usedMemory ?? 1)}/${toMb(state.node?.nodeInfo?.lastNodeInfoSnapshot?.reservedMemory ?? 1)}/${toMb(state.node?.nodeInfo?.lastNodeInfoSnapshot?.maxMemory ?? 1)} MB',
+                style: style),
+            Text(
+                '${toMb(state.node?.nodeInfo?.lastNodeInfoSnapshot?.processSnapshot?.heapUsageMemory ?? 1)}/${toMb(state.node?.nodeInfo?.lastNodeInfoSnapshot?.processSnapshot?.maxHeapMemory ?? 1)} Mb',
+                style: style),
+            Text(
+                '${toCpu(state.node?.nodeInfo?.lastNodeInfoSnapshot?.processSnapshot?.cpuUsage ?? 1)}%',
+                style: style),
+          ],
+        ),
+      ],
+    );
+    return row;
+  }
+
+  int toMb(int bytes) {
+    return (bytes / 1024 / 1024).round();
+  }
+
+  String toCpu(double cpu) {
+    return cpu.toStringAsFixed(2);
+  }
+
+  Widget widgetVersion(NodeState state) {
+    final version =
+        '${state.node?.nodeInfo?.version.major}.${state.node?.nodeInfo?.version.minor}.${state.node?.nodeInfo?.version.patch}-${state.node?.nodeInfo?.version.versionType}';
+    final style = TextStyle(fontSize: 15);
+    final row = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text('Version', style: style),
+            Text('Revision', style: style),
+            Text('Title', style: style),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(version, style: style),
+            Text(state.node?.nodeInfo?.version.revision ?? '', style: style),
+            Text(state.node?.nodeInfo?.version.versionTitle ?? '',
+                style: style),
+          ],
+        ),
+      ],
+    );
+    return row;
+  }
+
+  Future<WebSocket?> openConsole(NodeState state) async {
+    final headers = {
+      'Authorization': 'Bearer ${state.node?.token}',
+      'Content-Type': 'application/json',
+    };
+    final ws = WebSocket.connect(
+        '${state.node?.toWebSocketUrl()}/api/v2/node/liveconsole',
+        headers: headers);
+    return Future.value(ws);
   }
 
   Future<void> _pullRefresh() async {
-    StoreProvider.dispatch(context, UpdateNodeInfo());
+    (StoreProvider.dispatch(context, UpdateNodeInfo()) as Future<ActionStatus>)
+        .timeout(Duration(seconds: 15), onTimeout: () {
+      return Future.error('Timeout');
+    });
+    setState(() {});
   }
 
   void _onError(dynamic error) {}

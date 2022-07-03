@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloudnet/feature/login/login_page.dart';
 import 'package:cloudnet/utils/router.dart';
 import 'package:dio/dio.dart';
@@ -34,6 +35,17 @@ class ApiClient {
             }
             if (err.response?.statusCode != null &&
                 err.response!.statusCode == 403) {
+              router.routerDelegate.navigatorKey.currentContext
+                  ?.go(LoginPage.route);
+              SnackBar snackBar = SnackBar(
+                content: Text('An error was conrrurent. Login out'),
+              );
+              ScaffoldMessenger.of(
+                      router.routerDelegate.navigatorKey.currentContext!)
+                  .showSnackBar(snackBar);
+            }
+            if (err.response?.statusCode != null &&
+                err.response!.statusCode == 401) {
               router.routerDelegate.navigatorKey.currentContext
                   ?.go(LoginPage.route);
               SnackBar snackBar = SnackBar(
@@ -80,8 +92,26 @@ class ApiBasicClient {
               handler.reject(err);
             }
             if (err.response?.statusCode != null &&
+                err.response!.statusCode == 403) {
+              router.routerDelegate.navigatorKey.currentContext
+                  ?.go(LoginPage.route);
+              SnackBar snackBar = SnackBar(
+                content: Text('An error was conrrurent. Login out'),
+              );
+              ScaffoldMessenger.of(
+                      router.routerDelegate.navigatorKey.currentContext!)
+                  .showSnackBar(snackBar);
+            }
+            if (err.response?.statusCode != null &&
                 err.response!.statusCode == 401) {
-              handler.reject(err);
+              router.routerDelegate.navigatorKey.currentContext
+                  ?.go(LoginPage.route);
+              SnackBar snackBar = SnackBar(
+                content: Text('An error was conrrurent. Login out'),
+              );
+              ScaffoldMessenger.of(
+                      router.routerDelegate.navigatorKey.currentContext!)
+                  .showSnackBar(snackBar);
             }
             handler.reject(err);
           },
